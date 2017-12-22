@@ -24,19 +24,21 @@ using UnityEngine;
  */
 public class NetworkHandler : MonoBehaviour
 {
-    // For socket send.
-    Socket socket;
+    // Connection settings.
     string serverIP = "127.0.0.1";
     int serverPort = 5055;
+
+    // For socket write.
+    Socket socket;
     int connectionTimeOut = 5000;
     bool socketInitialized = false;
     bool socketError = false;
+    string messageTerminator = "\r\n";
 
-    // For socket receive.
-    Thread receiveThread;
-    bool receiveThreadStarted = false;
-    byte[] bytes = new byte[1024];
-    string messageReceived = "";
+    // For socket read.
+    Thread readThread;
+    bool readThreadStarted = false;
+    string[] arraySeparator = new string[] { "\n" };
 
     void OnApplicationQuit()
     {
@@ -45,7 +47,7 @@ public class NetworkHandler : MonoBehaviour
             if (socket.Connected)
             {
                 socket.Close();
-                receiveThreadStarted = false;
+                readThreadStarted = false;
             }
             Debug.Log("Application ending after " + Time.time + " seconds.");
         }
@@ -65,7 +67,7 @@ public class NetworkHandler : MonoBehaviour
             InitSocket();
         }
 
-        if (socketError || !receiveThreadStarted)
+        if (socketError || !readThreadStarted)
         {
             // TODO: Manage this in a better way.
             Application.Quit(); // Quit the game.
@@ -95,9 +97,9 @@ public class NetworkHandler : MonoBehaviour
                     Debug.Log("Connected.");
 
                     // Start Receive thread.
-                    receiveThreadStarted = true;
-                    receiveThread = new Thread(new ThreadStart(receiveHandler));
-                    receiveThread.Start();
+                    readThreadStarted = true;
+                    readThread = new Thread(new ThreadStart(channelRead));
+                    readThread.Start();
                 }
                 else
                 {
@@ -114,32 +116,38 @@ public class NetworkHandler : MonoBehaviour
         }
     }
 
-    public void Send(string info)
+    public void Send(string[] info)
     {
         if (socket.Poll(1000, SelectMode.SelectRead) && socket.Available == 0) // Connection closed.
         {
-            receiveThreadStarted = false;
+            readThreadStarted = false;
             Start(); // This is actually for closing the client.
         }
         else
         {
-            socket.Send(Encoding.UTF8.GetBytes(info + "\r\n"));
+            string concatenate = string.Join(arraySeparator[0], info);
+            //TODO: Encrypt.
+            socket.Send(Encoding.UTF8.GetBytes(concatenate + messageTerminator));
         }
     }
 
-    void receiveHandler()
+    void channelRead()
     {
+        byte[] byteBuffer = new byte[1024];
+        string info = "";
         int len = 0;
-        while (receiveThreadStarted)
+
+        while (readThreadStarted)
         {
-            if (messageReceived.Contains("\n"))
+            len = socket.Receive(byteBuffer);
+            if (len > 0)
             {
-                len = socket.Receive(bytes);
-                messageReceived = Encoding.UTF8.GetString(bytes, 0, len);
-                string[] split = messageReceived.Split(new string[] { "\n" }, System.StringSplitOptions.None);
-                for (int i = 0; i < split.Length - 1; i++)
+                info = Encoding.UTF8.GetString(byteBuffer, 0, len);
+                //TODO: Decrypt.
+                string[] dataArray = info.Split(arraySeparator, System.StringSplitOptions.None);
+                for (int i = 0; i < dataArray.Length - 1; i++) // TODO: Handle message.
                 {
-                    Debug.Log("Recieved " + split[i]);
+                    Debug.Log("Recieved " + dataArray[i]);
                 }
             }
         }
