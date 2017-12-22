@@ -30,21 +30,16 @@ public class NetworkHandler : MonoBehaviour
     Socket socket;
     string serverIP = "127.0.0.1";
     int serverPort = 5055;
-    ThreadStart ts;
-    Thread socketThread;
-    bool socketThreadStarted = false;
-    bool socketThreadError = false;
     int connectionTimeOut = 5000;
+    bool socketInitialized = false;
+    bool socketError = false;
 
     // For socket receive.
-    ThreadStart ts2;
     Thread receiveThread;
     bool receiveThreadStarted = false;
     string messageReceived = "";
-    int zeroByteCount = 0;
-    List<string> receiveMsgList = new List<string>();
     byte[] bytes = new byte[1024];
-
+    
     void OnApplicationQuit()
     {
         if (socket != null)
@@ -66,15 +61,12 @@ public class NetworkHandler : MonoBehaviour
     // Use this for initialization.
     void Start()
     {
-        if (!socketThreadStarted)
+        if (!socketInitialized)
         {
-            socketThreadStarted = true;
-            ts = new ThreadStart(openSocket);
-            socketThread = new Thread(ts);
-            socketThread.Start();
-            socketThread.Join(); // Wait until it ends, we need socketThreadError to be updated.
+            socketInitialized = true;
+            InitSocket();
 
-            if (socketThreadError)
+            if (socketError)
             {
                 // Send a popup window notification.
                 EditorUtility.DisplayDialog("Network error!", "Could not connect to the server.", "OK");
@@ -89,16 +81,11 @@ public class NetworkHandler : MonoBehaviour
         }
     }
 
-    // Update is called once per frame.
-    void Update()
-    {
-    }
-
-    void openSocket()
+    void InitSocket()
     {
         try
         {
-            socketThreadError = false;
+            socketError = false;
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Debug.Log("Trying to connect.");
             System.IAsyncResult result = socket.BeginConnect(serverIP, serverPort, null, null);
@@ -106,7 +93,7 @@ public class NetworkHandler : MonoBehaviour
 
             if (!success)
             {
-                socketThreadError = true;
+                socketError = true;
                 Debug.Log("Failed to connect.");
                 socket.Close();
             }
@@ -118,13 +105,12 @@ public class NetworkHandler : MonoBehaviour
 
                     // Start Receive thread.
                     receiveThreadStarted = true;
-                    ts2 = new ThreadStart(receiveHandler);
-                    receiveThread = new Thread(ts2);
+                    receiveThread = new Thread(new ThreadStart(receiveHandler));
                     receiveThread.Start();
                 }
                 else
                 {
-                    socketThreadError = true;
+                    socketError = true;
                     Debug.Log("Failed to connect.");
                     socket.Close();
                 }
@@ -132,36 +118,35 @@ public class NetworkHandler : MonoBehaviour
         }
         catch (SocketException se)
         {
-            socketThreadError = true;
+            socketError = true;
             Debug.Log("SocketException :" + se.SocketErrorCode);
+        }
+    }
+
+    public void Send()
+    {
+        if (socket != null && socket.Connected)
+        {
+            socket.Send(Encoding.UTF8.GetBytes("TEST" + "\r\n"));
         }
     }
 
     void receiveHandler()
     {
-        int bytesRec = 0;
+        int len = 0;
         while (receiveThreadStarted)
         {
-            if (bytesRec == 0)
+            len = socket.Receive(bytes);
+            if (len > 0)
             {
-                zeroByteCount++;
-                if (zeroByteCount > 20)
+                messageReceived = Encoding.UTF8.GetString(bytes, 0, len);
+                if (messageReceived.Contains("\n"))
                 {
-                    // Connection closed.
-                    receiveThreadStarted = false;
-                }
-            }
-            bytesRec = socket.Receive(bytes);
-
-            messageReceived = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-
-            if (messageReceived.Contains("\n"))
-            {
-                string[] split = messageReceived.Split(new string[] { "\n" }, System.StringSplitOptions.None);
-                for (int i = 0; i < split.Length - 1; i++)
-                {
-                    receiveMsgList.Add(split[i]);
-                    Debug.Log("Added " + split[i] + " into List.");
+                    string[] split = messageReceived.Split(new string[] {"\n"}, System.StringSplitOptions.None);
+                    for (int i = 0; i < split.Length - 1; i++)
+                    {
+                        Debug.Log("Recieved " + split[i]);
+                    }
                 }
             }
         }
