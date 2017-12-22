@@ -14,11 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using UnityEditor;
 using UnityEngine;
 
 /**
@@ -37,9 +35,9 @@ public class NetworkHandler : MonoBehaviour
     // For socket receive.
     Thread receiveThread;
     bool receiveThreadStarted = false;
-    string messageReceived = "";
     byte[] bytes = new byte[1024];
-    
+    string messageReceived = "";
+
     void OnApplicationQuit()
     {
         if (socket != null)
@@ -65,19 +63,12 @@ public class NetworkHandler : MonoBehaviour
         {
             socketInitialized = true;
             InitSocket();
+        }
 
-            if (socketError)
-            {
-                // Send a popup window notification.
-                EditorUtility.DisplayDialog("Network error!", "Could not connect to the server.", "OK");
-
-                // Application.Quit() does not work in the editor so UnityEditor.EditorApplication.isPlaying need to be set to false to end the game.
-                #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-                #else
-                    Application.Quit(); // Quit the game.
-                #endif
-            }
+        if (socketError || !receiveThreadStarted)
+        {
+            // TODO: Manage this in a better way.
+            Application.Quit(); // Quit the game.
         }
     }
 
@@ -123,11 +114,16 @@ public class NetworkHandler : MonoBehaviour
         }
     }
 
-    public void Send()
+    public void Send(string info)
     {
-        if (socket != null && socket.Connected)
+        if (socket.Poll(1000, SelectMode.SelectRead) && socket.Available == 0) // Connection closed.
         {
-            socket.Send(Encoding.UTF8.GetBytes("TEST" + "\r\n"));
+            receiveThreadStarted = false;
+            Start(); // This is actually for closing the client.
+        }
+        else
+        {
+            socket.Send(Encoding.UTF8.GetBytes(info + "\r\n"));
         }
     }
 
@@ -136,17 +132,14 @@ public class NetworkHandler : MonoBehaviour
         int len = 0;
         while (receiveThreadStarted)
         {
-            len = socket.Receive(bytes);
-            if (len > 0)
+            if (messageReceived.Contains("\n"))
             {
+                len = socket.Receive(bytes);
                 messageReceived = Encoding.UTF8.GetString(bytes, 0, len);
-                if (messageReceived.Contains("\n"))
+                string[] split = messageReceived.Split(new string[] { "\n" }, System.StringSplitOptions.None);
+                for (int i = 0; i < split.Length - 1; i++)
                 {
-                    string[] split = messageReceived.Split(new string[] {"\n"}, System.StringSplitOptions.None);
-                    for (int i = 0; i < split.Length - 1; i++)
-                    {
-                        Debug.Log("Recieved " + split[i]);
-                    }
+                    Debug.Log("Recieved " + split[i]);
                 }
             }
         }
