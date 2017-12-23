@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using Simias.Encryption;
 using System.Net.Sockets;
 using System.Threading;
 using UnityEngine;
@@ -122,8 +123,7 @@ public class NetworkHandler : MonoBehaviour
         }
         else
         {
-            // TODO: Encrypt (bytes).
-            socket.Send(bytes);
+            socket.Send(Encryption.encrypt(bytes));
         }
     }
 
@@ -138,7 +138,7 @@ public class NetworkHandler : MonoBehaviour
             if (len > 0)
             {
                 // TODO: Decrypt (bytes).
-                ReceivablePacket packet = new ReceivablePacket(bytes);
+                ReceivablePacket packet = new ReceivablePacket(Encryption.decrypt(bytes));
                 // TODO: Handle message.
             }
         }
