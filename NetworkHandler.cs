@@ -15,7 +15,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using UnityEngine;
 
@@ -28,17 +27,15 @@ public class NetworkHandler : MonoBehaviour
     string serverIP = "127.0.0.1";
     int serverPort = 5055;
 
-    // For socket write.
-    Socket socket;
-    int connectionTimeOut = 5000;
-    bool socketInitialized = false;
-    bool socketError = false;
-    string messageTerminator = "\r\n";
-
     // For socket read.
     Thread readThread;
     bool readThreadStarted = false;
-    string[] arraySeparator = new string[] { "\n" };
+
+    // For socket write.
+    Socket socket;
+    bool socketError = false;
+    bool socketInitialized = false;
+    int connectionTimeOut = 5000;
 
     void OnApplicationQuit()
     {
@@ -98,7 +95,7 @@ public class NetworkHandler : MonoBehaviour
 
                     // Start Receive thread.
                     readThreadStarted = true;
-                    readThread = new Thread(new ThreadStart(channelRead));
+                    readThread = new Thread(new ThreadStart(ChannelRead));
                     readThread.Start();
                 }
                 else
@@ -116,39 +113,33 @@ public class NetworkHandler : MonoBehaviour
         }
     }
 
-    public void Send(string[] info)
+    public void Send(byte[] bytes)
     {
         if (socket.Poll(1000, SelectMode.SelectRead) && socket.Available == 0) // Connection closed.
         {
             readThreadStarted = false;
-            Start(); // This is actually for closing the client.
+            Start(); // This is for reseting - closing the client.
         }
         else
         {
-            string concatenate = string.Join(arraySeparator[0], info);
-            //TODO: Encrypt.
-            socket.Send(Encoding.UTF8.GetBytes(concatenate + messageTerminator));
+            socket.Send(bytes);
         }
     }
 
-    void channelRead()
+    void ChannelRead()
     {
-        byte[] byteBuffer = new byte[1024];
-        string info = "";
+        byte[] bytes = new byte[1024];
+        ReceivablePacket byteBuffer;
         int len = 0;
 
         while (readThreadStarted)
         {
-            len = socket.Receive(byteBuffer);
+            len = socket.Receive(bytes);
             if (len > 0)
             {
-                info = Encoding.UTF8.GetString(byteBuffer, 0, len);
-                //TODO: Decrypt.
-                string[] dataArray = info.Split(arraySeparator, System.StringSplitOptions.None);
-                for (int i = 0; i < dataArray.Length - 1; i++) // TODO: Handle message.
-                {
-                    Debug.Log("Recieved " + dataArray[i]);
-                }
+                // TODO: Decrypt (bytes).
+                byteBuffer = new ReceivablePacket(bytes);
+                // TODO: Handle message.
             }
         }
     }
