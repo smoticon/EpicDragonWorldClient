@@ -122,14 +122,14 @@ public class NetworkHandler : MonoBehaviour
         }
         else
         {
+            // TODO: Encrypt (bytes).
             socket.Send(bytes);
         }
     }
 
     void ChannelRead()
     {
-        byte[] bytes = new byte[1024];
-        ReceivablePacket byteBuffer;
+        byte[] bytes = new byte[1024 * 1024];
         int len = 0;
 
         while (readThreadStarted)
@@ -138,7 +138,7 @@ public class NetworkHandler : MonoBehaviour
             if (len > 0)
             {
                 // TODO: Decrypt (bytes).
-                byteBuffer = new ReceivablePacket(bytes);
+                ReceivablePacket packet = new ReceivablePacket(bytes);
                 // TODO: Handle message.
             }
         }

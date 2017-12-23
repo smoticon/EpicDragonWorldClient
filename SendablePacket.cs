@@ -24,8 +24,8 @@ using System.Text;
 public class SendablePacket
 {
     private MemoryStream memoryStream;
-	
-	public SendablePacket()
+
+    public SendablePacket()
     {
         memoryStream = new MemoryStream();
     }
@@ -98,8 +98,6 @@ public class SendablePacket
 
     public byte[] GetSendableBytes()
     {
-        //TODO: Encrypt (memoryStream).
-        WriteString("\n");
         return memoryStream.ToArray();
     }
 }
