@@ -1,0 +1,7 @@
+sceneSetups:
+- path: Assets/Scenes/Disclaimer/Disclaimer.unity
+  isLoaded: 1
+  isActive: 1
+- path: Assets/Scenes/LoginScreen/LoginScreen.unity
+  isLoaded: 1
+  isActive: 0
