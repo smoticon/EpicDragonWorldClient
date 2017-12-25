@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using Simias.Encryption;
 using System.Net.Sockets;
 using System.Threading;
 using UnityEngine;
@@ -22,11 +21,15 @@ using UnityEngine;
 /**
  * @author Pantelis Andrianakis
  */
-public class NetworkHandler : MonoBehaviour
+public class NetworkManager : MonoBehaviour
 {
+    // Network manager instance.
+    public static NetworkManager instance;
+
     // Connection settings.
     string serverIP = "127.0.0.1";
     int serverPort = 5055;
+    int connectionTimeOut = 5000;
 
     // For socket read.
     Thread readThread;
@@ -34,9 +37,17 @@ public class NetworkHandler : MonoBehaviour
 
     // For socket write.
     Socket socket;
-    bool socketError = false;
-    bool socketInitialized = false;
-    int connectionTimeOut = 5000;
+    bool socketConnected = false;
+
+    void Start()
+    {
+        instance = this;
+    }
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
+    }
 
     void OnApplicationQuit()
     {
@@ -45,89 +56,66 @@ public class NetworkHandler : MonoBehaviour
             if (socket.Connected)
             {
                 socket.Close();
+                socketConnected = false;
                 readThreadStarted = false;
             }
             Debug.Log("Application ending after " + Time.time + " seconds.");
         }
     }
 
-    void Awake()
+    // Best to call this only once per login attempt.
+    public bool connectToServer()
     {
-        DontDestroyOnLoad(transform.gameObject);
+        if (socketConnected = false || socket == null || !socket.Connected)
+        {
+            connectSocket();
+        }
+        return SocketConnected();
     }
 
-    // Use this for initialization.
-    void Start()
-    {
-        if (!socketInitialized)
-        {
-            socketInitialized = true;
-            InitSocket();
-        }
-
-        if (socketError || !readThreadStarted)
-        {
-            // TODO: Manage this in a better way.
-            Application.Quit(); // Quit the game.
-        }
-    }
-
-    void InitSocket()
+    private void connectSocket()
     {
         try
         {
-            socketError = false;
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             Debug.Log("Trying to connect.");
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             System.IAsyncResult result = socket.BeginConnect(serverIP, serverPort, null, null);
             bool success = result.AsyncWaitHandle.WaitOne(connectionTimeOut, true);
 
             if (!success)
             {
-                socketError = true;
-                Debug.Log("Failed to connect.");
+                socketConnected = false;
                 socket.Close();
+                Debug.Log("Failed to connect.");
             }
             else
             {
                 if (socket.Connected)
                 {
-                    Debug.Log("Connected.");
-
+                    socketConnected = true;
                     // Start Receive thread.
                     readThreadStarted = true;
                     readThread = new Thread(new ThreadStart(ChannelRead));
                     readThread.Start();
+                    Debug.Log("Connected.");
                 }
                 else
                 {
-                    socketError = true;
-                    Debug.Log("Failed to connect.");
+                    socketConnected = false;
                     socket.Close();
+                    Debug.Log("Failed to connect.");
                 }
             }
         }
         catch (SocketException se)
         {
-            socketError = true;
+            socketConnected = false;
+            readThreadStarted = false;
             Debug.Log("SocketException :" + se.SocketErrorCode);
         }
     }
 
-    public void Send(byte[] bytes)
-    {
-        if (socket.Poll(1000, SelectMode.SelectRead) && socket.Available == 0) // Connection closed.
-        {
-            readThreadStarted = false;
-            Start(); // This is for reseting - closing the client.
-        }
-        else
-        {
-            socket.Send(Encryption.encrypt(bytes));
-        }
-    }
-
-    void ChannelRead()
+    private void ChannelRead()
     {
         byte[] bytes = new byte[1024 * 1024];
         int len = 0;
@@ -137,10 +125,30 @@ public class NetworkHandler : MonoBehaviour
             len = socket.Receive(bytes);
             if (len > 0)
             {
-                // TODO: Decrypt (bytes).
                 ReceivablePacket packet = new ReceivablePacket(Encryption.decrypt(bytes));
                 // TODO: Handle message.
             }
         }
+    }
+
+    public void ChannelSend(byte[] bytes)
+    {
+        if (SocketConnected()) // Connection closed.
+        {
+            socketConnected = false;
+            readThreadStarted = false;
+            // TODO: Manage this in a better way.
+            Application.Quit(); // Close the client.
+        }
+        else
+        {
+            socket.Send(Encryption.encrypt(bytes));
+        }
+    }
+
+    private bool SocketConnected()
+    {
+        // return !(socket.Poll(1000, SelectMode.SelectRead) && socket.Available == 0);
+        return socketConnected && socket != null && socket.Connected;
     }
 }

@@ -19,6 +19,7 @@ using UnityEngine.SceneManagement;
 
 /**
  * @author FlatTutorials
+ * @URL https://www.assetstore.unity3d.com/en/#!/content/81753
  */
 public class SceneFader : MonoBehaviour
 {
