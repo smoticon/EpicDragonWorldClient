@@ -22,73 +22,78 @@ using UnityEngine;
  */
 public class MusicManager : MonoBehaviour
 {
+    // Variables.
     public static MusicManager instance;
-    private bool initializedSources = false;
+    private bool firstRun = true;
+    private int musicFadeDuration = 4;
+    private float currentVolume;
 
+    // Audio outputs.
     private AudioSource audioSource1;
     private AudioSource audioSource2;
 
-    private int musicFadeDuration = 4;
-
+    // Music tracks.
     public AudioClip MusicMajesticHills;
     public AudioClip MusicSeasideNight;
-
-    private void Initialize()
-    {
-        audioSource1 = gameObject.AddComponent<AudioSource>();
-        audioSource2 = gameObject.AddComponent<AudioSource>();
-        MusicMajesticHills = Resources.Load<AudioClip>("Audio/Music/MajesticHills");
-        MusicSeasideNight = Resources.Load<AudioClip>("Audio/Music/SeasideNight");
-        audioSource1.loop = true;
-        audioSource2.loop = true;
-        audioSource1.volume = 1;
-        audioSource2.volume = 0;
-        initializedSources = true;
-    }
 
     void Awake()
     {
         // Keep a single instance running.
-        if (instance)
+        if (firstRun)
         {
-            DestroyImmediate(gameObject);
+            firstRun = false;
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            // Initialize sources if running for the first time.
+            audioSource1 = gameObject.AddComponent<AudioSource>();
+            audioSource2 = gameObject.AddComponent<AudioSource>();
+            audioSource1.loop = true;
+            audioSource2.loop = true;
+            audioSource1.volume = 0;
+            audioSource2.volume = 1;
+
+            // Music tracks.
+            MusicMajesticHills = Resources.Load<AudioClip>("Audio/Music/MajesticHills");
+            MusicSeasideNight = Resources.Load<AudioClip>("Audio/Music/SeasideNight");
         }
         else
         {
-            DontDestroyOnLoad(gameObject);
-            instance = this;
-        }
-
-        if (!initializedSources)
-        {
-            Initialize();
+            DestroyImmediate(gameObject);
         }
     }
 
     public void PlayMusic(AudioClip audioClip)
     {
+        // Crude way to avoid starting other songs on startup.
+        if (Time.time < 5 && audioClip != MusicMajesticHills)
+        {
+            return;
+        }
+
+        // Switch audio outputs.
         AudioSource audioSourceNext = audioSource1.isPlaying ? audioSource2 : audioSource1;
         AudioSource audioSourcePrev = audioSourceNext == audioSource1 ? audioSource2 : audioSource1;
 
+        // Play music if not already playing.
         if (audioSourcePrev.clip != audioClip)
         {
-            StartCoroutine(fadeAudioSourceOut(audioSourcePrev));
-            audioSourceNext.volume = 0;
+            currentVolume = audioSourcePrev.volume;
+            StartCoroutine(fadeOutAudio(audioSourcePrev));
             audioSourceNext.clip = audioClip;
-            StartCoroutine(fadeAudioSourceIn(audioSourceNext));
+            StartCoroutine(fadeInAudio(audioSourceNext));
         }
     }
 
-    private IEnumerator fadeAudioSourceOut(AudioSource audioSource)
+    private IEnumerator fadeOutAudio(AudioSource audioSource)
     {
         float startTime = Time.time;
-        float startVolume = audioSource.volume;
-
         while (true)
         {
             float elapsed = Time.time - startTime;
-            audioSource.volume = Mathf.Clamp01(Mathf.Lerp(startVolume, 0, elapsed / musicFadeDuration));
+            audioSource.volume = Mathf.Clamp01(Mathf.Lerp(currentVolume, 0, elapsed / musicFadeDuration));
 
+            // Stop playing.
             if (audioSource.volume == 0)
             {
                 audioSource.Stop();
@@ -98,19 +103,19 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    private IEnumerator fadeAudioSourceIn(AudioSource audioSource)
+    private IEnumerator fadeInAudio(AudioSource audioSource)
     {
+        // Start playing.
         audioSource.Play();
 
         float startTime = Time.time;
-        float startVolume = audioSource.volume;
-
         while (true)
         {
             float elapsed = Time.time - startTime;
-            audioSource.volume = Mathf.Clamp01(Mathf.Lerp(startVolume, 1, elapsed / musicFadeDuration));
+            audioSource.volume = Mathf.Clamp01(Mathf.Lerp(0, currentVolume, elapsed / musicFadeDuration));
 
-            if (audioSource.volume == 1)
+            // Stop increasing volume.
+            if (audioSource.volume == currentVolume)
             {
                 break;
             }
