@@ -47,7 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scenes\CharacterSelection\CharacterSelectionManager.cs" />
      <Compile Include="Assets\Scenes\Disclaimer\DisclaimerManager.cs" />
-     <Compile Include="Assets\Scenes\LoginScreen\ButtonLogin.cs" />
+     <Compile Include="Assets\Scenes\LoginScreen\AuthenticationManager.cs" />
      <Compile Include="Assets\Scenes\LoginScreen\ButtonQuitGame.cs" />
      <Compile Include="Assets\Scenes\LoginScreen\LoginScreenManager.cs" />
      <Compile Include="Assets\Scripts\Music\MusicManager.cs" />

@@ -20,14 +20,14 @@ using UnityEngine.UI;
 /**
  * @author Pantelis Andrianakis
  */
-public class ButtonLogin : MonoBehaviour
+public class AuthenticationManager : MonoBehaviour
 {
     public Button loginButton;
     public InputField accountNameField;
     public InputField passwordField;
     public Text messageText;
 
-    public static ButtonLogin instance;
+    public static AuthenticationManager instance;
     public static int status = -1000;
     private bool authenticating = false;
 

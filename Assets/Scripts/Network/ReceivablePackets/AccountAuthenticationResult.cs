@@ -22,6 +22,6 @@ public class AccountAuthenticationResult
 {
     public static void notify(ReceivablePacket packet)
     {
-        ButtonLogin.status = packet.ReadByte();
+        AuthenticationManager.status = packet.ReadByte();
     }
 }

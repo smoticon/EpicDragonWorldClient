@@ -33,8 +33,8 @@ public class MusicManager : MonoBehaviour
     private AudioSource audioSource2;
 
     // Music tracks.
-    public AudioClip MusicMajesticHills;
-    public AudioClip MusicSeasideNight;
+    public AudioClip LoginScreen;
+    public AudioClip CharacterSelection;
 
     void Awake()
     {
@@ -52,10 +52,6 @@ public class MusicManager : MonoBehaviour
             audioSource2.loop = true;
             audioSource1.volume = 0;
             audioSource2.volume = 1;
-
-            // Music tracks.
-            MusicMajesticHills = Resources.Load<AudioClip>("Audio/Music/MajesticHills");
-            MusicSeasideNight = Resources.Load<AudioClip>("Audio/Music/SeasideNight");
         }
         else
         {
@@ -66,7 +62,7 @@ public class MusicManager : MonoBehaviour
     public void PlayMusic(AudioClip audioClip)
     {
         // Crude way to avoid starting other songs on startup.
-        if (Time.time < 5 && audioClip != MusicMajesticHills)
+        if (Time.time < 5 && audioClip != LoginScreen)
         {
             return;
         }

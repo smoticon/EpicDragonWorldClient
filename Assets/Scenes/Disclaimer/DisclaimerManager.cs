@@ -26,7 +26,7 @@ public class DisclaimerManager : MonoBehaviour
 
     private void Start()
     {
-        MusicManager.instance.PlayMusic(MusicManager.instance.MusicMajesticHills);
+        MusicManager.instance.PlayMusic(MusicManager.instance.LoginScreen);
         StartCoroutine(LoadLevelAfterDelay(delay));
     }
 

@@ -23,6 +23,6 @@ public class CharacterSelectionManager : MonoBehaviour
 {
     private void Start()
     {
-        MusicManager.instance.PlayMusic(MusicManager.instance.MusicSeasideNight);
+        MusicManager.instance.PlayMusic(MusicManager.instance.CharacterSelection);
     }
 }

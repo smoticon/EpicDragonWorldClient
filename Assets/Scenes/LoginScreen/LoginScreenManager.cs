@@ -30,7 +30,7 @@ public class LoginScreenManager : MonoBehaviour
 
     private void Start()
     {
-        MusicManager.instance.PlayMusic(MusicManager.instance.MusicMajesticHills);
+        MusicManager.instance.PlayMusic(MusicManager.instance.LoginScreen);
     }
 
     private void Awake()
