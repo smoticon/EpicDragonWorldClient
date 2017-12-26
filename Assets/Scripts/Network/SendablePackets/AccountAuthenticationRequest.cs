@@ -14,25 +14,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System.Collections;
-using UnityEngine;
 
 /**
- * @author Pantelis Andrianakis
- */
-public class DisclaimerManager : MonoBehaviour
+* @author Pantelis Andrianakis
+*/
+public class AccountAuthenticationRequest : SendablePacket
 {
-    public float delay = 4;
-
-    private void Start()
+    public AccountAuthenticationRequest(string accountName, string password)
     {
-        MusicManager.instance.PlayMusic(MusicManager.instance.MusicMajesticHills);
-        StartCoroutine(LoadLevelAfterDelay(delay));
-    }
-
-    private IEnumerator LoadLevelAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SceneFader.Fade("LoginScreen", Color.black, 0.5f);
+        WriteShort(1);
+        WriteString(accountName);
+        WriteString(MD5Generator.Calculate(password));
     }
 }

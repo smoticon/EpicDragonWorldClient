@@ -27,35 +27,42 @@ public class ButtonLogin : MonoBehaviour
     public InputField passwordField;
     public Text messageText;
 
-    void Start()
+    public static ButtonLogin instance;
+    public static int status = -1000;
+    private bool authenticating = false;
+
+    private void Start()
     {
+        instance = this;
         loginButton.GetComponent<Button>().onClick.AddListener(OnClickTask);
     }
 
     private void OnClickTask()
     {
         DisableButtons();
-        
-        // Field text checks.
-        if (accountNameField.text == "")
+        string account = accountNameField.text;
+        string password = passwordField.text;
+
+        // Input field checks.
+        if (account == "")
         {
             messageText.text = "Please enter your account name.";
             EnableButtons();
             return;
         }
-        if (passwordField.text == "")
+        if (password == "")
         {
             messageText.text = "Please enter your password.";
             EnableButtons();
             return;
         }
-        if (accountNameField.text.Length < 2)
+        if (account.Length < 2)
         {
             messageText.text = "Account name length is too short.";
             EnableButtons();
             return;
         }
-        if (passwordField.text.Length < 2)
+        if (password.Length < 2)
         {
             messageText.text = "Password length is too short.";
             EnableButtons();
@@ -63,25 +70,75 @@ public class ButtonLogin : MonoBehaviour
         }
 
         // Try to connect to server.
-        if (!NetworkManager.instance.connectToServer())
+        if (!NetworkManager.instance.ConnectToServer())
         {
             messageText.text = "Could not communicate with the server.";
             EnableButtons();
             return;
         }
 
-        // TODO: Authenticate.
+        // Authenticate.
+        messageText.text = "Authenticating...";
+        NetworkManager.instance.ChannelSend(new AccountAuthenticationRequest(account, password));
 
-        messageText.text = "Connected!";
-        // TODO: Go to character selection scene.
+        // Wait for result.
+        authenticating = true;
+        while (authenticating)
+        {
+            switch (status)
+            {
+                case 0:
+                    messageText.text = "Account does not exist.";
+                    NetworkManager.instance.DisconnectFromServer();
+                    authenticating = false;
+                    status = -1000;
+                    EnableButtons();
+                    break;
+
+                case 1:
+                    messageText.text = "Account is banned.";
+                    NetworkManager.instance.DisconnectFromServer();
+                    authenticating = false;
+                    status = -1000;
+                    EnableButtons();
+                    break;
+
+                case 2:
+                    messageText.text = "Account requires activation.";
+                    NetworkManager.instance.DisconnectFromServer();
+                    authenticating = false;
+                    status = -1000;
+                    EnableButtons();
+                    break;
+
+                case 3:
+                    messageText.text = "Wrong password.";
+                    NetworkManager.instance.DisconnectFromServer();
+                    authenticating = false;
+                    status = -1000;
+                    EnableButtons();
+                    break;
+
+                case 4:
+                    messageText.text = "Authenticated.";
+                    authenticating = false;
+                    break;
+            }
+        }
+
+        // Go to character selection screen.
+        if (status == 4)
+        {
+            SceneFader.Fade("CharacterSelection", Color.white, 0.5f);
+        }
     }
 
     private void DisableButtons()
     {
+        messageText.text = "Connecting..."; // Clean any old messages.
         loginButton.enabled = false;
         accountNameField.enabled = false;
         passwordField.enabled = false;
-        messageText.text = "Connecting..."; // Clean any old messages.
     }
 
     private void EnableButtons()

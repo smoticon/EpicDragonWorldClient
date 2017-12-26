@@ -14,27 +14,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using Simias.Encryption;
 using System.Text;
+using System.Security.Cryptography;
 
 /**
+ * AES Rijndael encryption.
  * @author Pantelis Andrianakis
  */
 public class Encryption
 {
-    private static byte[] secretKey = Encoding.UTF8.GetBytes("SECRET_KEYWORD");
+    // Secret keyword.
+    private static readonly string PASSWORD = "SECRET_KEYWORD";
+    // 16-byte private password.
+    private static readonly byte[] IV = Encoding.UTF8.GetBytes("0123456789012345");
 
-    public static byte[] encrypt(byte[] data)
+    private static readonly byte[] key = new MD5CryptoServiceProvider().ComputeHash(Encoding.UTF8.GetBytes(PASSWORD));
+    private static readonly RijndaelManaged cipher = new RijndaelManaged();
+
+    public static byte[] Encrypt(byte[] bytes)
     {
-        Blowfish algorithm = new Blowfish(secretKey);
-        algorithm.Encipher(data, data.Length);
-        return data;
+        return cipher.CreateEncryptor(key, IV).TransformFinalBlock(bytes, 0, bytes.Length);
     }
 
-    public static byte[] decrypt(byte[] data)
+    public static byte[] Decrypt(byte[] bytes)
     {
-        Blowfish algorithm = new Blowfish(secretKey);
-        algorithm.Decipher(data, data.Length);
-        return data;
+        return cipher.CreateDecryptor(key, IV).TransformFinalBlock(bytes, 0, bytes.Length);
     }
 }

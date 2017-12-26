@@ -16,20 +16,19 @@
  */
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 /**
  * @author Pantelis Andrianakis
  */
 public class MusicManager : MonoBehaviour
 {
-    private static MusicManager instance;
+    public static MusicManager instance;
     private bool initializedSources = false;
 
     private AudioSource audioSource1;
     private AudioSource audioSource2;
 
-    private int musicFadeDuration = 3;
+    private int musicFadeDuration = 4;
 
     public AudioClip MusicMajesticHills;
     public AudioClip MusicSeasideNight;
@@ -64,20 +63,6 @@ public class MusicManager : MonoBehaviour
         {
             Initialize();
         }
-
-        // Auto select music.
-        AutoPlayMusic();
-    }
-
-    public void AutoPlayMusic()
-    {
-        switch (SceneManager.GetActiveScene().name)
-        {
-            case "Disclaimer":
-            case "LoginScreen":
-                PlayMusic(MusicMajesticHills);
-                break;
-        }
     }
 
     public void PlayMusic(AudioClip audioClip)
@@ -87,14 +72,14 @@ public class MusicManager : MonoBehaviour
 
         if (audioSourcePrev.clip != audioClip)
         {
-            StartCoroutine(fadeAudioSource(audioSourcePrev));
-            audioSourceNext.volume = 1;
+            StartCoroutine(fadeAudioSourceOut(audioSourcePrev));
+            audioSourceNext.volume = 0;
             audioSourceNext.clip = audioClip;
-            audioSourceNext.Play();
+            StartCoroutine(fadeAudioSourceIn(audioSourceNext));
         }
     }
 
-    private IEnumerator fadeAudioSource(AudioSource audioSource)
+    private IEnumerator fadeAudioSourceOut(AudioSource audioSource)
     {
         float startTime = Time.time;
         float startVolume = audioSource.volume;
@@ -107,6 +92,26 @@ public class MusicManager : MonoBehaviour
             if (audioSource.volume == 0)
             {
                 audioSource.Stop();
+                break;
+            }
+            yield return null;
+        }
+    }
+
+    private IEnumerator fadeAudioSourceIn(AudioSource audioSource)
+    {
+        audioSource.Play();
+
+        float startTime = Time.time;
+        float startVolume = audioSource.volume;
+
+        while (true)
+        {
+            float elapsed = Time.time - startTime;
+            audioSource.volume = Mathf.Clamp01(Mathf.Lerp(startVolume, 1, elapsed / musicFadeDuration));
+
+            if (audioSource.volume == 1)
+            {
                 break;
             }
             yield return null;

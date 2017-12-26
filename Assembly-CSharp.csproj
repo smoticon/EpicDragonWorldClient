@@ -45,16 +45,20 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scenes\CharacterSelection\CharacterSelectionManager.cs" />
      <Compile Include="Assets\Scenes\Disclaimer\DisclaimerManager.cs" />
      <Compile Include="Assets\Scenes\LoginScreen\ButtonLogin.cs" />
      <Compile Include="Assets\Scenes\LoginScreen\ButtonQuitGame.cs" />
      <Compile Include="Assets\Scenes\LoginScreen\LoginScreenManager.cs" />
      <Compile Include="Assets\Scripts\Music\MusicManager.cs" />
-     <Compile Include="Assets\Scripts\Network\Blowfish.cs" />
      <Compile Include="Assets\Scripts\Network\Encryption.cs" />
      <Compile Include="Assets\Scripts\Network\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\Network\ReceivablePacket.cs" />
+     <Compile Include="Assets\Scripts\Network\ReceivablePackets\AccountAuthenticationResult.cs" />
+     <Compile Include="Assets\Scripts\Network\RecievablePacketManager.cs" />
      <Compile Include="Assets\Scripts\Network\SendablePacket.cs" />
+     <Compile Include="Assets\Scripts\Network\SendablePackets\AccountAuthenticationRequest.cs" />
+     <Compile Include="Assets\Scripts\Util\MD5Generator.cs" />
      <Compile Include="Assets\Scripts\Util\SceneFader.cs" />
      <None Include="Assets\Resources\Audio\Music\_Readme.txt" />
      <None Include="Assets\Resources\Cursor\_Readme.txt" />

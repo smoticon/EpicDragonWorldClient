@@ -28,6 +28,11 @@ public class LoginScreenManager : MonoBehaviour
     private List<Selectable> m_orderedSelectables;
     private bool autoSelect;
 
+    private void Start()
+    {
+        MusicManager.instance.PlayMusic(MusicManager.instance.MusicMajesticHills);
+    }
+
     private void Awake()
     {
         m_orderedSelectables = new List<Selectable>();
