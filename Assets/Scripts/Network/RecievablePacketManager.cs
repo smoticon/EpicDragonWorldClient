@@ -27,6 +27,10 @@ public class RecievablePacketManager
             case 1:
                 AccountAuthenticationResult.notify(packet);
                 break;
+
+            case 2:
+                CharacterSelectionInfoResult.notify(packet);
+                break;
         }
     }
 }

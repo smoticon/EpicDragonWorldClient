@@ -14,16 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System.Security.Cryptography;
 
 /**
 * @author Pantelis Andrianakis
 */
-public class AccountAuthenticationRequest : SendablePacket
+public class SHA256Generator
 {
-    public AccountAuthenticationRequest(string accountName, string password)
+    public static string Calculate(string input)
     {
-        WriteShort(1); // Packet id.
-        WriteString(accountName);
-        WriteString(SHA256Generator.Calculate(password));
+        // Calculate SHA256 hash from input.
+        SHA256 sha256 = SHA256Managed.Create();
+        byte[] hash = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(input));
+
+        // Convert byte array to hex string.
+        string result = "";
+        foreach (byte b in hash)
+        {
+            result += b.ToString("x2");
+        }
+
+        // Return the result.
+        return result;
     }
 }

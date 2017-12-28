@@ -15,6 +15,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
+using System.Collections;
 using System.Net.Sockets;
 using System.Threading;
 using UnityEngine;
@@ -40,6 +41,10 @@ public class NetworkManager : MonoBehaviour
     Socket socket;
     bool socketConnected = false;
 
+    // Client stored variables.
+    public static String accountName; // TODO: Move to player data class.
+    public static ArrayList characterList; // TODO: Move to player data class.
+
     private void Start()
     {
         instance = this;
@@ -63,6 +68,10 @@ public class NetworkManager : MonoBehaviour
         }
         socketConnected = false;
         readThreadStarted = false;
+
+        //Clear stored variables.
+        accountName = "";
+        characterList = null;
     }
 
     // Best to call this only once per login attempt.

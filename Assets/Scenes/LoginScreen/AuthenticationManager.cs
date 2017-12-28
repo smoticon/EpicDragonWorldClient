@@ -28,18 +28,22 @@ public class AuthenticationManager : MonoBehaviour
     public Text messageText;
 
     public static AuthenticationManager instance;
-    public static int status = -1000;
-    private bool authenticating = false;
+    public static int status;
+    private bool authenticating;
 
     private void Start()
     {
         instance = this;
+        NetworkManager.instance.DisconnectFromServer(); // In case player exits to login screen.
         loginButton.GetComponent<Button>().onClick.AddListener(OnClickTask);
     }
 
     private void OnClickTask()
     {
+        // Disable buttons.
         DisableButtons();
+
+        // Store login information.
         string account = accountNameField.text;
         string password = passwordField.text;
 
@@ -79,6 +83,7 @@ public class AuthenticationManager : MonoBehaviour
 
         // Authenticate.
         messageText.text = "Authenticating...";
+        status = -1;
         NetworkManager.instance.ChannelSend(new AccountAuthenticationRequest(account, password));
 
         // Wait for result.
@@ -89,47 +94,46 @@ public class AuthenticationManager : MonoBehaviour
             {
                 case 0:
                     messageText.text = "Account does not exist.";
-                    NetworkManager.instance.DisconnectFromServer();
                     authenticating = false;
-                    status = -1000;
-                    EnableButtons();
                     break;
 
                 case 1:
                     messageText.text = "Account is banned.";
-                    NetworkManager.instance.DisconnectFromServer();
                     authenticating = false;
-                    status = -1000;
-                    EnableButtons();
                     break;
 
                 case 2:
                     messageText.text = "Account requires activation.";
-                    NetworkManager.instance.DisconnectFromServer();
                     authenticating = false;
-                    status = -1000;
-                    EnableButtons();
                     break;
 
                 case 3:
                     messageText.text = "Wrong password.";
-                    NetworkManager.instance.DisconnectFromServer();
                     authenticating = false;
-                    status = -1000;
-                    EnableButtons();
                     break;
 
                 case 4:
+                    messageText.text = "Too many online, please try again later.";
+                    authenticating = false;
+                    break;
+
+                case 100:
                     messageText.text = "Authenticated.";
                     authenticating = false;
                     break;
             }
         }
 
-        // Go to character selection screen.
-        if (status == 4)
+        // Go to player selection screen.
+        if (status == 100)
         {
+            NetworkManager.accountName = account;
             SceneFader.Fade("CharacterSelection", Color.white, 0.5f);
+        }
+        else // Enable buttons.
+        {
+            NetworkManager.instance.DisconnectFromServer();
+            EnableButtons();
         }
     }
 

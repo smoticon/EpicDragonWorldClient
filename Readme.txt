@@ -6,3 +6,4 @@ Epic Dragon World Client
 - Scene fader.
 - Music manager.
 - Server authentication.
+- Character management.

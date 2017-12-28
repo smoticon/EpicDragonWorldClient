@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System.Collections;
 using UnityEngine;
 
 /**
@@ -21,8 +22,39 @@ using UnityEngine;
  */
 public class CharacterSelectionManager : MonoBehaviour
 {
+    public static CharacterSelectionManager instance;
+    public static bool waitingServer = true;
+
     private void Start()
     {
-        MusicManager.instance.PlayMusic(MusicManager.instance.CharacterSelection);
+        // Return if account name is empty.
+        if (NetworkManager.accountName == "")
+        {
+            return;
+        }
+
+        // Set instance.
+        instance = this;
+
+        // Change music.
+        MusicManager.instance.PlayMusic(MusicManager.instance.PlayerSelection);
+
+        // Request info.
+        NetworkManager.instance.ChannelSend(new CharacterSelectionInfoRequest());
+
+        // Wait until server sends existing player data.
+        while (waitingServer)
+        {
+            Debug.Log("waiting");
+        }
+
+        // Schedule to exit to login screen.
+        StartCoroutine(ExitToLoginScreen());
+    }
+
+    private IEnumerator ExitToLoginScreen()
+    {
+        yield return new WaitForSeconds(900); // Wait 15 minutes.
+        SceneFader.Fade("LoginScreen", Color.white, 0.5f);
     }
 }
