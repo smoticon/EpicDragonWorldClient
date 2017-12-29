@@ -23,6 +23,6 @@ public class CharacterSelectionInfoRequest : SendablePacket
     public CharacterSelectionInfoRequest()
     {
         WriteShort(2); // Packet id.
-        WriteString(NetworkManager.accountName);
+        WriteString(NetworkManager.instance.accountName);
     }
 }

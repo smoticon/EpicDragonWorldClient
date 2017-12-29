@@ -20,12 +20,14 @@
 */
 public class CharacterDataHolder
 {
-    private byte slot = 0;
     private string name = "";
+    private byte slot = 0;
+    private bool selected = false;
     private byte classId = 0;
-    private long x = 0;
-    private long y = 0;
-    private long z = 0;
+    private string locationName = "";
+    private double x = 0;
+    private double y = 0;
+    private double z = 0;
     private int heading = 0;
     private long experience = 0;
     private long hp = 0;
@@ -39,6 +41,16 @@ public class CharacterDataHolder
     private int itemRightHand = 0;
     private int itemLeftHand = 0;
 
+    public string GetName()
+    {
+        return name;
+    }
+
+    public void SetName(string name)
+    {
+        this.name = name;
+    }
+
     public byte GetSlot()
     {
         return slot;
@@ -49,14 +61,14 @@ public class CharacterDataHolder
         this.slot = slot;
     }
 
-    public string GetName()
+    public bool IsSelected()
     {
-        return name;
+        return selected;
     }
 
-    public void SetName(string name)
+    public void SetSelected(bool selected)
     {
-        this.name = name;
+        this.selected = selected;
     }
 
     public byte GetClassId()
@@ -69,32 +81,42 @@ public class CharacterDataHolder
         this.classId = classId;
     }
 
-    public long GetX()
+    public string GetLocationName()
+    {
+        return locationName;
+    }
+
+    public void SetLocationName(string locationName)
+    {
+        this.locationName = locationName;
+    }
+
+    public double GetX()
     {
         return x;
     }
 
-    public void SetX(long x)
+    public void SetX(double x)
     {
         this.x = x;
     }
 
-    public long GetY()
+    public double GetY()
     {
         return y;
     }
 
-    public void SetY(long y)
+    public void SetY(double y)
     {
         this.y = y;
     }
 
-    public long GetZ()
+    public double GetZ()
     {
         return z;
     }
 
-    public void SetZ(long z)
+    public void SetZ(double z)
     {
         this.z = z;
     }

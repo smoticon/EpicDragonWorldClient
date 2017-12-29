@@ -45,6 +45,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scenes\CharacterCreation\CharacterCreationManager.cs" />
      <Compile Include="Assets\Scenes\CharacterSelection\CharacterSelectionManager.cs" />
      <Compile Include="Assets\Scenes\Disclaimer\DisclaimerManager.cs" />
      <Compile Include="Assets\Scenes\LoginScreen\AuthenticationManager.cs" />
@@ -56,10 +57,12 @@
      <Compile Include="Assets\Scripts\Network\NetworkManager.cs" />
      <Compile Include="Assets\Scripts\Network\ReceivablePacket.cs" />
      <Compile Include="Assets\Scripts\Network\ReceivablePackets\AccountAuthenticationResult.cs" />
+     <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterCreationResult.cs" />
      <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterSelectionInfoResult.cs" />
      <Compile Include="Assets\Scripts\Network\RecievablePacketManager.cs" />
      <Compile Include="Assets\Scripts\Network\SendablePacket.cs" />
      <Compile Include="Assets\Scripts\Network\SendablePackets\AccountAuthenticationRequest.cs" />
+     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterCreationRequest.cs" />
      <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSelectionInfoRequest.cs" />
      <Compile Include="Assets\Scripts\Util\SceneFader.cs" />
      <Compile Include="Assets\Scripts\Util\SHA256Generator.cs" />

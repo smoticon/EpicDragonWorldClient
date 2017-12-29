@@ -31,12 +31,14 @@ public class CharacterSelectionInfoResult
         for (int i = 0; i < listSize; i++)
         {
             CharacterDataHolder characterData = new CharacterDataHolder();
-            characterData.SetSlot((byte)packet.ReadByte());
             characterData.SetName(packet.ReadString());
+            characterData.SetSlot((byte)packet.ReadByte());
+            characterData.SetSelected(packet.ReadByte() == 1 ? true : false);
             characterData.SetClassId((byte)packet.ReadByte());
-            characterData.SetX(packet.ReadLong());
-            characterData.SetY(packet.ReadLong());
-            characterData.SetZ(packet.ReadLong());
+            characterData.SetLocationName(packet.ReadString());
+            characterData.SetX(packet.ReadDouble());
+            characterData.SetY(packet.ReadDouble());
+            characterData.SetZ(packet.ReadDouble());
             characterData.SetHeading(packet.ReadInt());
             characterData.SetExperience(packet.ReadLong());
             characterData.SetHp(packet.ReadLong());
@@ -53,9 +55,9 @@ public class CharacterSelectionInfoResult
         }
 
         // Send the data.
-        NetworkManager.characterList = characterList;
+        NetworkManager.instance.characterList = characterList;
 
         // Enable player selection.
-        CharacterSelectionManager.waitingServer = false;
+        CharacterSelectionManager.instance.waitingServer = false;
     }
 }

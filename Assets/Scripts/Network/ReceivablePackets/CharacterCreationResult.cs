@@ -18,10 +18,10 @@
 /**
 * @author Pantelis Andrianakis
 */
-public class AccountAuthenticationResult
+public class CharacterCreationResult
 {
     public static void notify(ReceivablePacket packet)
     {
-        AuthenticationManager.instance.status = packet.ReadByte();
+        CharacterCreationManager.instance.creationResult = packet.ReadByte();
     }
 }

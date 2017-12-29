@@ -34,7 +34,7 @@ public class MusicManager : MonoBehaviour
 
     // Music tracks.
     public AudioClip LoginScreen;
-    public AudioClip PlayerSelection;
+    public AudioClip CharacterSelection;
 
     void Awake()
     {

@@ -28,7 +28,7 @@ public class AuthenticationManager : MonoBehaviour
     public Text messageText;
 
     public static AuthenticationManager instance;
-    public static int status;
+    public int status;
     private bool authenticating;
 
     private void Start()
@@ -127,7 +127,7 @@ public class AuthenticationManager : MonoBehaviour
         // Go to player selection screen.
         if (status == 100)
         {
-            NetworkManager.accountName = account;
+            NetworkManager.instance.accountName = account;
             SceneFader.Fade("CharacterSelection", Color.white, 0.5f);
         }
         else // Enable buttons.

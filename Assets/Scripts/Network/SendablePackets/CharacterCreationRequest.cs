@@ -18,10 +18,12 @@
 /**
 * @author Pantelis Andrianakis
 */
-public class AccountAuthenticationResult
+public class CharacterCreationRequest : SendablePacket
 {
-    public static void notify(ReceivablePacket packet)
+    public CharacterCreationRequest(string name, int classId)
     {
-        AuthenticationManager.instance.status = packet.ReadByte();
+        WriteShort(3); // Packet id.
+        WriteString(name);
+        WriteByte(classId);
     }
 }

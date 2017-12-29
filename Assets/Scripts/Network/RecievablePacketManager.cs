@@ -31,6 +31,10 @@ public class RecievablePacketManager
             case 2:
                 CharacterSelectionInfoResult.notify(packet);
                 break;
+
+            case 3:
+                CharacterCreationResult.notify(packet);
+                break;
         }
     }
 }

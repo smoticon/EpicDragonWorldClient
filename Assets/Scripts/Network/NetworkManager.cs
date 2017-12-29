@@ -42,8 +42,12 @@ public class NetworkManager : MonoBehaviour
     bool socketConnected = false;
 
     // Client stored variables.
-    public static String accountName; // TODO: Move to player data class.
-    public static ArrayList characterList; // TODO: Move to player data class.
+    [HideInInspector]
+    public String accountName; // TODO: Move to player data class.
+    [HideInInspector]
+    public ArrayList characterList; // TODO: Move to player data class.
+    [HideInInspector]
+    public CharacterDataHolder selectedCharacterData; // TODO: Move to player data class.
 
     private void Start()
     {
@@ -70,8 +74,9 @@ public class NetworkManager : MonoBehaviour
         readThreadStarted = false;
 
         //Clear stored variables.
-        accountName = "";
+        accountName = null;
         characterList = null;
+        selectedCharacterData = null;
     }
 
     // Best to call this only once per login attempt.
@@ -118,6 +123,7 @@ public class NetworkManager : MonoBehaviour
         {
             socketConnected = false;
             readThreadStarted = false;
+            Debug.Log(se);
         }
     }
 

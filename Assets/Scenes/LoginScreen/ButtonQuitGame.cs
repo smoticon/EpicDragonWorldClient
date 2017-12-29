@@ -31,7 +31,6 @@ public class ButtonQuitGame : MonoBehaviour
 
     void OnClickTask()
     {
-        Debug.Log("You have clicked the quit button!");
         Application.Quit();
     }
 }
