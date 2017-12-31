@@ -18,27 +18,10 @@
 /**
 * @author Pantelis Andrianakis
 */
-public class RecievablePacketManager
+public class CharacterDeletionResult
 {
-    public static void handle(ReceivablePacket packet)
+    public static void notify(ReceivablePacket packet)
     {
-        switch (packet.ReadShort())
-        {
-            case 1:
-                AccountAuthenticationResult.notify(packet);
-                break;
-
-            case 2:
-                CharacterSelectionInfoResult.notify(packet);
-                break;
-
-            case 3:
-                CharacterCreationResult.notify(packet);
-                break;
-
-            case 4:
-                CharacterDeletionResult.notify(packet);
-                break;
-        }
+        CharacterSelectionManager.instance.waitingServer = false;
     }
 }

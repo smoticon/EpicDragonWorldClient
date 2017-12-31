@@ -18,27 +18,12 @@
 /**
 * @author Pantelis Andrianakis
 */
-public class RecievablePacketManager
+public class CharacterSlotUpdate : SendablePacket
 {
-    public static void handle(ReceivablePacket packet)
+    public CharacterSlotUpdate(int oldSlotId, int newSlotId)
     {
-        switch (packet.ReadShort())
-        {
-            case 1:
-                AccountAuthenticationResult.notify(packet);
-                break;
-
-            case 2:
-                CharacterSelectionInfoResult.notify(packet);
-                break;
-
-            case 3:
-                CharacterCreationResult.notify(packet);
-                break;
-
-            case 4:
-                CharacterDeletionResult.notify(packet);
-                break;
-        }
+        WriteShort(5); // Packet id.
+        WriteByte(oldSlotId);
+        WriteByte(newSlotId);
     }
 }
