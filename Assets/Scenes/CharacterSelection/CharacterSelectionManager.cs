@@ -396,9 +396,9 @@ public class CharacterSelectionManager : MonoBehaviour
         {
             textMessage.text = "You must create a character.";
         }
-        else
+        else // Enter world.
         {
-            // TODO: Enter world.
+            SceneFader.Fade("World", Color.white, 0.5f);
         }
     }
 
