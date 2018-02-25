@@ -127,7 +127,7 @@ public class AuthenticationManager : MonoBehaviour
         // Go to player selection screen.
         if (status == 100)
         {
-            NetworkManager.instance.accountName = account;
+            PlayerManager.instance.accountName = account;
             SceneFader.Fade("CharacterSelection", Color.white, 0.5f);
         }
         else // Enable buttons.

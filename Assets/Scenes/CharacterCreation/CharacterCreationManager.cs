@@ -33,7 +33,6 @@ public class CharacterCreationManager : MonoBehaviour
     private int classSelected = 0;
 
     public Button[] selectButtons;
-    public GameObject[] characterModels;
     public Transform spawnLocation;
     public Text textMessage;
     public InputField characterName;
@@ -43,7 +42,7 @@ public class CharacterCreationManager : MonoBehaviour
     private void Start()
     {
         // Return if account name is empty.
-        if (NetworkManager.instance == null || NetworkManager.instance.accountName == null)
+        if (PlayerManager.instance == null || PlayerManager.instance.accountName == null)
         {
             return;
         }
@@ -60,34 +59,34 @@ public class CharacterCreationManager : MonoBehaviour
         backButton.GetComponent<Button>().onClick.AddListener(OnClickBackButton);
 
         // Select first character model.
-        characterSelected = Instantiate(characterModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickButton1()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(characterModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         classSelected = 0;
     }
 
     private void OnClickButton2()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(characterModels[1], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[1], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         classSelected = 1;
     }
 
     private void OnClickButton3()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(characterModels[2], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[2], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         classSelected = 2;
     }
 
     private void OnClickButton4()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(characterModels[3], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[3], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
         classSelected = 3;
     }
 
@@ -156,6 +155,7 @@ public class CharacterCreationManager : MonoBehaviour
 
     private void OnClickBackButton()
     {
+        Destroy(characterSelected); // Destroy clone object.
         SceneFader.Fade("CharacterSelection", Color.white, 0.5f);
     }
 

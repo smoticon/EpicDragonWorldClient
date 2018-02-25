@@ -77,6 +77,8 @@
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSelectionInfoRequest.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSelectUpdate.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSlotUpdate.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerManager.cs" />
+    <Compile Include="Assets\Scripts\Util\DontDestroyObject.cs" />
     <Compile Include="Assets\Scripts\Util\SceneFader.cs" />
     <Compile Include="Assets\Scripts\Util\SHA256Generator.cs" />
   </ItemGroup>

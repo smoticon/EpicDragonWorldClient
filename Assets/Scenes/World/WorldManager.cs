@@ -21,13 +21,12 @@ using UnityEngine;
  */
 public class WorldManager : MonoBehaviour
 {
-    public GameObject[] characterModels;
     public GameObject playerCharacter;
 
     private void Start()
     {
         // Return if account name is empty.
-        if (NetworkManager.instance == null || NetworkManager.instance.accountName == null)
+        if (PlayerManager.instance == null || PlayerManager.instance.accountName == null)
         {
             return; // Return to login?
         }
@@ -36,8 +35,8 @@ public class WorldManager : MonoBehaviour
         MusicManager.instance.PlayMusic(MusicManager.instance.EnterWorld);
 
         // Set player model.
-        playerCharacter.GetComponent<MeshFilter>().mesh = characterModels[NetworkManager.instance.selectedCharacterData.GetClassId()].GetComponent<MeshFilter>().mesh;
-        playerCharacter.GetComponent<Renderer>().materials = characterModels[NetworkManager.instance.selectedCharacterData.GetClassId()].GetComponent<Renderer>().materials;
+        playerCharacter.GetComponent<MeshFilter>().mesh = PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<MeshFilter>().mesh;
+        playerCharacter.GetComponent<Renderer>().materials = PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<Renderer>().materials;
 
         // TODO: Send player info to server.
     }

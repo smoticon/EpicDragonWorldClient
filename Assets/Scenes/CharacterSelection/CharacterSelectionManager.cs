@@ -31,7 +31,6 @@ public class CharacterSelectionManager : MonoBehaviour
     GameObject characterSelected;
 
     public Transform spawnLocation;
-    public GameObject[] characterModels;
     public Button[] selectButtons;
     public Button[] moveUpButtons;
     public Button[] moveDownButtons;
@@ -44,7 +43,7 @@ public class CharacterSelectionManager : MonoBehaviour
     private void Start()
     {
         // Return if account name is empty.
-        if (NetworkManager.instance == null || NetworkManager.instance.accountName == null)
+        if (PlayerManager.instance == null || PlayerManager.instance.accountName == null)
         {
             return;
         }
@@ -90,12 +89,12 @@ public class CharacterSelectionManager : MonoBehaviour
         }
 
         // Show last selected character.
-        if (NetworkManager.instance.characterList.Count > 0)
+        if (PlayerManager.instance.characterList.Count > 0)
         {
-            for (int i = 0; i < NetworkManager.instance.characterList.Count; i++)
+            for (int i = 0; i < PlayerManager.instance.characterList.Count; i++)
             {
                 // Get current character data.
-                CharacterDataHolder characterData = (CharacterDataHolder)NetworkManager.instance.characterList[i];
+                CharacterDataHolder characterData = (CharacterDataHolder)PlayerManager.instance.characterList[i];
 
                 // Set select button text to character name.
                 selectButtons[i].gameObject.SetActive(true);
@@ -106,17 +105,17 @@ public class CharacterSelectionManager : MonoBehaviour
 
                 if (characterData.IsSelected())
                 {
-                    NetworkManager.instance.selectedCharacterData = characterData;
+                    PlayerManager.instance.selectedCharacterData = characterData;
                     // Model 0-3 id is set from character class id.
                     // characterModels[characterData.GetClassId()]
-                    characterSelected = Instantiate(characterModels[characterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                    characterSelected = Instantiate(PlayerManager.instance.characterModels[characterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
                     // TODO: Restore appearance when support is made.
                 }
             }
         }
         else // In case of character deletion.
         {
-            NetworkManager.instance.selectedCharacterData = null;
+            PlayerManager.instance.selectedCharacterData = null;
         }
 
         // Add button listeners.
@@ -158,8 +157,8 @@ public class CharacterSelectionManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new CharacterSelectUpdate(1));
         // Change selected character.
         Destroy(characterSelected);
-        NetworkManager.instance.selectedCharacterData = (CharacterDataHolder)NetworkManager.instance.characterList[0];
-        characterSelected = Instantiate(characterModels[NetworkManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[0];
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter2Button()
@@ -168,8 +167,8 @@ public class CharacterSelectionManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new CharacterSelectUpdate(2));
         // Change selected character.
         Destroy(characterSelected);
-        NetworkManager.instance.selectedCharacterData = (CharacterDataHolder)NetworkManager.instance.characterList[1];
-        characterSelected = Instantiate(characterModels[NetworkManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[1];
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter3Button()
@@ -178,8 +177,8 @@ public class CharacterSelectionManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new CharacterSelectUpdate(3));
         // Change selected character.
         Destroy(characterSelected);
-        NetworkManager.instance.selectedCharacterData = (CharacterDataHolder)NetworkManager.instance.characterList[2];
-        characterSelected = Instantiate(characterModels[NetworkManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[2];
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter4Button()
@@ -188,8 +187,8 @@ public class CharacterSelectionManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new CharacterSelectUpdate(4));
         // Change selected character.
         Destroy(characterSelected);
-        NetworkManager.instance.selectedCharacterData = (CharacterDataHolder)NetworkManager.instance.characterList[3];
-        characterSelected = Instantiate(characterModels[NetworkManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[3];
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter5Button()
@@ -198,8 +197,8 @@ public class CharacterSelectionManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new CharacterSelectUpdate(5));
         // Change selected character.
         Destroy(characterSelected);
-        NetworkManager.instance.selectedCharacterData = (CharacterDataHolder)NetworkManager.instance.characterList[4];
-        characterSelected = Instantiate(characterModels[NetworkManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[4];
+        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickMoveUp2Button()
@@ -207,9 +206,9 @@ public class CharacterSelectionManager : MonoBehaviour
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(2, 1));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[0];
-        NetworkManager.instance.characterList[0] = NetworkManager.instance.characterList[1];
-        NetworkManager.instance.characterList[1] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[0];
+        PlayerManager.instance.characterList[0] = PlayerManager.instance.characterList[1];
+        PlayerManager.instance.characterList[1] = temp;
         // Update button name.
         string name = selectButtons[0].GetComponentInChildren<Text>().text;
         selectButtons[0].GetComponentInChildren<Text>().text = selectButtons[1].GetComponentInChildren<Text>().text;
@@ -223,9 +222,9 @@ public class CharacterSelectionManager : MonoBehaviour
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(3, 2));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[1];
-        NetworkManager.instance.characterList[1] = NetworkManager.instance.characterList[2];
-        NetworkManager.instance.characterList[2] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[1];
+        PlayerManager.instance.characterList[1] = PlayerManager.instance.characterList[2];
+        PlayerManager.instance.characterList[2] = temp;
         // Update button name.
         string name = selectButtons[1].GetComponentInChildren<Text>().text;
         selectButtons[1].GetComponentInChildren<Text>().text = selectButtons[2].GetComponentInChildren<Text>().text;
@@ -239,9 +238,9 @@ public class CharacterSelectionManager : MonoBehaviour
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(4, 3));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[2];
-        NetworkManager.instance.characterList[2] = NetworkManager.instance.characterList[3];
-        NetworkManager.instance.characterList[3] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[2];
+        PlayerManager.instance.characterList[2] = PlayerManager.instance.characterList[3];
+        PlayerManager.instance.characterList[3] = temp;
         // Update button name.
         string name = selectButtons[2].GetComponentInChildren<Text>().text;
         selectButtons[2].GetComponentInChildren<Text>().text = selectButtons[3].GetComponentInChildren<Text>().text;
@@ -255,9 +254,9 @@ public class CharacterSelectionManager : MonoBehaviour
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(5, 4));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[3];
-        NetworkManager.instance.characterList[3] = NetworkManager.instance.characterList[4];
-        NetworkManager.instance.characterList[4] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[3];
+        PlayerManager.instance.characterList[3] = PlayerManager.instance.characterList[4];
+        PlayerManager.instance.characterList[4] = temp;
         // Update button name.
         string name = selectButtons[3].GetComponentInChildren<Text>().text;
         selectButtons[3].GetComponentInChildren<Text>().text = selectButtons[4].GetComponentInChildren<Text>().text;
@@ -269,16 +268,16 @@ public class CharacterSelectionManager : MonoBehaviour
     private void OnClickMoveDown1Button()
     {
         // Check if character bellow exists.
-        if (NetworkManager.instance.characterList.Count == 1)
+        if (PlayerManager.instance.characterList.Count == 1)
         {
             return;
         }
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(1, 2));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[1];
-        NetworkManager.instance.characterList[1] = NetworkManager.instance.characterList[0];
-        NetworkManager.instance.characterList[0] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[1];
+        PlayerManager.instance.characterList[1] = PlayerManager.instance.characterList[0];
+        PlayerManager.instance.characterList[0] = temp;
         // Update button name.
         string name = selectButtons[1].GetComponentInChildren<Text>().text;
         selectButtons[1].GetComponentInChildren<Text>().text = selectButtons[0].GetComponentInChildren<Text>().text;
@@ -290,16 +289,16 @@ public class CharacterSelectionManager : MonoBehaviour
     private void OnClickMoveDown2Button()
     {
         // Check if character bellow exists.
-        if (NetworkManager.instance.characterList.Count == 2)
+        if (PlayerManager.instance.characterList.Count == 2)
         {
             return;
         }
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(2, 3));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[2];
-        NetworkManager.instance.characterList[2] = NetworkManager.instance.characterList[1];
-        NetworkManager.instance.characterList[1] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[2];
+        PlayerManager.instance.characterList[2] = PlayerManager.instance.characterList[1];
+        PlayerManager.instance.characterList[1] = temp;
         // Update button name.
         string name = selectButtons[2].GetComponentInChildren<Text>().text;
         selectButtons[2].GetComponentInChildren<Text>().text = selectButtons[1].GetComponentInChildren<Text>().text;
@@ -311,16 +310,16 @@ public class CharacterSelectionManager : MonoBehaviour
     private void OnClickMoveDown3Button()
     {
         // Check if character bellow exists.
-        if (NetworkManager.instance.characterList.Count == 3)
+        if (PlayerManager.instance.characterList.Count == 3)
         {
             return;
         }
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(3, 4));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[3];
-        NetworkManager.instance.characterList[3] = NetworkManager.instance.characterList[2];
-        NetworkManager.instance.characterList[2] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[3];
+        PlayerManager.instance.characterList[3] = PlayerManager.instance.characterList[2];
+        PlayerManager.instance.characterList[2] = temp;
         // Update button name.
         string name = selectButtons[3].GetComponentInChildren<Text>().text;
         selectButtons[3].GetComponentInChildren<Text>().text = selectButtons[2].GetComponentInChildren<Text>().text;
@@ -332,16 +331,16 @@ public class CharacterSelectionManager : MonoBehaviour
     private void OnClickMoveDown4Button()
     {
         // Check if character bellow exists.
-        if (NetworkManager.instance.characterList.Count == 4)
+        if (PlayerManager.instance.characterList.Count == 4)
         {
             return;
         }
         // Send character slot update packet to server.
         NetworkManager.instance.ChannelSend(new CharacterSlotUpdate(4, 5));
         // Update stored data.
-        CharacterDataHolder temp = (CharacterDataHolder)NetworkManager.instance.characterList[4];
-        NetworkManager.instance.characterList[4] = NetworkManager.instance.characterList[3];
-        NetworkManager.instance.characterList[3] = temp;
+        CharacterDataHolder temp = (CharacterDataHolder)PlayerManager.instance.characterList[4];
+        PlayerManager.instance.characterList[4] = PlayerManager.instance.characterList[3];
+        PlayerManager.instance.characterList[3] = temp;
         // Update button name.
         string name = selectButtons[4].GetComponentInChildren<Text>().text;
         selectButtons[4].GetComponentInChildren<Text>().text = selectButtons[3].GetComponentInChildren<Text>().text;
@@ -352,13 +351,14 @@ public class CharacterSelectionManager : MonoBehaviour
 
     private void OnClickCreateButton()
     {
+        Destroy(characterSelected); // Destroy clone object.
         SceneFader.Fade("CharacterCreation", Color.white, 0.5f);
     }
 
     private void OnClickDeleteButton()
     {
         // Get current character data.
-        CharacterDataHolder characterData = NetworkManager.instance.selectedCharacterData;
+        CharacterDataHolder characterData = PlayerManager.instance.selectedCharacterData;
 
         // Return if no character is selected.
         if (characterData == null)
@@ -386,24 +386,27 @@ public class CharacterSelectionManager : MonoBehaviour
         }
 
         // Reload everything.
+        Destroy(characterSelected); // Destroy clone object.
         SceneFader.Fade("CharacterSelection", Color.white, 0.5f);
     }
 
     private void OnClickEnterButton()
     {
         // Check if no character exists.
-        if (NetworkManager.instance.selectedCharacterData == null)
+        if (PlayerManager.instance.selectedCharacterData == null)
         {
             textMessage.text = "You must create a character.";
         }
         else // Enter world.
         {
+            Destroy(characterSelected); // Destroy clone object.
             SceneFader.Fade("World", Color.white, 0.5f);
         }
     }
 
     private void OnClickExitButton()
     {
+        Destroy(characterSelected); // Destroy clone object.
         SceneFader.Fade("LoginScreen", Color.white, 0.5f);
     }
 

@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using UnityEngine;
 
 /**
-* @author Pantelis Andrianakis
-*/
-public class CharacterSelectionInfoRequest : SendablePacket
+ * @author Pantelis Andrianakis
+ */
+public class DontDestroyObject : MonoBehaviour
 {
-    public CharacterSelectionInfoRequest()
+	private void Update ()
     {
-        WriteShort(2); // Packet id.
-        WriteString(PlayerManager.instance.accountName);
+        DontDestroyOnLoad(transform.gameObject);
     }
 }

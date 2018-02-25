@@ -14,15 +14,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System;
+using System.Collections;
+using UnityEngine;
 
 /**
-* @author Pantelis Andrianakis
-*/
-public class CharacterSelectionInfoRequest : SendablePacket
+ * @author Pantelis Andrianakis
+ */
+public class PlayerManager : MonoBehaviour
 {
-    public CharacterSelectionInfoRequest()
+    // Network manager instance.
+    public static PlayerManager instance;
+
+    [HideInInspector]
+    public String accountName;
+    [HideInInspector]
+    public ArrayList characterList;
+    [HideInInspector]
+    public CharacterDataHolder selectedCharacterData;
+
+    // Player models are saved here.
+    public GameObject[] characterModels;
+
+    void Start ()
     {
-        WriteShort(2); // Packet id.
-        WriteString(PlayerManager.instance.accountName);
+        instance = this;
+    }
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
     }
 }

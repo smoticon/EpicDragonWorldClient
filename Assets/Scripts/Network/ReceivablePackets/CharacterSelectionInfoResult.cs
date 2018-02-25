@@ -55,7 +55,7 @@ public class CharacterSelectionInfoResult
         }
 
         // Send the data.
-        NetworkManager.instance.characterList = characterList;
+        PlayerManager.instance.characterList = characterList;
 
         // Enable player selection.
         CharacterSelectionManager.instance.waitingServer = false;
