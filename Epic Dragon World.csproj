@@ -57,6 +57,9 @@
     <Compile Include="Assets\Scenes\LoginScreen\AuthenticationManager.cs" />
     <Compile Include="Assets\Scenes\LoginScreen\ButtonQuitGame.cs" />
     <Compile Include="Assets\Scenes\LoginScreen\LoginScreenManager.cs" />
+    <Compile Include="Assets\Scenes\World\CameraController.cs" />
+    <Compile Include="Assets\Scenes\World\PlayerController.cs" />
+    <Compile Include="Assets\Scenes\World\WorldManager.cs" />
     <Compile Include="Assets\Scripts\Holders\CharacterDataHolder.cs" />
     <Compile Include="Assets\Scripts\Music\MusicManager.cs" />
     <Compile Include="Assets\Scripts\Network\Encryption.cs" />
