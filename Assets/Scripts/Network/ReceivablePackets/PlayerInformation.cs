@@ -14,39 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System.Collections;
 
 /**
 * @author Pantelis Andrianakis
 */
-public class RecievablePacketManager
+public class PlayerInformation
 {
-    public static void handle(ReceivablePacket packet)
+    public static void notify(ReceivablePacket packet)
     {
-        switch (packet.ReadShort())
-        {
-            case 1:
-                AccountAuthenticationResult.notify(packet);
-                break;
-
-            case 2:
-                CharacterSelectionInfoResult.notify(packet);
-                break;
-
-            case 3:
-                CharacterCreationResult.notify(packet);
-                break;
-
-            case 4:
-                CharacterDeletionResult.notify(packet);
-                break;
-
-            case 5:
-                EnterWorldInformation.notify(packet);
-                break;
-
-            case 6:
-                PlayerInformation.notify(packet);
-                break;
-        }
+        string playerName = packet.ReadString();
+        double posX = packet.ReadDouble();
+        double posY = packet.ReadDouble();
+        double posZ = packet.ReadDouble();
+        int posHeading = packet.ReadInt();
+        //TODO: Manage PlayerInformation
     }
 }

@@ -38,7 +38,8 @@ public class WorldManager : MonoBehaviour
         playerCharacter.GetComponent<MeshFilter>().mesh = PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<MeshFilter>().mesh;
         playerCharacter.GetComponent<Renderer>().materials = PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<Renderer>().materials;
 
-        // TODO: Send player info to server.
+        // Request world info from server.
+        NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
     }
 
     private void Update()

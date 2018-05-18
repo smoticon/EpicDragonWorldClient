@@ -18,35 +18,11 @@
 /**
 * @author Pantelis Andrianakis
 */
-public class RecievablePacketManager
+public class EnterWorldRequest : SendablePacket
 {
-    public static void handle(ReceivablePacket packet)
+    public EnterWorldRequest(string characterName)
     {
-        switch (packet.ReadShort())
-        {
-            case 1:
-                AccountAuthenticationResult.notify(packet);
-                break;
-
-            case 2:
-                CharacterSelectionInfoResult.notify(packet);
-                break;
-
-            case 3:
-                CharacterCreationResult.notify(packet);
-                break;
-
-            case 4:
-                CharacterDeletionResult.notify(packet);
-                break;
-
-            case 5:
-                EnterWorldInformation.notify(packet);
-                break;
-
-            case 6:
-                PlayerInformation.notify(packet);
-                break;
-        }
+        WriteShort(7); // Packet id.
+        WriteString(characterName);
     }
 }
