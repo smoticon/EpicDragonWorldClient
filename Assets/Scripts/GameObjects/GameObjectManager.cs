@@ -14,22 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-using System.Collections;
+using UnityEngine;
 
 /**
-* @author Pantelis Andrianakis
-*/
-public class PlayerInformation
+ * @author Pantelis Andrianakis
+ */
+public class GameObjectManager : MonoBehaviour
 {
-    public static void notify(ReceivablePacket packet)
-    {
-        string playerName = packet.ReadString();
-        double posX = packet.ReadDouble();
-        double posY = packet.ReadDouble();
-        double posZ = packet.ReadDouble();
-        int posHeading = packet.ReadInt();
-        //TODO: Manage PlayerInformation
+    // GameObject manager instance.
+    public static GameObjectManager instance;
+    // Player models are saved here.
+    public GameObject[] playerModels;
+    // Game object models are saved here.
+    public GameObject[] gameObjectList;
 
-        WorldManager.instance.AddObject(posX, posY, posZ, posHeading);
+    void Start()
+    {
+        instance = this;
+    }
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);
     }
 }

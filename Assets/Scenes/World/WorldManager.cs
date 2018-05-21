@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using System.Collections;
 using UnityEngine;
 
 /**
@@ -23,6 +24,11 @@ public class WorldManager : MonoBehaviour
 {
     public GameObject playerCharacter;
 
+    [HideInInspector]
+    public static WorldManager instance;
+    [HideInInspector]
+    ArrayList characterModels = new ArrayList();
+
     private void Start()
     {
         // Return if account name is empty.
@@ -31,15 +37,24 @@ public class WorldManager : MonoBehaviour
             return; // Return to login?
         }
 
+        // Set instance.
+        instance = this;
+
         // Change music.
         MusicManager.instance.PlayMusic(MusicManager.instance.EnterWorld);
 
         // Set player model.
-        playerCharacter.GetComponent<MeshFilter>().mesh = PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<MeshFilter>().mesh;
-        playerCharacter.GetComponent<Renderer>().materials = PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<Renderer>().materials;
+        playerCharacter.GetComponent<MeshFilter>().mesh = GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<MeshFilter>().mesh;
+        playerCharacter.GetComponent<Renderer>().materials = GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<Renderer>().materials;
 
         // Request world info from server.
         NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
+    }
+
+    public void AddObject(double posX, double posY, double posZ, int posHeading)
+    {
+        // GameObject temp = Instantiate(GameObjectManager.instance.gameObjectList[0], new Vector3(9.824759f, -10.283f, 0.2593288f), Quaternion.identity) as GameObject;
+        characterModels.Add(gameObject);
     }
 
     private void Update()

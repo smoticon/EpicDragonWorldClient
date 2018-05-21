@@ -23,7 +23,7 @@ using UnityEngine;
  */
 public class PlayerManager : MonoBehaviour
 {
-    // Network manager instance.
+    // Player manager instance.
     public static PlayerManager instance;
 
     [HideInInspector]
@@ -32,9 +32,6 @@ public class PlayerManager : MonoBehaviour
     public ArrayList characterList;
     [HideInInspector]
     public CharacterDataHolder selectedCharacterData;
-
-    // Player models are saved here.
-    public GameObject[] characterModels;
 
     void Start ()
     {

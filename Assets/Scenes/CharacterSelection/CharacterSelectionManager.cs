@@ -108,7 +108,7 @@ public class CharacterSelectionManager : MonoBehaviour
                     PlayerManager.instance.selectedCharacterData = characterData;
                     // Model 0-3 id is set from character class id.
                     // characterModels[characterData.GetClassId()]
-                    characterSelected = Instantiate(PlayerManager.instance.characterModels[characterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                    characterSelected = Instantiate(GameObjectManager.instance.playerModels[characterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
                     // TODO: Restore appearance when support is made.
                 }
             }
@@ -158,7 +158,7 @@ public class CharacterSelectionManager : MonoBehaviour
         // Change selected character.
         Destroy(characterSelected);
         PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[0];
-        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter2Button()
@@ -168,7 +168,7 @@ public class CharacterSelectionManager : MonoBehaviour
         // Change selected character.
         Destroy(characterSelected);
         PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[1];
-        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter3Button()
@@ -178,7 +178,7 @@ public class CharacterSelectionManager : MonoBehaviour
         // Change selected character.
         Destroy(characterSelected);
         PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[2];
-        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter4Button()
@@ -188,7 +188,7 @@ public class CharacterSelectionManager : MonoBehaviour
         // Change selected character.
         Destroy(characterSelected);
         PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[3];
-        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickSelectCharacter5Button()
@@ -198,7 +198,7 @@ public class CharacterSelectionManager : MonoBehaviour
         // Change selected character.
         Destroy(characterSelected);
         PlayerManager.instance.selectedCharacterData = (CharacterDataHolder)PlayerManager.instance.characterList[4];
-        characterSelected = Instantiate(PlayerManager.instance.characterModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
     }
 
     private void OnClickMoveUp2Button()
