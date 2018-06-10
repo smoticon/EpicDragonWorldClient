@@ -15,20 +15,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
- /**
+/**
 * @author Pantelis Andrianakis
 */
-public class PlayerInformation
+public class DeleteObject
 {
     public static void notify(ReceivablePacket packet)
     {
-        string playerName = packet.ReadString();
-        double posX = packet.ReadDouble();
-        double posY = packet.ReadDouble();
-        double posZ = packet.ReadDouble();
-        int posHeading = packet.ReadInt();
-        //TODO: Manage PlayerInformation
-
-        WorldManager.instance.AddObject(posX, posY, posZ, posHeading);
+         int objectId = packet.ReadInt();
+        // TODO: Delete object from world.
     }
 }

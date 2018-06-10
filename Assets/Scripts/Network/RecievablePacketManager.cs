@@ -47,6 +47,14 @@ public class RecievablePacketManager
             case 6:
                 PlayerInformation.notify(packet);
                 break;
+
+            case 7:
+                DeleteObject.notify(packet);
+                break;
+
+            case 8:
+                Logout.notify(packet);
+                break;
         }
     }
 }

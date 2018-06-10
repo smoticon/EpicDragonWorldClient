@@ -36,6 +36,13 @@ public class AuthenticationManager : MonoBehaviour
         instance = this;
         NetworkManager.instance.DisconnectFromServer(); // In case player exits to login screen.
         loginButton.GetComponent<Button>().onClick.AddListener(OnClickTask);
+
+        // In case player was kicked from the game.
+        if (NetworkManager.instance.kicked)
+        {
+            messageText.text = "You have been kicked from the game.";
+            NetworkManager.instance.kicked = false;
+        }
     }
 
     private void OnClickTask()
@@ -113,7 +120,12 @@ public class AuthenticationManager : MonoBehaviour
                     break;
 
                 case 4:
-                    messageText.text = "Too many online, please try again later.";
+                    messageText.text = "Account is already connected.";
+                    authenticating = false;
+                    break;
+
+                case 5:
+                    messageText.text = "Too many online players, please try again later.";
                     authenticating = false;
                     break;
 

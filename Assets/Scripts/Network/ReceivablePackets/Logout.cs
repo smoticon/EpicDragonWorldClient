@@ -14,21 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using UnityEngine;
 
- /**
+/**
 * @author Pantelis Andrianakis
 */
-public class PlayerInformation
+public class Logout
 {
     public static void notify(ReceivablePacket packet)
     {
-        string playerName = packet.ReadString();
-        double posX = packet.ReadDouble();
-        double posY = packet.ReadDouble();
-        double posZ = packet.ReadDouble();
-        int posHeading = packet.ReadInt();
-        //TODO: Manage PlayerInformation
-
-        WorldManager.instance.AddObject(posX, posY, posZ, posHeading);
+        // Used for kicked message.
+        NetworkManager.instance.kicked = true;
+        // Go to login screen.
+        SceneFader.Fade("LoginScreen", Color.white, 0.5f);
     }
 }

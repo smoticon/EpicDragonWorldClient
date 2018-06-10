@@ -72,7 +72,9 @@
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterCreationResult.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterDeletionResult.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterSelectionInfoResult.cs" />
+    <Compile Include="Assets\Scripts\Network\ReceivablePackets\DeleteObject.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\EnterWorldInformation.cs" />
+    <Compile Include="Assets\Scripts\Network\ReceivablePackets\Logout.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\PlayerInformation.cs" />
     <Compile Include="Assets\Scripts\Network\RecievablePacketManager.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePacket.cs" />
