@@ -27,6 +27,6 @@ public class MoveToLocation
         float posY = packet.ReadFloat();
         float posZ = packet.ReadFloat();
 
-        WorldManager.instance.moveObject(objectId, posX, posY, posZ);
+        WorldManager.instance.MoveObject(objectId, posX, posY, posZ);
     }
 }

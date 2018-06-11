@@ -28,6 +28,8 @@ public class WorldManager : MonoBehaviour
     public static WorldManager instance;
     [HideInInspector]
     ArrayList gameObjects = new ArrayList();
+    [HideInInspector]
+    private static readonly int visibilityRange = 3000;
 
     private void Start()
     {
@@ -49,6 +51,9 @@ public class WorldManager : MonoBehaviour
 
         // Request world info from server.
         NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
+
+        // Object distance forget task.
+        StartCoroutine(DistanceCheck());
     }
 
     public void AddObject(int objectId, float posX, float posY, float posZ, int posHeading)
@@ -72,7 +77,7 @@ public class WorldManager : MonoBehaviour
         gameObjects.Add(obj);
     }
 
-    public void moveObject(int objectId, float posX, float posY, float posZ)
+    public void MoveObject(int objectId, float posX, float posY, float posZ)
     {
         foreach (GameObject gameObject in gameObjects)
         {
@@ -84,8 +89,27 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void DeleteObject(GameObject gameObject)
     {
+        // Remove from objects list.
+        gameObjects.Remove(gameObject);
 
+        // Delete game object from world.
+        Destroy(gameObject);
+    }
+
+    IEnumerator DistanceCheck()
+    {
+        while (true)
+        {
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (Vector3.Distance(playerCharacter.transform.position, gameObject.transform.position) > visibilityRange)
+                {
+                    DeleteObject(gameObject);
+                }
+            }
+            yield return new WaitForSeconds(3);
+        }
     }
 }
