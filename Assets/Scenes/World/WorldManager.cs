@@ -84,9 +84,12 @@ public class WorldManager : MonoBehaviour
             if (gameObject.GetComponent<WorldObject>().objectId == objectId)
             {
                 gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(gameObject.transform.position, new Vector3(posX, posY, posZ), 1));
-                break;
+                return;
             }
         }
+        
+        // Request unknown object info from server.
+        NetworkManager.instance.ChannelSend(new ObjectInfoRequest(objectId));
     }
 
     private void DeleteObject(GameObject gameObject)
