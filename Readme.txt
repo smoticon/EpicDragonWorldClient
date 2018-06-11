@@ -7,3 +7,4 @@ Epic Dragon World Client
 - Music manager.
 - Server authentication.
 - Character management.
+- Broadcast game object movement.
