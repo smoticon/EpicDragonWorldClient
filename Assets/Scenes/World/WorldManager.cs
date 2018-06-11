@@ -102,6 +102,18 @@ public class WorldManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new ObjectInfoRequest(objectId));
     }
 
+    public void DeleteObject(int objectId)
+    {
+        foreach (GameObject gameObject in gameObjects)
+        {
+            if (gameObject.GetComponent<WorldObject>().objectId == objectId)
+            {
+                DeleteObject(gameObject);
+                return;
+            }
+        }
+    }
+
     private void DeleteObject(GameObject gameObject)
     {
         // Remove from objects list.
