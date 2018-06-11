@@ -56,7 +56,7 @@ public class WorldManager : MonoBehaviour
         StartCoroutine(DistanceCheck());
     }
 
-    public void UpdateObject(int objectId, float posX, float posY, float posZ, int posHeading)
+    public void UpdateObject(int objectId, int classId, float posX, float posY, float posZ, int posHeading)
     {
         // Check for existing objects.
         foreach (GameObject gameObject in gameObjects)
@@ -69,13 +69,13 @@ public class WorldManager : MonoBehaviour
         }
 
         // Object does not exist. Instantiate.
-        GameObject obj = Instantiate(GameObjectManager.instance.gameObjectList[0], new Vector3(posX, posY, posZ), Quaternion.identity) as GameObject;
+        GameObject obj = Instantiate(GameObjectManager.instance.gameObjectList[classId], new Vector3(posX, posY, posZ), Quaternion.identity) as GameObject;
+
+        // TODO: Proper appearance.
 
         // Assign object id.
         obj.AddComponent<WorldObject>();
         obj.GetComponent<WorldObject>().objectId = objectId;
-
-        // TODO: Proper appearance.
 
         // Add RigidBody.
         Rigidbody rigidBody = obj.AddComponent<Rigidbody>();
