@@ -56,9 +56,19 @@ public class WorldManager : MonoBehaviour
         StartCoroutine(DistanceCheck());
     }
 
-    public void AddObject(int objectId, float posX, float posY, float posZ, int posHeading)
+    public void UpdateObject(int objectId, float posX, float posY, float posZ, int posHeading)
     {
-        // Instantiate.
+        // Check for existing objects.
+        foreach (GameObject gameObject in gameObjects)
+        {
+            if (gameObject.GetComponent<WorldObject>().objectId == objectId)
+            {
+                // TODO: Update object info.
+                return;
+            }
+        }
+
+        // Object does not exist. Instantiate.
         GameObject obj = Instantiate(GameObjectManager.instance.gameObjectList[0], new Vector3(posX, posY, posZ), Quaternion.identity) as GameObject;
 
         // Assign object id.
@@ -87,7 +97,7 @@ public class WorldManager : MonoBehaviour
                 return;
             }
         }
-        
+
         // Request unknown object info from server.
         NetworkManager.instance.ChannelSend(new ObjectInfoRequest(objectId));
     }
