@@ -27,7 +27,7 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     public static WorldManager instance;
     [HideInInspector]
-    ArrayList characterModels = new ArrayList();
+    ArrayList gameObjects = new ArrayList();
 
     private void Start()
     {
@@ -51,10 +51,37 @@ public class WorldManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
     }
 
-    public void AddObject(double posX, double posY, double posZ, int posHeading)
+    public void AddObject(int objectId, float posX, float posY, float posZ, int posHeading)
     {
-        // GameObject temp = Instantiate(GameObjectManager.instance.gameObjectList[0], new Vector3(9.824759f, -10.283f, 0.2593288f), Quaternion.identity) as GameObject;
-        characterModels.Add(gameObject);
+        // Instantiate.
+        GameObject obj = Instantiate(GameObjectManager.instance.gameObjectList[0], new Vector3(posX, posY, posZ), Quaternion.identity) as GameObject;
+
+        // Assign object id.
+        obj.AddComponent<WorldObject>();
+        obj.GetComponent<WorldObject>().objectId = objectId;
+
+        // TODO: Proper appearance.
+
+        // Add RigidBody.
+        Rigidbody rigidBody = obj.AddComponent<Rigidbody>();
+        rigidBody.mass = 1;
+        rigidBody.angularDrag = 0.05f;
+        rigidBody.freezeRotation = true;
+
+        // Add to game object list.
+        gameObjects.Add(obj);
+    }
+
+    public void moveObject(int objectId, float posX, float posY, float posZ)
+    {
+        foreach (GameObject gameObject in gameObjects)
+        {
+            if (gameObject.GetComponent<WorldObject>().objectId == objectId)
+            {
+                gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(gameObject.transform.position, new Vector3(posX, posY, posZ), 1));
+                break;
+            }
+        }
     }
 
     private void Update()

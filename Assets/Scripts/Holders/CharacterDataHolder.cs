@@ -25,9 +25,9 @@ public class CharacterDataHolder
     private bool selected = false;
     private byte classId = 0;
     private string locationName = "";
-    private double x = 0;
-    private double y = 0;
-    private double z = 0;
+    private float x = 0;
+    private float y = 0;
+    private float z = 0;
     private int heading = 0;
     private long experience = 0;
     private long hp = 0;
@@ -91,32 +91,32 @@ public class CharacterDataHolder
         this.locationName = locationName;
     }
 
-    public double GetX()
+    public float GetX()
     {
         return x;
     }
 
-    public void SetX(double x)
+    public void SetX(float x)
     {
         this.x = x;
     }
 
-    public double GetY()
+    public float GetY()
     {
         return y;
     }
 
-    public void SetY(double y)
+    public void SetY(float y)
     {
         this.y = y;
     }
 
-    public double GetZ()
+    public float GetZ()
     {
         return z;
     }
 
-    public void SetZ(double z)
+    public void SetZ(float z)
     {
         this.z = z;
     }

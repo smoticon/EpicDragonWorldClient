@@ -57,6 +57,10 @@ public class PlayerController : MonoBehaviour
     private float turnInput;
     private float jumpInput;
 
+    private float oldX = 0;
+    private float oldY = 0;
+    private float oldZ = 0;
+
     public Quaternion TargetRotation
     {
         get { return targetRotation; }
@@ -102,6 +106,15 @@ public class PlayerController : MonoBehaviour
         Jump();
 
         rBody.velocity = transform.TransformDirection(velocity);
+
+        // Send position to server.
+        if (oldX != transform.position.x || oldY != transform.position.y || oldZ != transform.position.z)
+        {
+            NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z));
+            oldX = transform.position.x;
+            oldY = transform.position.y;
+            oldZ = transform.position.z;
+        }
     }
 
     private void Run()

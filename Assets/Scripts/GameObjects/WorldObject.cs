@@ -14,22 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+using UnityEngine;
 
- /**
+/**
 * @author Pantelis Andrianakis
 */
-public class PlayerInformation
+public class WorldObject : MonoBehaviour
 {
-    public static void notify(ReceivablePacket packet)
-    {
-        int objectId = packet.ReadInt();
-        string playerName = packet.ReadString();
-        float posX = packet.ReadFloat();
-        float posY = packet.ReadFloat();
-        float posZ = packet.ReadFloat();
-        int posHeading = packet.ReadInt();
-        //TODO: Manage PlayerInformation
-
-        WorldManager.instance.AddObject(objectId, posX, posY, posZ, posHeading);
-    }
+    public int objectId;
 }

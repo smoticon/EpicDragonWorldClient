@@ -82,6 +82,16 @@ public class ReceivablePacket
         return BitConverter.ToInt64(byteArray, 0);
     }
 
+    public float ReadFloat()
+    {
+        byte[] byteArray = new byte[4];
+        byteArray[0] = (byte)memoryStream.ReadByte();
+        byteArray[1] = (byte)memoryStream.ReadByte();
+        byteArray[2] = (byte)memoryStream.ReadByte();
+        byteArray[3] = (byte)memoryStream.ReadByte();
+        return BitConverter.ToSingle(byteArray, 0);
+    }
+
     public double ReadDouble()
     {
         byte[] byteArray = new byte[8];

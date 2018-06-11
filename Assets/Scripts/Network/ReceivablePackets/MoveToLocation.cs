@@ -15,21 +15,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
- /**
+/**
 * @author Pantelis Andrianakis
 */
-public class PlayerInformation
+public class MoveToLocation
 {
     public static void notify(ReceivablePacket packet)
     {
         int objectId = packet.ReadInt();
-        string playerName = packet.ReadString();
         float posX = packet.ReadFloat();
         float posY = packet.ReadFloat();
         float posZ = packet.ReadFloat();
-        int posHeading = packet.ReadInt();
-        //TODO: Manage PlayerInformation
 
-        WorldManager.instance.AddObject(objectId, posX, posY, posZ, posHeading);
+        WorldManager.instance.moveObject(objectId, posX, posY, posZ);
     }
 }

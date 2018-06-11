@@ -63,6 +63,7 @@
     <Compile Include="Assets\Scenes\World\PlayerController.cs" />
     <Compile Include="Assets\Scenes\World\WorldManager.cs" />
     <Compile Include="Assets\Scripts\GameObjects\GameObjectManager.cs" />
+    <Compile Include="Assets\Scripts\GameObjects\WorldObject.cs" />
     <Compile Include="Assets\Scripts\Holders\CharacterDataHolder.cs" />
     <Compile Include="Assets\Scripts\Music\MusicManager.cs" />
     <Compile Include="Assets\Scripts\Network\Encryption.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\DeleteObject.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\EnterWorldInformation.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\Logout.cs" />
+    <Compile Include="Assets\Scripts\Network\ReceivablePackets\MoveToLocation.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\PlayerInformation.cs" />
     <Compile Include="Assets\Scripts\Network\RecievablePacketManager.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePacket.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSelectUpdate.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSlotUpdate.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\EnterWorldRequest.cs" />
+    <Compile Include="Assets\Scripts\Network\SendablePackets\LocationUpdate.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Util\DontDestroyObject.cs" />
     <Compile Include="Assets\Scripts\Util\SceneFader.cs" />

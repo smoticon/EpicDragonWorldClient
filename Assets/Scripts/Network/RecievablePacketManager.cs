@@ -55,6 +55,10 @@ public class RecievablePacketManager
             case 8:
                 Logout.notify(packet);
                 break;
+
+            case 9:
+                MoveToLocation.notify(packet);
+                break;
         }
     }
 }

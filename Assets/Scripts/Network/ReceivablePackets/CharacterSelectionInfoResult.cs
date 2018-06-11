@@ -36,9 +36,9 @@ public class CharacterSelectionInfoResult
             characterData.SetSelected(packet.ReadByte() == 1 ? true : false);
             characterData.SetClassId((byte)packet.ReadByte());
             characterData.SetLocationName(packet.ReadString());
-            characterData.SetX(packet.ReadDouble());
-            characterData.SetY(packet.ReadDouble());
-            characterData.SetZ(packet.ReadDouble());
+            characterData.SetX(packet.ReadFloat());
+            characterData.SetY(packet.ReadFloat());
+            characterData.SetZ(packet.ReadFloat());
             characterData.SetHeading(packet.ReadInt());
             characterData.SetExperience(packet.ReadLong());
             characterData.SetHp(packet.ReadLong());

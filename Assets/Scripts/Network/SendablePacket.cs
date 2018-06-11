@@ -83,6 +83,16 @@ public class SendablePacket
         memoryStream.WriteByte((byte)(value >> 56));
     }
 
+    // TODO: WriteFloat (SingleToInt32Bits)
+    // public void WriteFloat(float fvalue)
+    // {
+    // long value = BitConverter.SingleToInt32Bits(fvalue);
+    // memoryStream.WriteByte((byte)value);
+    // memoryStream.WriteByte((byte)(value >> 8));
+    // memoryStream.WriteByte((byte)(value >> 16));
+    // memoryStream.WriteByte((byte)(value >> 24));
+    // }
+
     public void WriteDouble(double dvalue)
     {
         long value = BitConverter.DoubleToInt64Bits(dvalue);
