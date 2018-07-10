@@ -5,7 +5,7 @@ public class PlayerInformation
 {
     public static void notify(ReceivablePacket packet)
     {
-        int objectId = packet.ReadInt();
+        long objectId = packet.ReadLong();
         int classId = packet.ReadShort();
         string playerName = packet.ReadString();
         float posX = packet.ReadFloat();

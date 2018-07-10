@@ -5,7 +5,7 @@ public class DeleteObject
 {
     public static void notify(ReceivablePacket packet)
     {
-        int objectId = packet.ReadInt();
+        long objectId = packet.ReadLong();
         WorldManager.instance.DeleteObject(objectId);
     }
 }

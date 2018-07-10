@@ -5,7 +5,7 @@ public class MoveToLocation
 {
     public static void notify(ReceivablePacket packet)
     {
-        int objectId = packet.ReadInt();
+        long objectId = packet.ReadLong();
         float posX = packet.ReadFloat();
         float posY = packet.ReadFloat();
         float posZ = packet.ReadFloat();

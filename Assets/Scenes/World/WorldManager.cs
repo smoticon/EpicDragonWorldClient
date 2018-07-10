@@ -40,7 +40,7 @@ public class WorldManager : MonoBehaviour
         StartCoroutine(DistanceCheck());
     }
 
-    public void UpdateObject(int objectId, int classId, float posX, float posY, float posZ, int posHeading)
+    public void UpdateObject(long objectId, int classId, float posX, float posY, float posZ, int posHeading)
     {
         // Check for existing objects.
         foreach (GameObject gameObject in gameObjects)
@@ -71,7 +71,7 @@ public class WorldManager : MonoBehaviour
         gameObjects.Add(obj);
     }
 
-    public void MoveObject(int objectId, float posX, float posY, float posZ)
+    public void MoveObject(long objectId, float posX, float posY, float posZ)
     {
         foreach (GameObject gameObject in gameObjects)
         {
@@ -86,7 +86,7 @@ public class WorldManager : MonoBehaviour
         NetworkManager.instance.ChannelSend(new ObjectInfoRequest(objectId));
     }
 
-    public void DeleteObject(int objectId)
+    public void DeleteObject(long objectId)
     {
         foreach (GameObject gameObject in gameObjects)
         {

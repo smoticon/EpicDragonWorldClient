@@ -3,9 +3,9 @@
 */
 public class ObjectInfoRequest : SendablePacket
 {
-    public ObjectInfoRequest(int objectId)
+    public ObjectInfoRequest(long objectId)
     {
         WriteShort(9); // Packet id.
-        WriteInt(objectId);
+        WriteLong(objectId);
     }
 }
