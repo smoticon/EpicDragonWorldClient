@@ -43,34 +43,34 @@ public class CharacterCreationManager : MonoBehaviour
         backButton.GetComponent<Button>().onClick.AddListener(OnClickBackButton);
 
         // Select first character model.
-        characterSelected = Instantiate(GameObjectManager.instance.playerModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
     }
 
     private void OnClickButton1()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(GameObjectManager.instance.playerModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
         classSelected = 0;
     }
 
     private void OnClickButton2()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(GameObjectManager.instance.playerModels[1], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[1], spawnLocation.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
         classSelected = 1;
     }
 
     private void OnClickButton3()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(GameObjectManager.instance.playerModels[2], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[2], spawnLocation.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
         classSelected = 2;
     }
 
     private void OnClickButton4()
     {
         Destroy(characterSelected);
-        characterSelected = Instantiate(GameObjectManager.instance.playerModels[3], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+        characterSelected = Instantiate(GameObjectManager.instance.playerModels[3], spawnLocation.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
         classSelected = 3;
     }
 
