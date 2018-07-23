@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /**
- * @author Pantelis Andrianakis
+ * @author Pantelis Andrianakis, Abdallah Azzami
  */
 public class PlayerController : MonoBehaviour
 {
@@ -33,31 +33,34 @@ public class PlayerController : MonoBehaviour
     public MoveSettings moveSetting = new MoveSettings();
     public PhysSettings physSetting = new PhysSettings();
     public InputSettings inputSetting = new InputSettings();
+    public GameObject objectTarget;
 
     Vector3 velocity = Vector3.zero;
-    private Quaternion targetRotation;
     private Rigidbody rBody;
     private float forwardInput;
+    private float forwardInputByMouse;
+
     private float turnInput;
     private float jumpInput;
+    private float jumpDelay;
 
     private float oldX = 0;
     private float oldY = 0;
     private float oldZ = 0;
+    private Movement movement;
+    private bool canRotate = false;
 
-    public Quaternion TargetRotation
-    {
-        get { return targetRotation; }
-    }
+    public Quaternion TargetRotation { get; private set; }
 
-    private bool Grounded()
+    public bool Grounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, moveSetting.distToGrounded, moveSetting.ground);
     }
 
     private void Start()
     {
-        targetRotation = transform.rotation;
+        movement = GetComponent<Movement>();
+        TargetRotation = transform.rotation;
         if (GetComponent<Rigidbody>())
         {
             rBody = GetComponent<Rigidbody>();
@@ -103,7 +106,20 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        if (Mathf.Abs(forwardInput) > inputSetting.inputDelay)
+        if ((Input.GetMouseButton(0) && Input.GetMouseButton(1)))
+        {
+            velocity.z = moveSetting.forwardVel * forwardInputByMouse;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                forwardInputByMouse += 0.5f;
+            }
+            else
+            {
+                forwardInputByMouse += 1f;
+            }
+            velocity.z = moveSetting.forwardVel * forwardInputByMouse;
+        }
+        else if (Mathf.Abs(forwardInput) > inputSetting.inputDelay)
         {
             // Move.
             velocity.z = moveSetting.forwardVel * forwardInput;
@@ -113,23 +129,83 @@ public class PlayerController : MonoBehaviour
             // Zero velocity.
             velocity.z = 0;
         }
+        forwardInputByMouse = 0;
     }
 
     private void Turn()
     {
-        if (Mathf.Abs(turnInput) > inputSetting.inputDelay)
+        // Check if the mouse buttons are clicked, and assign it to boolean var.
+        bool bothMouseBtn = (Input.GetMouseButton(0) && Input.GetMouseButton(1));
+        bool leftMouseBtn = (Input.GetMouseButton(1));
+        bool rightMouseBtn = (Input.GetMouseButton(0));
+
+        // Mouse x axis, to rotate the player while holding mouse buttons.
+        float mouseX = Input.GetAxis("Mouse X") * 3;
+
+        if (Mathf.Abs(turnInput) > inputSetting.inputDelay && !rightMouseBtn)
         {
-            targetRotation *= Quaternion.AngleAxis(moveSetting.rotateVel * turnInput * Time.deltaTime, Vector3.up);
+            if (forwardInput < 0)
+            {
+                TargetRotation *= Quaternion.AngleAxis(moveSetting.rotateVel * -turnInput * Time.deltaTime, Vector3.up);
+            }
+            else
+            {
+                TargetRotation *= Quaternion.AngleAxis(moveSetting.rotateVel * turnInput * Time.deltaTime, Vector3.up);
+            }
         }
-        transform.rotation = targetRotation;
+        else if (leftMouseBtn || rightMouseBtn)
+        {
+            TargetRotation *= Quaternion.AngleAxis(moveSetting.rotateVel * mouseX * Time.deltaTime, Vector3.up);
+        }
+
+        ChangeTarget();
+
+        if ((rightMouseBtn && !leftMouseBtn) || canRotate)
+        {
+            objectTarget.transform.rotation = TargetRotation;
+
+            // Rotation while walking and holding the right mouse button.
+            float xRotaion = Input.GetAxis("Horizontal");
+            float yRotaion = Input.GetAxis("Vertical");
+            if (xRotaion != 0 && yRotaion != 0)
+            {
+                if (forwardInput < 0) // When walk back rotation will be in the opposite direction.
+                {
+                    transform.Rotate(transform.rotation.x,
+                    transform.rotation.y - xRotaion * Time.deltaTime * 170, transform.rotation.z);
+                }
+                else
+                {
+                    transform.Rotate(transform.rotation.x,
+                    transform.rotation.y + xRotaion * Time.deltaTime * 170, transform.rotation.z);
+                }
+            }
+        }
+        else
+        {
+            transform.rotation = TargetRotation;
+        }
+    }
+
+    private void ChangeTarget()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            canRotate = true;
+        }
+        else if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
+        {
+            canRotate = false;
+        }
     }
 
     private void Jump()
     {
-        if (jumpInput > 0 && Grounded())
+        if ((jumpInput > 0 || Input.GetKey(KeyCode.Space)) && Grounded())
         {
             // Jump.
-            velocity.y = moveSetting.jumpVel;
+            jumpDelay += Time.deltaTime;
+            DelayJump();
         }
         else if (jumpInput == 0 && Grounded())
         {
@@ -140,6 +216,22 @@ public class PlayerController : MonoBehaviour
         {
             // Decrease velocity.y
             velocity.y -= physSetting.downAccel;
+        }
+    }
+
+    private void DelayJump()
+    {
+        if (jumpDelay >= 0.13f && velocity.z <= 3.5f)
+        {
+            velocity.y = moveSetting.jumpVel;
+            movement.JumpAnimation();
+            jumpDelay = 0;
+        }
+        else if (jumpDelay >= 0.15f && velocity.z > 3.5f)
+        {
+            velocity.y = moveSetting.jumpVel;
+            movement.FarJumpAnimation();
+            jumpDelay = 0;
         }
     }
 }

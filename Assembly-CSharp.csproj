@@ -60,6 +60,8 @@
     <Compile Include="Assets\Scenes\LoginScreen\ButtonQuitGame.cs" />
     <Compile Include="Assets\Scenes\LoginScreen\LoginScreenManager.cs" />
     <Compile Include="Assets\Scenes\World\CameraController.cs" />
+    <Compile Include="Assets\Scenes\World\MouseCamera.cs" />
+    <Compile Include="Assets\Scenes\World\Movement.cs" />
     <Compile Include="Assets\Scenes\World\PlayerController.cs" />
     <Compile Include="Assets\Scenes\World\WorldManager.cs" />
     <Compile Include="Assets\Scripts\GameObjects\GameObjectManager.cs" />
