@@ -5,6 +5,7 @@
  */
 public class Movement : MonoBehaviour
 {
+    [HideInInspector]
     public Animator anim;
     public float movementSpeed;
     public float rotationSpeed;

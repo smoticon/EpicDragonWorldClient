@@ -6,7 +6,13 @@ using UnityEngine;
  */
 public class WorldManager : MonoBehaviour
 {
+    [HideInInspector]
     public GameObject playerCharacter;
+    public GameObject playerMale;
+    public GameObject playerFemale;
+    public GameObject cameraMale;
+    public GameObject cameraFemale;
+    public GameObject cameraTarget;
 
     [HideInInspector]
     public static WorldManager instance;
@@ -30,8 +36,22 @@ public class WorldManager : MonoBehaviour
         MusicManager.instance.PlayMusic(MusicManager.instance.EnterWorld);
 
         // Set player model.
-        playerCharacter.GetComponent<MeshFilter>().mesh = GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<MeshFilter>().mesh;
-        playerCharacter.GetComponent<Renderer>().materials = GameObjectManager.instance.playerModels[PlayerManager.instance.selectedCharacterData.GetClassId()].GetComponent<Renderer>().materials;
+        if (PlayerManager.instance.selectedCharacterData.GetClassId() == 0)
+        {
+            playerMale.SetActive(true);
+            cameraMale.SetActive(true);
+            playerCharacter = playerMale;
+        }
+        if (PlayerManager.instance.selectedCharacterData.GetClassId() == 1)
+        {
+            playerFemale.SetActive(true);
+            cameraFemale.SetActive(true);
+            playerCharacter = playerFemale;
+        }
+
+        // Set position.
+        playerCharacter.transform.position = new Vector3(PlayerManager.instance.selectedCharacterData.GetX(), PlayerManager.instance.selectedCharacterData.GetY(), PlayerManager.instance.selectedCharacterData.GetZ());
+        cameraTarget.transform.position = playerCharacter.transform.position; // TODO: Make a function to set acting player position with target object.
 
         // Request world info from server.
         NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));

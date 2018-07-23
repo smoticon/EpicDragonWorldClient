@@ -154,8 +154,8 @@ MonoBehaviour:
   - {fileID: 72023951}
   - {fileID: 1070483104}
   gameObjectList:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 72023951}
+  - {fileID: 1070483104}
   - {fileID: 0}
   - {fileID: 0}
 --- !u!4 &309882133
