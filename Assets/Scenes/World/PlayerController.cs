@@ -50,6 +50,8 @@ public class PlayerController : MonoBehaviour
     private Movement movement;
     private bool canRotate = false;
 
+    private bool movementLock = false;
+
     public Quaternion TargetRotation { get; private set; }
 
     public bool Grounded()
@@ -79,6 +81,16 @@ public class PlayerController : MonoBehaviour
         forwardInput = Input.GetAxis(inputSetting.FORWARD_AXIS); // Interpolated.
         turnInput = Input.GetAxis(inputSetting.TURN_AXIS); // Interpolated.
         jumpInput = Input.GetAxisRaw(inputSetting.JUMP_AXIS); // Non-interpolated.
+
+        // Movement lock.
+        if (Input.GetKeyDown(KeyCode.Numlock) || Input.GetMouseButtonDown(3))
+        {
+            movementLock = !movementLock;
+        }
+        if (forwardInput < 0 || (Input.GetMouseButton(0) && Input.GetMouseButton(1)))
+        {
+            movementLock = false;
+        }
     }
 
     private void Update()
@@ -106,7 +118,7 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        if ((Input.GetMouseButton(0) && Input.GetMouseButton(1)))
+        if ((Input.GetMouseButton(0) && Input.GetMouseButton(1)) || movementLock)
         {
             velocity.z = moveSetting.forwardVel * forwardInputByMouse;
             if (Input.GetKey(KeyCode.LeftShift))

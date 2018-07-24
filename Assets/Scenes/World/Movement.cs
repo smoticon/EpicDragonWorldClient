@@ -15,6 +15,7 @@ public class Movement : MonoBehaviour
     private float rotation;
     private int lastMousePositionX = 0;
     private int lastMousePositionY = 0;
+    private bool movementLock = false;
 
     public bool canMove = true;
 
@@ -51,14 +52,24 @@ public class Movement : MonoBehaviour
         rotation *= Time.deltaTime;
 
         // Mouse buttons.
-        bool bothMouseBtn = (Input.GetMouseButton(0) && Input.GetMouseButton(1));
-        bool leftMouseBtn = (Input.GetMouseButton(1));
-        bool rightMouseBtn = (Input.GetMouseButton(0));
+        bool bothMouseBtn = Input.GetMouseButton(0) && Input.GetMouseButton(1);
+        bool leftMouseBtn = Input.GetMouseButton(1);
+        bool rightMouseBtn = Input.GetMouseButton(0);
 
         float mouseX = Input.GetAxis("Mouse X");
 
+        // Movement lock.
+        if (Input.GetKeyDown(KeyCode.Numlock) || Input.GetMouseButtonDown(3))
+        {
+            movementLock = !movementLock;
+        }
+        if (translation < 0 || bothMouseBtn)
+        {
+            movementLock = false;
+        }
+
         // Running, walking, forward jump.
-        if (translation > 0 || bothMouseBtn)
+        if (translation > 0 || bothMouseBtn || movementLock)
         {
             // Forward.
             if (Input.GetKey(KeyCode.LeftShift))
