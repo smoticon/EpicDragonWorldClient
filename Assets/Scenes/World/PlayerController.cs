@@ -135,7 +135,6 @@ public class PlayerController : MonoBehaviour
     private void Turn()
     {
         // Check if the mouse buttons are clicked, and assign it to boolean var.
-        bool bothMouseBtn = (Input.GetMouseButton(0) && Input.GetMouseButton(1));
         bool leftMouseBtn = (Input.GetMouseButton(1));
         bool rightMouseBtn = (Input.GetMouseButton(0));
 
