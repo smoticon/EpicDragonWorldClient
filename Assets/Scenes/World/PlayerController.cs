@@ -54,6 +54,10 @@ public class PlayerController : MonoBehaviour
 
     public Quaternion TargetRotation { get; private set; }
 
+    // Footstep sounds.
+    public AudioSource FootstepAudioSource;
+    public AudioClip[] FootstepSounds;
+
     public bool Grounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, moveSetting.distToGrounded, moveSetting.ground);
@@ -105,6 +109,12 @@ public class PlayerController : MonoBehaviour
         Jump();
 
         rBody.velocity = transform.TransformDirection(velocity);
+
+        // Footstep sounds.
+        if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && Grounded())
+        {
+            FootstepAudioSource.PlayOneShot(FootstepSounds[0], 1f);
+        }
 
         // Send position to server.
         if (oldX != transform.position.x || oldY != transform.position.y || oldZ != transform.position.z)

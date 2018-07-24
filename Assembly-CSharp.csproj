@@ -106,6 +106,7 @@
     <None Include="Assets\Resources\Effects\Water\Water4\Shaders\FXWater4Simple.shader" />
     <None Include="Assets\Resources\Audio\Music\_Readme.txt" />
     <None Include="Assets\Resources\Cursor\_Readme.txt" />
+    <None Include="Assets\Resources\Audio\Sounds\_Readme.txt" />
     <None Include="Assets\Resources\Effects\Water\Water\Shaders\FXWaterPro.shader" />
     <None Include="Assets\Resources\Fonts\_Readme.txt" />
     <None Include="Assets\Resources\Effects\Water\Water4\Shaders\WaterInclude.cginc" />
