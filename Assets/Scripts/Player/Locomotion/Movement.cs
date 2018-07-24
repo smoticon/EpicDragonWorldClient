@@ -92,7 +92,7 @@ public class Movement : MonoBehaviour
             }
         }
         // Walking back.
-        else if (translation < 0 && !leftMouseBtn)
+        else if (translation < 0)
         {
             anim.SetBool("IsWalkingBackward", true);
             anim.SetBool("IsWalkingForward", false);

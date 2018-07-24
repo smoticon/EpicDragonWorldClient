@@ -157,8 +157,8 @@ public class PlayerController : MonoBehaviour
     private void Turn()
     {
         // Check if the mouse buttons are clicked, and assign it to boolean var.
-        bool leftMouseBtn = (Input.GetMouseButton(1));
-        bool rightMouseBtn = (Input.GetMouseButton(0));
+        bool leftMouseBtn = Input.GetMouseButton(1);
+        bool rightMouseBtn = Input.GetMouseButton(0);
 
         // Mouse x axis, to rotate the player while holding mouse buttons.
         float mouseX = Input.GetAxis("Mouse X") * 3;
