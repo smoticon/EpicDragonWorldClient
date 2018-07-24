@@ -7,7 +7,7 @@ public class MouseCamera : MonoBehaviour
 {
     public float mouseSensitivity = 100.0f;
     public float clampAngle = 80.0f;
-    public bool mouseAcive;
+    public bool mouseActive;
 
     private float rotY = 0.0f; // Rotation around the up/y axis.
     private float rotX = 0.0f; // Rotation around the right/x axis.
@@ -17,12 +17,12 @@ public class MouseCamera : MonoBehaviour
         Vector3 rot = transform.localRotation.eulerAngles;
         rotY = rot.y;
         rotX = rot.x;
-        mouseAcive = true;
+        mouseActive = true;
     }
 
     void Update()
     {
-        if (mouseAcive && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))
+        if (mouseActive && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))
         {
             float mouseX = Input.GetAxis("Mouse X");
             float mouseY = -Input.GetAxis("Mouse Y");
@@ -39,11 +39,11 @@ public class MouseCamera : MonoBehaviour
 
     public void DeActiveMouse()
     {
-        mouseAcive = false;
+        mouseActive = false;
     }
 
     public void ActiveMouse()
     {
-        mouseAcive = true;
+        mouseActive = true;
     }
 }

@@ -170,13 +170,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (forwardInput < 0) // When walk back rotation will be in the opposite direction.
                 {
-                    transform.Rotate(transform.rotation.x,
-                    transform.rotation.y - xRotaion * Time.deltaTime * 170, transform.rotation.z);
+                    transform.Rotate(transform.rotation.x, transform.rotation.y - xRotaion * Time.deltaTime * 170, transform.rotation.z);
                 }
                 else
                 {
-                    transform.Rotate(transform.rotation.x,
-                    transform.rotation.y + xRotaion * Time.deltaTime * 170, transform.rotation.z);
+                    transform.Rotate(transform.rotation.x, transform.rotation.y + xRotaion * Time.deltaTime * 170, transform.rotation.z);
                 }
             }
         }

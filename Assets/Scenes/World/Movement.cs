@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Runtime.InteropServices;
 
 /**
  * @author Abdallah Azzami
@@ -12,6 +13,8 @@ public class Movement : MonoBehaviour
     private PlayerController playerController;
     private float translation;
     private float rotation;
+    private int lastMousePositionX = 0;
+    private int lastMousePositionY = 0;
 
     public bool canMove = true;
 
@@ -110,13 +113,26 @@ public class Movement : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
+#if UNITY_STANDALONE_WIN
+            Win32Cursor.POINT point = new Win32Cursor.POINT();
+            Win32Cursor.GetCursorPos(out point);
+            lastMousePositionX = point.X;
+            lastMousePositionY = point.Y;
+#endif
             Cursor.visible = false;
         }
         else if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
         {
+#if UNITY_STANDALONE_WIN
+            if (!Cursor.visible)
+            {
+                Win32Cursor.SetCursorPos(lastMousePositionX, lastMousePositionY);
+            }
+#endif
             Cursor.visible = true;
         }
 
+        // TODO: Move to menu.
         if (Input.GetKey("escape"))
         {
             Application.Quit();
@@ -173,3 +189,29 @@ public class Movement : MonoBehaviour
         anim.SetBool("IsRunning", false);
     }
 }
+
+// Windows only fix for locking mouse cursor position, since Unity does not support setting cursor position.
+#if UNITY_STANDALONE_WIN
+public class Win32Cursor
+{
+    [DllImport("User32.Dll")]
+    public static extern long SetCursorPos(int x, int y);
+
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool GetCursorPos(out POINT lpPoint);
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct POINT
+    {
+        public int X;
+        public int Y;
+
+        public POINT(int x, int y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
+    }
+}
+#endif
