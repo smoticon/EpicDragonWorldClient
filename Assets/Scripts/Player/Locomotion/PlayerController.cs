@@ -33,7 +33,6 @@ public class PlayerController : MonoBehaviour
     public MoveSettings moveSetting = new MoveSettings();
     public PhysSettings physSetting = new PhysSettings();
     public InputSettings inputSetting = new InputSettings();
-    public GameObject objectTarget;
 
     Vector3 velocity = Vector3.zero;
     private Rigidbody rBody;
@@ -47,12 +46,10 @@ public class PlayerController : MonoBehaviour
     private float oldX = 0;
     private float oldY = 0;
     private float oldZ = 0;
-    private Movement movement;
-    private bool canRotate = false;
+
+    private AnimationController animationsController;
 
     private bool movementLock = false;
-
-    public Quaternion TargetRotation { get; private set; }
 
     // Footstep sounds.
     public AudioSource FootstepAudioSource;
@@ -65,8 +62,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        movement = GetComponent<Movement>();
-        TargetRotation = transform.rotation;
+        animationsController = GetComponent<AnimationController>();
         if (GetComponent<Rigidbody>())
         {
             rBody = GetComponent<Rigidbody>();
@@ -111,7 +107,7 @@ public class PlayerController : MonoBehaviour
         rBody.velocity = transform.TransformDirection(velocity);
 
         // Footstep sounds.
-        if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && Grounded())
+        if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && forwardInput > 0 && Grounded())
         {
             FootstepAudioSource.PlayOneShot(FootstepSounds[0], 1f);
         }
@@ -167,24 +163,20 @@ public class PlayerController : MonoBehaviour
         {
             if (forwardInput < 0)
             {
-                TargetRotation *= Quaternion.AngleAxis(moveSetting.rotateVel * -turnInput * Time.deltaTime, Vector3.up);
+                transform.rotation *= Quaternion.AngleAxis(moveSetting.rotateVel * -turnInput * Time.deltaTime, Vector3.up);
             }
             else
             {
-                TargetRotation *= Quaternion.AngleAxis(moveSetting.rotateVel * turnInput * Time.deltaTime, Vector3.up);
+                transform.rotation *= Quaternion.AngleAxis(moveSetting.rotateVel * turnInput * Time.deltaTime, Vector3.up);
             }
         }
-        else if (leftMouseBtn || rightMouseBtn)
+        else if (leftMouseBtn)
         {
-            TargetRotation *= Quaternion.AngleAxis(moveSetting.rotateVel * mouseX * Time.deltaTime, Vector3.up);
+            transform.rotation *= Quaternion.AngleAxis(moveSetting.rotateVel * mouseX * Time.deltaTime, Vector3.up);
         }
 
-        ChangeTarget();
-
-        if ((rightMouseBtn && !leftMouseBtn) || canRotate)
+        if (rightMouseBtn && !leftMouseBtn)
         {
-            objectTarget.transform.rotation = TargetRotation;
-
             // Rotation while walking and holding the right mouse button.
             float xRotaion = Input.GetAxis("Horizontal");
             float yRotaion = Input.GetAxis("Vertical");
@@ -199,22 +191,6 @@ public class PlayerController : MonoBehaviour
                     transform.Rotate(transform.rotation.x, transform.rotation.y + xRotaion * Time.deltaTime * 170, transform.rotation.z);
                 }
             }
-        }
-        else
-        {
-            transform.rotation = TargetRotation;
-        }
-    }
-
-    private void ChangeTarget()
-    {
-        if (Input.GetMouseButtonUp(0))
-        {
-            canRotate = true;
-        }
-        else if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
-        {
-            canRotate = false;
         }
     }
 
@@ -243,13 +219,13 @@ public class PlayerController : MonoBehaviour
         if (jumpDelay >= 0.13f && velocity.z <= 3.5f)
         {
             velocity.y = moveSetting.jumpVel;
-            movement.JumpAnimation();
+            animationsController.JumpAnimation();
             jumpDelay = 0;
         }
         else if (jumpDelay >= 0.15f && velocity.z > 3.5f)
         {
             velocity.y = moveSetting.jumpVel;
-            movement.FarJumpAnimation();
+            animationsController.FarJumpAnimation();
             jumpDelay = 0;
         }
     }

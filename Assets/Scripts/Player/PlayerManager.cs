@@ -17,7 +17,7 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector]
     public CharacterDataHolder selectedCharacterData;
 
-    void Start ()
+    void Start()
     {
         instance = this;
     }

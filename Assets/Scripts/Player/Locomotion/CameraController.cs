@@ -1,123 +1,140 @@
 ﻿using UnityEngine;
 
 /**
- * @author Pantelis Andrianakis, Abdallah Azzami
+ * @author Paintbrush
  */
 public class CameraController : MonoBehaviour
 {
-    public Transform[] target;
-    public float lookSmooth = 0.09f;
-    public Vector3 offsetFromTarget = new Vector3(0, 6, -8);
-    public float xTilt = 10;
+    public Transform target;
 
-    private Vector3 destination = Vector3.zero;
-    private PlayerController charControler;
-    private bool canRotate = false;
-    private Transform mainTarget;
+    public float targetHeight = 1.7f;
+    public float distance = 5.0f;
+    public float offsetFromWall = 0.1f;
 
-    private void Start()
+    public float maxDistance = 20;
+    public float minDistance = .6f;
+    public float speedDistance = 5;
+
+    public float xSpeed = 200.0f;
+    public float ySpeed = 200.0f;
+
+    public int yMinLimit = -40;
+    public int yMaxLimit = 80;
+
+    public int zoomRate = 40;
+
+    public float rotationDampening = 3.0f;
+    public float zoomDampening = 5.0f;
+
+    public LayerMask collisionLayers = -1;
+
+    private float xDeg = 0.0f;
+    private float yDeg = 0.0f;
+    private float currentDistance;
+    private float desiredDistance;
+    private float correctedDistance;
+
+    void Start()
     {
-        SetCameraTarget(target[0]);
-        mainTarget = target[0]; // The player is the main target for the camera.
-    }
+        Vector3 angles = transform.eulerAngles;
+        xDeg = angles.x;
+        yDeg = angles.y;
 
-    // Can be used to set a target for the camera to look at.
-    public void SetCameraTarget(Transform target)
-    {
-        if (target != null)
+        currentDistance = distance;
+        desiredDistance = distance;
+        correctedDistance = distance;
+
+        // Make the rigid body not change rotation.
+        if (gameObject.GetComponent<Rigidbody>())
         {
-            if (target.GetComponent<PlayerController>())
-            {
-                charControler = target.GetComponent<PlayerController>();
-            }
-            else
-            {
-                Debug.LogError("The camera's target needs a character controller.");
-            }
-        }
-        else
-        {
-            Debug.LogError("Your camera needs a target.");
-        }
-    }
-
-    private void LateUpdate()
-    {
-        SelectTarget();
-        // Moving.
-        MoveToTarget();
-        // Rotating.
-        LookAtTarget();
-    }
-
-    private void MoveToTarget()
-    {
-        MouseWheelToZoom();
-
-        destination = charControler.TargetRotation * offsetFromTarget;
-        destination += mainTarget.position;
-        transform.position = destination;
-    }
-
-    private void LookAtTarget()
-    {
-        // Follow camera effect.
-        // float eulerYAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, target.eulerAngles.y, ref rotateVel, lookSmooth);
-        // transform.rotation = Quaternion.Euler(transform.eulerAngles.x, eulerYAngle, 0);
-        // transform.LookAt(mainTarget);
-
-        transform.rotation = Quaternion.Euler(transform.eulerAngles.x, mainTarget.eulerAngles.y, 0);
-    }
-
-    void SelectTarget()
-    {
-        target[1].position = target[0].transform.position;
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            canRotate = true;
-        }
-        else if (Input.GetMouseButtonDown(1) || Input.GetMouseButtonUp(1))
-        {
-            canRotate = false;
-        }
-
-        if ((Input.GetMouseButton(0) && !Input.GetMouseButton(1)) || canRotate)
-        {
-            mainTarget = target[1]; // Object target is the main taeget for the camera.
-        }
-        else
-        {
-            mainTarget = target[0];  // The player is the main target for the camera.
+            gameObject.GetComponent<Rigidbody>().freezeRotation = true;
         }
     }
 
-    void MouseWheelToZoom()
+    /**
+     * Camera logic on LateUpdate to only update after all character movement logic has been handled.
+     */
+    void LateUpdate()
     {
-        float zoom = Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * 150;
-        if (offsetFromTarget.z <= -1 && offsetFromTarget.z >= -6.5f)
+        Vector3 vTargetOffset;
+
+        // Don't do anything if target is not defined.
+        if (!target)
         {
-            offsetFromTarget.z += zoom;
-            if (offsetFromTarget.z >= -1)
+            return;
+        }
+
+        // If either mouse buttons are down, let the mouse govern camera position.
+        if (GUIUtility.hotControl == 0)
+        {
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
             {
-                offsetFromTarget.z = -1;
+                xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+                yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
             }
-            else if (offsetFromTarget.z <= -6.5f)
+            // Otherwise, ease behind the target if any of the directional keys are pressed.
+            else if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0)
             {
-                offsetFromTarget.z = -6.5f;
+                float targetRotationAngle = target.eulerAngles.y;
+                float currentRotationAngle = transform.eulerAngles.y;
+                xDeg = Mathf.LerpAngle(currentRotationAngle, targetRotationAngle, rotationDampening * Time.deltaTime);
             }
         }
-        if (offsetFromTarget.y <= 2.64f && offsetFromTarget.y >= 1.5f)
+
+
+        // Calculate the desired distance.
+        desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance) * speedDistance;
+        desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
+
+        yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);
+
+        // Det camera rotation.
+        Quaternion rotation = Quaternion.Euler(yDeg, xDeg, 0);
+        correctedDistance = desiredDistance;
+
+        // Calculate desired camera position.
+        vTargetOffset = new Vector3(0, -targetHeight, 0);
+        Vector3 position = target.position - (rotation * Vector3.forward * desiredDistance + vTargetOffset);
+
+        // Check for collision using the true target's desired registration point as set by user using height.
+        RaycastHit collisionHit;
+        Vector3 trueTargetPosition = new Vector3(target.position.x, target.position.y, target.position.z) - vTargetOffset;
+
+        // If there was a collision, correct the camera position and calculate the corrected distance.
+        bool isCorrected = false;
+        if (Physics.Linecast(trueTargetPosition, position, out collisionHit, collisionLayers.value))
         {
-            offsetFromTarget.y += -zoom / 5;
-            if (offsetFromTarget.y >= 2.64f)
-            {
-                offsetFromTarget.y = 2.64f;
-            }
-            else if (offsetFromTarget.y <= 1.5f)
-            {
-                offsetFromTarget.y = 1.5f;
-            }
+            // Calculate the distance from the original estimated position to the collision location,
+            // subtracting out a safety "offset" distance from the object we hit.  The offset will help
+            // keep the camera from being right on top of the surface we hit, which usually shows up as
+            // the surface geometry getting partially clipped by the camera's front clipping plane.
+            correctedDistance = Vector3.Distance(trueTargetPosition, collisionHit.point) - offsetFromWall;
+            isCorrected = true;
         }
+
+        // For smoothing, lerp distance only if either distance wasn't corrected, or correctedDistance is more than currentDistance.
+        currentDistance = !isCorrected || correctedDistance > currentDistance ? Mathf.Lerp(currentDistance, correctedDistance, Time.deltaTime * zoomDampening) : correctedDistance;
+
+        // Keep within legal limits.
+        currentDistance = Mathf.Clamp(currentDistance, minDistance, maxDistance);
+
+        // Recalculate position based on the new currentDistance.
+        position = target.position - (rotation * Vector3.forward * currentDistance + vTargetOffset);
+
+        transform.rotation = rotation;
+        transform.position = position;
+    }
+
+    private static float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360)
+        {
+            angle += 360;
+        }
+        if (angle > 360)
+        {
+            angle -= 360;
+        }
+        return Mathf.Clamp(angle, min, max);
     }
 }

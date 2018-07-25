@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 /**
  * @author Abdallah Azzami
  */
-public class Movement : MonoBehaviour
+public class AnimationController : MonoBehaviour
 {
     [HideInInspector]
     public Animator anim;

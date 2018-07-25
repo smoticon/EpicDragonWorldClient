@@ -12,7 +12,6 @@ public class WorldManager : MonoBehaviour
     public GameObject playerFemale;
     public GameObject cameraMale;
     public GameObject cameraFemale;
-    public GameObject cameraTarget;
 
     [HideInInspector]
     public static WorldManager instance;
@@ -51,7 +50,6 @@ public class WorldManager : MonoBehaviour
 
         // Set position.
         playerCharacter.transform.position = new Vector3(PlayerManager.instance.selectedCharacterData.GetX(), PlayerManager.instance.selectedCharacterData.GetY(), PlayerManager.instance.selectedCharacterData.GetZ());
-        cameraTarget.transform.position = playerCharacter.transform.position; // TODO: Make a function to set acting player position with target object.
 
         // Request world info from server.
         NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
