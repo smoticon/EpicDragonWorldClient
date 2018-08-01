@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
         rBody.velocity = transform.TransformDirection(velocity);
 
         // Footstep sounds.
-        if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && forwardInput > 0 && Grounded())
+        if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && (forwardInput > 0 || movementLock) && Grounded())
         {
             FootstepAudioSource.PlayOneShot(FootstepSounds[0], 1f);
         }
