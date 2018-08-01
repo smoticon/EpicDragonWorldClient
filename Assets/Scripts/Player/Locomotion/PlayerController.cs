@@ -113,7 +113,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Send position to server.
-        if (oldX != transform.position.x || oldY != transform.position.y || oldZ != transform.position.z)
+        if (NetworkManager.instance != null && (oldX != transform.position.x || oldY != transform.position.y || oldZ != transform.position.z))
         {
             NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z));
             oldX = transform.position.x;

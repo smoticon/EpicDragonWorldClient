@@ -22,40 +22,53 @@ public class WorldManager : MonoBehaviour
 
     private void Start()
     {
-        // Return if account name is empty.
-        if (PlayerManager.instance == null || PlayerManager.instance.accountName == null)
+        if (NetworkManager.instance == null) // Offline mode.
         {
-            return; // Return to login?
-        }
-
-        // Set instance.
-        instance = this;
-
-        // Change music.
-        MusicManager.instance.PlayMusic(MusicManager.instance.EnterWorld);
-
-        // Set player model.
-        if (PlayerManager.instance.selectedCharacterData.GetClassId() == 0)
-        {
+            // Set player model to male.
             playerMale.SetActive(true);
             cameraMale.SetActive(true);
             playerCharacter = playerMale;
+
+            // Set position.
+            playerCharacter.transform.position = new Vector3(9945.9f, 9.2f, 10534.9f); // Spawn location.
         }
-        if (PlayerManager.instance.selectedCharacterData.GetClassId() == 1)
+        else // Online mode.
         {
-            playerFemale.SetActive(true);
-            cameraFemale.SetActive(true);
-            playerCharacter = playerFemale;
+            // Return if account name is empty.
+            if (PlayerManager.instance == null || PlayerManager.instance.accountName == null)
+            {
+                return; // Return to login?
+            }
+
+            // Set instance.
+            instance = this;
+
+            // Change music.
+            MusicManager.instance.PlayMusic(MusicManager.instance.EnterWorld);
+
+            // Set player model.
+            if (PlayerManager.instance.selectedCharacterData.GetClassId() == 0) // Male.
+            {
+                playerMale.SetActive(true);
+                cameraMale.SetActive(true);
+                playerCharacter = playerMale;
+            }
+            if (PlayerManager.instance.selectedCharacterData.GetClassId() == 1) // Female.
+            {
+                playerFemale.SetActive(true);
+                cameraFemale.SetActive(true);
+                playerCharacter = playerFemale;
+            }
+
+            // Set position.
+            playerCharacter.transform.position = new Vector3(PlayerManager.instance.selectedCharacterData.GetX(), PlayerManager.instance.selectedCharacterData.GetY(), PlayerManager.instance.selectedCharacterData.GetZ());
+
+            // Request world info from server.
+            NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
+
+            // Object distance forget task.
+            StartCoroutine(DistanceCheck());
         }
-
-        // Set position.
-        playerCharacter.transform.position = new Vector3(PlayerManager.instance.selectedCharacterData.GetX(), PlayerManager.instance.selectedCharacterData.GetY(), PlayerManager.instance.selectedCharacterData.GetZ());
-
-        // Request world info from server.
-        NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
-
-        // Object distance forget task.
-        StartCoroutine(DistanceCheck());
     }
 
     public void UpdateObject(long objectId, int classId, float posX, float posY, float posZ, int posHeading)
