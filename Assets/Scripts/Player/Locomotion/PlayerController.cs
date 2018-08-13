@@ -174,24 +174,6 @@ public class PlayerController : MonoBehaviour
         {
             transform.rotation *= Quaternion.AngleAxis(moveSetting.rotateVel * mouseX * Time.deltaTime, Vector3.up);
         }
-
-        if (rightMouseBtn && !leftMouseBtn)
-        {
-            // Rotation while walking and holding the right mouse button.
-            float xRotaion = Input.GetAxis("Horizontal");
-            float yRotaion = Input.GetAxis("Vertical");
-            if (xRotaion != 0 && yRotaion != 0)
-            {
-                if (forwardInput < 0) // When walk back rotation will be in the opposite direction.
-                {
-                    transform.Rotate(transform.rotation.x, transform.rotation.y - xRotaion * Time.deltaTime * 170, transform.rotation.z);
-                }
-                else
-                {
-                    transform.Rotate(transform.rotation.x, transform.rotation.y + xRotaion * Time.deltaTime * 170, transform.rotation.z);
-                }
-            }
-        }
     }
 
     private void Jump()
