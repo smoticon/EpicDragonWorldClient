@@ -8,17 +8,17 @@ public class PlayerController : MonoBehaviour
     [System.Serializable]
     public class MoveSettings
     {
-        public float forwardVel = 12;
+        public float forwardVel = 7;
         public float rotateVel = 100;
-        public float jumpVel = 25;
-        public float distToGrounded = 0.1f;
+        public float jumpVel = 17;
+        public float distToGrounded = 0.05f;
         public LayerMask ground;
     }
 
     [System.Serializable]
     public class PhysSettings
     {
-        public float downAccel = 0.75f;
+        public float downAccel = 1f;
     }
 
     [System.Serializable]
