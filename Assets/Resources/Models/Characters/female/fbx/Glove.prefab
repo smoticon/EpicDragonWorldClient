@@ -9,17 +9,17 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1035758556881176}
+  m_RootGameObject: {fileID: 1376499855029002}
   m_IsPrefabAsset: 1
---- !u!1 &1035758556881176
+--- !u!1 &1376499855029002
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4848165536546612}
-  - component: {fileID: 137914848342613398}
+  - component: {fileID: 4925174539890686}
+  - component: {fileID: 137341699927014988}
   m_Layer: 0
   m_Name: Glove
   m_TagString: Untagged
@@ -27,12 +27,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4848165536546612
+--- !u!4 &4925174539890686
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1035758556881176}
+  m_GameObject: {fileID: 1376499855029002}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -40,12 +40,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!137 &137914848342613398
+--- !u!137 &137341699927014988
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1035758556881176}
+  m_GameObject: {fileID: 1376499855029002}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -55,7 +55,7 @@ SkinnedMeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: faff723f1cf30a84eaf081f62862640f, type: 2}
+  - {fileID: 2100000, guid: b3160f7d4e9f5ec4fb850708ad89d0bc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,7 +79,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 4300018, guid: 39a4d894beaa10a4b946d4baf3e7e3a2, type: 3}
+  m_Mesh: {fileID: 4300018, guid: 08eb319a3c045494faaab23b929e2f77, type: 3}
   m_Bones:
   - {fileID: 0}
   - {fileID: 0}
@@ -101,6 +101,6 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
   m_AABB:
-    m_Center: {x: 0.24002728, y: -0.30915877, z: -0.053919815}
-    m_Extent: {x: 0.26147738, y: 0.3425416, z: 0.25707087}
+    m_Center: {x: 0.13611296, y: -0.41991574, z: 0.06343905}
+    m_Extent: {x: 0.3304263, y: 0.27804852, z: 0.11706499}
   m_DirtyAABB: 0

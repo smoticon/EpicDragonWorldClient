@@ -8,8 +8,8 @@ public class AnimationController : MonoBehaviour
 {
     [HideInInspector]
     public Animator anim;
-    public float movementSpeed;
-    public float rotationSpeed;
+    public float movementSpeed = 0.001f;
+    public float rotationSpeed = 0.001f;
     private PlayerController playerController;
     private float translation;
     private float rotation;

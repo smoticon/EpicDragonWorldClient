@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
         public float rotateVel = 100;
         public float jumpVel = 17;
         public float distToGrounded = 0.05f;
-        public LayerMask ground;
+        public LayerMask ground; // = LayerMask.NameToLayer("Everything")
     }
 
     [System.Serializable]
