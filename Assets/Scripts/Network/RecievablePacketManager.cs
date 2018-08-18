@@ -42,6 +42,10 @@ public class RecievablePacketManager
             case 9:
                 MoveToLocation.notify(packet);
                 break;
+
+            case 10:
+                ChatResult.notify(packet);
+                break;
         }
     }
 }

@@ -79,6 +79,7 @@
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterCreationResult.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterDeletionResult.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\CharacterSelectionInfoResult.cs" />
+    <Compile Include="Assets\Scripts\Network\ReceivablePackets\ChatResult.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\DeleteObject.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\EnterWorldInformation.cs" />
     <Compile Include="Assets\Scripts\Network\ReceivablePackets\Logout.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSelectionInfoRequest.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSelectUpdate.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\CharacterSlotUpdate.cs" />
+    <Compile Include="Assets\Scripts\Network\SendablePackets\ChatRequest.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\EnterWorldRequest.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\LocationUpdate.cs" />
     <Compile Include="Assets\Scripts\Network\SendablePackets\ObjectInfoRequest.cs" />
