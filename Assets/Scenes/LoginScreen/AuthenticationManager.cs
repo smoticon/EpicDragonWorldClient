@@ -15,6 +15,8 @@ public class AuthenticationManager : MonoBehaviour
     public int status;
     private bool authenticating;
 
+    private static readonly double clientVersion = 1.0;
+
     private void Start()
     {
         instance = this;
@@ -75,7 +77,7 @@ public class AuthenticationManager : MonoBehaviour
         // Authenticate.
         messageText.text = "Authenticating...";
         status = -1;
-        NetworkManager.instance.ChannelSend(new AccountAuthenticationRequest(account, password));
+        NetworkManager.instance.ChannelSend(new AccountAuthenticationRequest(clientVersion, account, password));
 
         // Wait for result.
         authenticating = true;
@@ -110,6 +112,11 @@ public class AuthenticationManager : MonoBehaviour
 
                 case 5:
                     messageText.text = "Too many online players, please try again later.";
+                    authenticating = false;
+                    break;
+
+                case 6:
+                    messageText.text = "Incorrect client version.";
                     authenticating = false;
                     break;
 
