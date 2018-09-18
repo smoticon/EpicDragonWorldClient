@@ -16,13 +16,6 @@ public class CharacterDataHolder
     private long hp = 0;
     private long mp = 0;
     private byte accessLevel = 0;
-    private int itemHead = 0;
-    private int itemChest = 0;
-    private int itemGloves = 0;
-    private int itemLegs = 0;
-    private int itemBoots = 0;
-    private int itemRightHand = 0;
-    private int itemLeftHand = 0;
 
     public string GetName()
     {
@@ -152,75 +145,5 @@ public class CharacterDataHolder
     public void SetAccessLevel(byte accessLevel)
     {
         this.accessLevel = accessLevel;
-    }
-
-    public int GetItemHead()
-    {
-        return itemHead;
-    }
-
-    public void SetItemHead(int itemHead)
-    {
-        this.itemHead = itemHead;
-    }
-
-    public int GetItemChest()
-    {
-        return itemChest;
-    }
-
-    public void SetItemChest(int itemChest)
-    {
-        this.itemChest = itemChest;
-    }
-
-    public int GetItemGloves()
-    {
-        return itemGloves;
-    }
-
-    public void SetItemGloves(int itemGloves)
-    {
-        this.itemGloves = itemGloves;
-    }
-
-    public int GetItemLegs()
-    {
-        return itemLegs;
-    }
-
-    public void SetItemLegs(int itemLegs)
-    {
-        this.itemLegs = itemLegs;
-    }
-
-    public int GetItemBoots()
-    {
-        return itemBoots;
-    }
-
-    public void SetItemBoots(int itemBoots)
-    {
-        this.itemBoots = itemBoots;
-    }
-
-    public int GetItemRightHand()
-    {
-        return itemRightHand;
-    }
-
-    public void SetItemRightHand(int itemRightHand)
-    {
-        this.itemRightHand = itemRightHand;
-    }
-
-    public int GetItemLeftHand()
-    {
-        return itemLeftHand;
-    }
-
-    public void SetItemLeftHand(int itemLeftHand)
-    {
-        this.itemLeftHand = itemLeftHand;
     }
 }

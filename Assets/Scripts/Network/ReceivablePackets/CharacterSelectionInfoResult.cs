@@ -28,13 +28,6 @@ public class CharacterSelectionInfoResult
             characterData.SetHp(packet.ReadLong());
             characterData.SetMp(packet.ReadLong());
             characterData.SetAccessLevel((byte)packet.ReadByte());
-            characterData.SetItemHead(packet.ReadInt());
-            characterData.SetItemChest(packet.ReadInt());
-            characterData.SetItemGloves(packet.ReadInt());
-            characterData.SetItemLegs(packet.ReadInt());
-            characterData.SetItemBoots(packet.ReadInt());
-            characterData.SetItemRightHand(packet.ReadInt());
-            characterData.SetItemLeftHand(packet.ReadInt());
             characterList.Add(characterData);
         }
 
