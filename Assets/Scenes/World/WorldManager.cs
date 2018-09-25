@@ -163,6 +163,7 @@ public class WorldManager : MonoBehaviour
         {
             if (gameObject.GetComponent<WorldObject>().objectId == objectId)
             {
+                gameObjects.Remove(gameObject);
                 DeleteObject(gameObject);
                 return;
             }
