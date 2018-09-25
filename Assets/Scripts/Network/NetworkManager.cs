@@ -147,4 +147,10 @@ public class NetworkManager : MonoBehaviour
         // return !(socket.Poll(1000, SelectMode.SelectRead) && socket.Available == 0);
         return socketConnected && socket != null && socket.Connected;
     }
+
+    // Dummy method to prevent console warning from UMA.
+    internal void StartHost()
+    {
+        throw new NotImplementedException();
+    }
 }

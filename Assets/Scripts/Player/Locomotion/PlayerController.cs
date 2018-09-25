@@ -8,10 +8,10 @@ public class PlayerController : MonoBehaviour
     [System.Serializable]
     public class MoveSettings
     {
-        public float forwardVel = 7;
+        public float forwardVel = 4;
         public float rotateVel = 100;
         public float jumpVel = 17;
-        public float distToGrounded = 0.05f;
+        public float distToGrounded = 2f;
         public LayerMask ground; // = LayerMask.NameToLayer("Everything")
     }
 
@@ -36,24 +36,31 @@ public class PlayerController : MonoBehaviour
 
     Vector3 velocity = Vector3.zero;
     private Rigidbody rBody;
-    private float forwardInput;
+    public float forwardInput;
     private float forwardInputByMouse;
 
     private float turnInput;
-    private float jumpInput;
+    public float jumpInput;
     private float jumpDelay;
 
     private float oldX = 0;
-    private float oldY = 0;
+    // private float oldY = 0;
     private float oldZ = 0;
+    private float oldYAngle = 0f;
 
-    private AnimationController animationsController;
+    public PL_MOVE_ANIM_STATE playerMoveState;
 
-    private bool movementLock = false;
+    public bool movementLock = false;
+    public bool sideWalking = false;
 
+    // Water settings.
+    public float waterHeight = 9.0f;
+    public bool isInsideWater = false;
+    public bool waterTouchState = false;
     // Footstep sounds.
     public AudioSource FootstepAudioSource;
     public AudioClip[] FootstepSounds;
+    public GameObject targetCamera;
 
     public bool Grounded()
     {
@@ -62,7 +69,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        animationsController = GetComponent<AnimationController>();
         if (GetComponent<Rigidbody>())
         {
             rBody = GetComponent<Rigidbody>();
@@ -91,6 +97,15 @@ public class PlayerController : MonoBehaviour
         {
             movementLock = false;
         }
+
+        if(Input.GetMouseButton(1) && turnInput != 0)
+        {
+            sideWalking = true;
+        }
+        else
+        {
+            sideWalking = false;
+        }
     }
 
     private void Update()
@@ -104,7 +119,27 @@ public class PlayerController : MonoBehaviour
         Run();
         Jump();
 
-        rBody.velocity = transform.TransformDirection(velocity);
+        if(isInsideWater)
+        {
+            if(targetCamera.transform.localRotation.eulerAngles.x > 0 && targetCamera.transform.localRotation.eulerAngles.x < 80f)
+            {
+                velocity.y = -0.5f;
+            }
+            else if((targetCamera.transform.localRotation.eulerAngles.x < 0 || targetCamera.transform.localRotation.eulerAngles.x > 80f) && transform.position.y < 8f)
+            {
+                velocity.y = 0.5f;
+            }
+            else
+            {
+                velocity.y = 0f;
+            }
+
+            rBody.velocity = transform.TransformDirection(velocity);
+        }
+        else
+        {
+            rBody.velocity = transform.TransformDirection(velocity);
+        }
 
         // Footstep sounds.
         if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && (forwardInput > 0 || movementLock) && Grounded())
@@ -113,12 +148,27 @@ public class PlayerController : MonoBehaviour
         }
 
         // Send position to server.
-        if (NetworkManager.instance != null && (oldX != transform.position.x || oldY != transform.position.y || oldZ != transform.position.z))
+        if(!isInsideWater)
         {
-            NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z));
-            oldX = transform.position.x;
-            oldY = transform.position.y;
-            oldZ = transform.position.z;
+            if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f) && Grounded())
+            {
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
+                oldX = transform.position.x;
+                // oldY = transform.position.y;
+                oldZ = transform.position.z;
+                oldYAngle = transform.localRotation.eulerAngles.y;
+            }
+        }
+        else
+        {
+            if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f))
+            {
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
+                oldX = transform.position.x;
+                // oldY = transform.position.y;
+                oldZ = transform.position.z;
+                oldYAngle = transform.localRotation.eulerAngles.y;
+            }
         }
     }
 
@@ -135,23 +185,85 @@ public class PlayerController : MonoBehaviour
             {
                 forwardInputByMouse += 1f;
             }
+            playerMoveState = PL_MOVE_ANIM_STATE.PL_W;
             velocity.z = moveSetting.forwardVel * forwardInputByMouse;
         }
         else if (Mathf.Abs(forwardInput) > inputSetting.inputDelay)
         {
             // Move.
-            velocity.z = moveSetting.forwardVel * forwardInput;
+            if (!sideWalking)
+            {
+                if (forwardInput < 0)
+                {
+                    playerMoveState = PL_MOVE_ANIM_STATE.PL_S;
+                    velocity.z = (moveSetting.forwardVel * 0.5f) * forwardInput;
+                }
+                else
+                {
+                    playerMoveState = PL_MOVE_ANIM_STATE.PL_W;
+                    velocity.z = moveSetting.forwardVel * forwardInput;
+                }
+
+            }
+            else if(sideWalking)
+            {
+                if (forwardInput < 0)
+                {
+                    if (turnInput > 0)
+                    {
+                        playerMoveState = PL_MOVE_ANIM_STATE.PL_DS;
+                    }
+                    else
+                    {
+                        playerMoveState = PL_MOVE_ANIM_STATE.PL_SA;
+                    }
+                    velocity.z = (moveSetting.forwardVel * 0.5f) * forwardInput;
+                    velocity.x = moveSetting.forwardVel * turnInput * 0.5f;
+                }
+                else
+                {
+                    if (turnInput > 0)
+                    {
+                        playerMoveState = PL_MOVE_ANIM_STATE.PL_WD;
+                    }
+                    else
+                    {
+                        playerMoveState = PL_MOVE_ANIM_STATE.PL_AW;
+                    }
+                    velocity.z = moveSetting.forwardVel * forwardInput;
+                    velocity.x = moveSetting.forwardVel * turnInput;
+                }
+            }
+        }
+        else if(Mathf.Abs(forwardInput) < inputSetting.inputDelay && sideWalking && !isInsideWater)
+        {
+            if(turnInput > 0)
+            {
+                playerMoveState = PL_MOVE_ANIM_STATE.PL_D;
+            }
+            else
+            {
+                playerMoveState = PL_MOVE_ANIM_STATE.PL_A;
+            }
+            velocity.x = moveSetting.forwardVel * turnInput;
         }
         else
         {
             // Zero velocity.
             velocity.z = 0;
+            velocity.x = 0;
+            playerMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
         }
         forwardInputByMouse = 0;
     }
 
     private void Turn()
     {
+        if(sideWalking)
+        {
+            return;
+        }
+
         // Check if the mouse buttons are clicked, and assign it to boolean var.
         bool leftMouseBtn = Input.GetMouseButton(1);
         bool rightMouseBtn = Input.GetMouseButton(0);
@@ -178,21 +290,47 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if ((jumpInput > 0 || Input.GetKey(KeyCode.Space)) && Grounded())
+        if ((jumpInput > 0 || Input.GetKey(KeyCode.Space)) && Grounded() && !gameObject.GetComponent<PlayerAnimationController>().isJump)
         {
             // Jump.
-            jumpDelay += Time.deltaTime;
-            DelayJump();
+            if(velocity.y == 0)
+            {
+                jumpDelay += Time.deltaTime;
+                DelayJump();
+                if (forwardInput != 0)
+                {
+                    if (NetworkManager.instance != null)
+                    {
+                        NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, 31, isInsideWater));
+                    }
+                    gameObject.GetComponent<PlayerAnimationController>().Jump(true);
+                    velocity.z = (moveSetting.forwardVel);
+                }
+                else
+                {
+                    if (NetworkManager.instance != null)
+                    {
+                        NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, 32, isInsideWater));
+                    }
+                    gameObject.GetComponent<PlayerAnimationController>().Jump(false);
+                }
+            }
         }
         else if (jumpInput == 0 && Grounded())
         {
-            // Zero out velocity.y
-            velocity.y = 0;
+            if (!isInsideWater)
+            {
+                // Zero out velocity.y
+                velocity.y = 0;
+            }
         }
         else
         {
             // Decrease velocity.y
-            velocity.y -= physSetting.downAccel;
+            if(!isInsideWater)
+            {
+                velocity.y -= physSetting.downAccel;
+            }
         }
     }
 
@@ -201,14 +339,79 @@ public class PlayerController : MonoBehaviour
         if (jumpDelay >= 0.13f && velocity.z <= 3.5f)
         {
             velocity.y = moveSetting.jumpVel;
-            animationsController.JumpAnimation();
             jumpDelay = 0;
         }
         else if (jumpDelay >= 0.15f && velocity.z > 3.5f)
         {
             velocity.y = moveSetting.jumpVel;
-            animationsController.FarJumpAnimation();
             jumpDelay = 0;
         }
     }
+
+    public int GetAnimState()
+    {
+        Animator anim = gameObject.GetComponent<Animator>();
+        if (anim == null)
+        {
+            return 0;
+        }
+        else
+        {
+            if (anim.GetBool("IsWalkingForward"))
+                return 22;
+
+            if (anim.GetBool("IsRunning"))
+                return 21;
+        }
+        return 0;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "water" && !isInsideWater)
+        {
+            Animator anim = gameObject.GetComponent<Animator>();
+            anim.SetBool("IsSwimming", true);
+            anim.Play("Swimming");
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            isInsideWater = true;
+            if (NetworkManager.instance != null)
+            {
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "water" && isInsideWater && gameObject.transform.position.y >= 8f)
+        {
+            isInsideWater = false;
+            if(NetworkManager.instance != null)
+            {
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
+            }
+
+            Animator anim = gameObject.GetComponent<Animator>();
+            anim.SetBool("IsSwimming", false);
+            anim.SetBool("IsSwimmingIdle", false);
+            gameObject.GetComponent<Rigidbody>().useGravity = true;
+        }
+    }
 }
+
+public enum PL_MOVE_ANIM_STATE
+{
+    PL_W = 21,
+    PL_S = 22,
+    PL_A = 23,
+    PL_D = 24,
+    PL_AW = 25,
+    PL_WD = 26,
+    PL_DS = 27,
+    PL_SA = 28,
+    PL_IDLE = 29,
+    PL_JUMP = 31,
+    PL_STAND_JUMP= 32
+};
+

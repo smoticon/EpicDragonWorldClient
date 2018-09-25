@@ -34,11 +34,17 @@ public class CameraController : MonoBehaviour
     private float desiredDistance;
     private float correctedDistance;
 
+    private Color normalColor;
+    private Color underwaterColor;
+    private bool posState = true;
     void Start()
     {
         Vector3 angles = transform.eulerAngles;
         xDeg = angles.x;
         yDeg = angles.y;
+
+        normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        underwaterColor = new Color(0.22f, 0.65f, 0.77f, 0.5f);
 
         currentDistance = distance;
         desiredDistance = distance;
@@ -51,17 +57,43 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public void SetCameraState(bool cmState)
+    {
+        if (posState == cmState)
+            return;
+        posState = cmState;
+        if(cmState)
+        {
+            RenderSettings.fogColor = normalColor;
+            RenderSettings.fogDensity = 0.01f;
+        }
+        else
+        {
+            RenderSettings.fogColor = underwaterColor;
+            RenderSettings.fogDensity = 0.1f;
+        }
+    }
+
     /**
      * Camera logic on LateUpdate to only update after all character movement logic has been handled.
      */
     void LateUpdate()
     {
         Vector3 vTargetOffset;
-
+        
         // Don't do anything if target is not defined.
         if (!target)
         {
             return;
+        }
+
+        if (target != null && target.GetComponent<PlayerController>() != null && target.GetComponent<PlayerController>().isInsideWater && this.transform.position.y < 9f)
+        {
+            SetCameraState(false);
+        }
+        else
+        {
+            SetCameraState(true);
         }
 
         // If either mouse buttons are down, let the mouse govern camera position.
