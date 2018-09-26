@@ -10,6 +10,9 @@ public class ChatResult
         string senderName = packet.ReadString();
         string message = packet.ReadString();
 
-        // TODO: ChatManager.manageChat(chatType, senderName, message);
+        // Send the message.
+        // TODO: Setting to show time.
+        // ChatBoxManager.instance.SendMessageToChat(DateTime.Now.ToString("HH:mm:ss tt") + " " + senderName + ": " + message, chatType);
+        ChatBoxManager.instance.SendMessageToChat(senderName + ": " + message, chatType);
     }
 }

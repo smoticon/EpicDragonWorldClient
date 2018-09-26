@@ -110,6 +110,11 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (ChatBoxManager.instance.isFocused)
+        {
+            return;
+        }
+
         GetInput();
         Turn();
     }
@@ -290,6 +295,11 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
+        if (ChatBoxManager.instance.isFocused)
+        {
+            return;
+        }
+
         if ((jumpInput > 0 || Input.GetKey(KeyCode.Space)) && Grounded() && !gameObject.GetComponent<PlayerAnimationController>().isJump)
         {
             // Jump.
@@ -358,10 +368,13 @@ public class PlayerController : MonoBehaviour
         else
         {
             if (anim.GetBool("IsWalkingForward"))
+            {
                 return 22;
-
+            }
             if (anim.GetBool("IsRunning"))
+            {
                 return 21;
+            }
         }
         return 0;
     }

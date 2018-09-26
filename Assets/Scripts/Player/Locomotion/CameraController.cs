@@ -37,7 +37,8 @@ public class CameraController : MonoBehaviour
     private Color normalColor;
     private Color underwaterColor;
     private bool posState = true;
-    void Start()
+
+    private void Start()
     {
         Vector3 angles = transform.eulerAngles;
         xDeg = angles.x;
@@ -60,7 +61,10 @@ public class CameraController : MonoBehaviour
     public void SetCameraState(bool cmState)
     {
         if (posState == cmState)
+        {
             return;
+        }
+
         posState = cmState;
         if(cmState)
         {

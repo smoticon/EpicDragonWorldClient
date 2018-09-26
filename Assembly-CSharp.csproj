@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scenes\LoginScreen\ButtonQuitGame.cs" />
     <Compile Include="Assets\Scenes\LoginScreen\LoginScreenManager.cs" />
     <Compile Include="Assets\Scenes\World\WorldManager.cs" />
+    <Compile Include="Assets\Scripts\Chat\ChatBoxManager.cs" />
     <Compile Include="Assets\Scripts\GameObjects\GameObjectManager.cs" />
     <Compile Include="Assets\Scripts\GameObjects\WorldObject.cs" />
     <Compile Include="Assets\Scripts\Holders\CharacterDataHolder.cs" />

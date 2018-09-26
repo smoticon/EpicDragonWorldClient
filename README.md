@@ -11,6 +11,7 @@ Unity3D/C# client that connects with Java/Netty server.
 - Character management.
 - Broadcast game object movement.
 - Support for UMA.
+- Chat and messaging.
 
 ### Necessary additional assets. (Put in assets folder)
 UMA: [http://www.mediafire.com/file/qmua80jtfs9m8wd/UMA.zip](http://www.mediafire.com/file/qmua80jtfs9m8wd/UMA.zip)
