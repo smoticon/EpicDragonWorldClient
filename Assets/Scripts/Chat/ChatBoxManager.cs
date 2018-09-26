@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using System.Collections;
 
 /**
  * @author Pantelis Andrianakis
@@ -13,6 +15,7 @@ public class ChatBoxManager : MonoBehaviour
     public GameObject scrollViewRightBar;
     public InputField inputField;
     public bool isFocused = false;
+    private string lastTell = "";
     private int maxMessages = 50;
     [SerializeField]
     private List<Message> messageList = new List<Message>();
@@ -31,6 +34,15 @@ public class ChatBoxManager : MonoBehaviour
                 if (NetworkManager.instance != null)
                 {
                     NetworkManager.instance.ChannelSend(new ChatRequest(inputField.text));
+                    string[] messageSplit = Regex.Replace(inputField.text, @"\s+", " ").Trim().Split(' ');
+                    if (messageSplit.Length > 2 && messageSplit[0].ToLower().Equals("/tell"))
+                    {
+                        lastTell = messageSplit[1];
+                    }
+                    else
+                    {
+                        lastTell = "";
+                    }
                 }
                 else
                 {
@@ -41,6 +53,11 @@ public class ChatBoxManager : MonoBehaviour
             else
             {
                 inputField.Select();
+                if (lastTell != "")
+                {
+                    inputField.text = "/tell " + lastTell + " ";
+                    StartCoroutine(MoveTextEnd_NextFrame());
+                }
             }
         }
 
@@ -54,6 +71,12 @@ public class ChatBoxManager : MonoBehaviour
             isFocused = false;
             scrollViewRightBar.SetActive(false);
         }
+    }
+
+    private IEnumerator MoveTextEnd_NextFrame()
+    {
+        yield return 0; // Skip the first frame in which this is called.
+        inputField.MoveTextEnd(false); // Do this during the next frame.
     }
 
     public void SendMessageToChat(string text, int type)
