@@ -94,6 +94,7 @@ public class CharacterCreationManager : MonoBehaviour
         if (name == "")
         {
             textMessage.text = "Please enter a name.";
+            EnableButtons();
             return;
         }
 
