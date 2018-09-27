@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Collections;
-using UnityEngine.EventSystems;
 
 /**
  * @author Pantelis Andrianakis
@@ -15,6 +14,9 @@ public class ChatBoxManager : MonoBehaviour
     public GameObject scrollViewContent;
     public GameObject scrollViewRightBar;
     public InputField inputField;
+    private Color32 colorSystem = new Color32(255, 110, 0, 255);
+    private Color32 colorNormal = new Color32(255, 255, 255, 255);
+    private Color32 colorMessage = new Color32(255, 0, 80, 255);
     public bool isFocused = false;
     private bool decayEnabled = true; // Use to enable or disable decay.
     private float decayTime = 0; // Time when decay will occur.
@@ -140,15 +142,15 @@ public class ChatBoxManager : MonoBehaviour
         switch (type)
         {
             case 0: // system
-                newMessage.textObject.color = Color.yellow;
+                newMessage.textObject.color = colorSystem;
                 break;
 
             case 1: // normal chat
-                newMessage.textObject.color = Color.white;
+                newMessage.textObject.color = colorNormal;
                 break;
 
             case 2: // personal message
-                newMessage.textObject.color = Color.magenta;
+                newMessage.textObject.color = colorMessage;
                 break;
         }
         messageList.Add(newMessage);
