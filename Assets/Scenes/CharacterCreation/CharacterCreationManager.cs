@@ -46,6 +46,14 @@ public class CharacterCreationManager : MonoBehaviour
         characterSelected = Instantiate(GameObjectManager.instance.playerModels[0], spawnLocation.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            OnClickCreateButton();
+        }
+    }
+
     private void OnClickButton1()
     {
         Destroy(characterSelected);
