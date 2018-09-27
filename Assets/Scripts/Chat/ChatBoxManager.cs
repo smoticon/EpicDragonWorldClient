@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 /**
  * @author Pantelis Andrianakis
@@ -15,6 +16,10 @@ public class ChatBoxManager : MonoBehaviour
     public GameObject scrollViewRightBar;
     public InputField inputField;
     public bool isFocused = false;
+    private bool decayEnabled = true; // Use to enable or disable decay.
+    private float decayTime = 0; // Time when decay will occur.
+    private float decayDelay = 5; // Time chat will be visible after message.
+    private float decayFadeDelay = 0.5f; // Time of fade transition.
     private string lastTell = "";
     private int maxMessages = 50;
     [SerializeField]
@@ -27,6 +32,8 @@ public class ChatBoxManager : MonoBehaviour
 
     private void Update()
     {
+        float time = Time.time;
+
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             if (inputField.text != "")
@@ -58,6 +65,10 @@ public class ChatBoxManager : MonoBehaviour
                     inputField.text = "/tell " + lastTell + " ";
                     StartCoroutine(MoveTextEnd_NextFrame());
                 }
+                if (decayEnabled && !IsVisible())
+                {
+                    StartCoroutine(FadeChat(0, 1)); // Show chat.
+                }
             }
         }
 
@@ -65,11 +76,18 @@ public class ChatBoxManager : MonoBehaviour
         {
             isFocused = true;
             scrollViewRightBar.SetActive(true);
+            decayTime = time + decayDelay;
         }
         else
         {
             isFocused = false;
             scrollViewRightBar.SetActive(false);
+
+            // Hide.
+            if (decayEnabled && IsVisible() && decayTime < time)
+            {
+                StartCoroutine(FadeChat(1, 0)); // Hide chat.
+            }
         }
     }
 
@@ -77,6 +95,34 @@ public class ChatBoxManager : MonoBehaviour
     {
         yield return 0; // Skip the first frame in which this is called.
         inputField.MoveTextEnd(false); // Do this during the next frame.
+    }
+
+    public IEnumerator FadeChat(float start, float end)
+    {
+        if (!(inputField.isFocused && end == 0))
+        {
+            float _timeStartedLerping = Time.time;
+            float timeSinceStarted = Time.time - _timeStartedLerping;
+            float percentageComplete = timeSinceStarted / decayFadeDelay;
+
+            while (true)
+            {
+                timeSinceStarted = Time.time - _timeStartedLerping;
+                percentageComplete = timeSinceStarted / decayFadeDelay;
+                float currentValue = Mathf.Lerp(start, end, percentageComplete);
+                inputField.GetComponentInParent<CanvasGroup>().alpha = currentValue;
+                if (percentageComplete >= 1)
+                {
+                    break;
+                }
+                yield return new WaitForFixedUpdate();
+            }
+        }
+    }
+
+    private bool IsVisible()
+    {
+        return inputField.GetComponentInParent<CanvasGroup>().alpha == 1;
     }
 
     public void SendMessageToChat(string text, int type)
@@ -106,6 +152,12 @@ public class ChatBoxManager : MonoBehaviour
                 break;
         }
         messageList.Add(newMessage);
+
+        if (decayEnabled && !IsVisible())
+        {
+            decayTime = Time.time + decayDelay; // Decay time delay is 5 seconds.
+            StartCoroutine(FadeChat(0, 1)); // Show chat.
+        }
     }
 }
 
