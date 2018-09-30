@@ -11,8 +11,7 @@ public class WorldObject : MonoBehaviour
     {
         public float forwardVel = 4;
         public float rotateVel = 100;
-        public float jumpVel = 17;
-        public float distToGrounded = 2f;
+        public float distToGrounded = 0.5f;
         public LayerMask ground; // = LayerMask.NameToLayer("Everything")
     }
     public long objectId;
@@ -489,7 +488,7 @@ public class WorldObject : MonoBehaviour
         isJump = false;
     }
 
-    public void PlayAnimation(Vector3 movePos, float angleY, int animId, int wState)
+    public void PlayAnimation(Vector3 movePos, float heading, int animId, int wState)
     {
         targetPos = movePos;
         if (isWater != wState)
@@ -504,15 +503,15 @@ public class WorldObject : MonoBehaviour
             }
         }
         isWater = wState;
-        if (Mathf.Abs(angleY - transform.localRotation.eulerAngles.y) > 3f)
+        if (Mathf.Abs(heading - transform.localRotation.eulerAngles.y) > 3f)
         {
             if (animState != PL_MOVE_ANIM_STATE.PL_W)
             {
-                Quaternion curAngle = transform.localRotation;
-                Vector3 curvAngle = curAngle.eulerAngles;
-                curvAngle.y = angleY;
-                curAngle.eulerAngles = curvAngle;
-                transform.localRotation = curAngle;
+                Quaternion curHeading = transform.localRotation;
+                Vector3 curvAngle = curHeading.eulerAngles;
+                curvAngle.y = heading;
+                curHeading.eulerAngles = curvAngle;
+                transform.localRotation = curHeading;
             }
         }
         if (wState > 0)
@@ -555,7 +554,7 @@ public class WorldObject : MonoBehaviour
 
     void FixedUpdate()
     {
-        if ((Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) > 0.1f) && !isJump)
+        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) > 0.1f)
         {
             if (animState == PL_MOVE_ANIM_STATE.PL_W)
             {
