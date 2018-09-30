@@ -6,14 +6,6 @@ using UnityEngine;
 */
 public class WorldObject : MonoBehaviour
 {
-    [System.Serializable]
-    public class MoveSettings
-    {
-        public float forwardVel = 4;
-        public float rotateVel = 100;
-        public float distToGrounded = 0.5f;
-        public LayerMask ground; // = LayerMask.NameToLayer("Everything")
-    }
     public long objectId;
     public Vector3 targetPos;
     public int curAnimState = 0;
@@ -22,9 +14,8 @@ public class WorldObject : MonoBehaviour
     public float vspeed = 3f;
     public bool isJump = false;
     int isWater = 0;
-    float jpDelayTime = 0.6f;
+    float jumpDelayTime = 0.7f;
     public bool isInsidewater = false;
-    public MoveSettings moveSetting = new MoveSettings();
     PL_MOVE_ANIM_STATE animState = PL_MOVE_ANIM_STATE.PL_IDLE;
 
     private void Start()
@@ -34,6 +25,34 @@ public class WorldObject : MonoBehaviour
             characAnimator = gameObject.GetComponent<Animator>();
         }
         targetPos = transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) > 0.1f)
+        {
+            if (animState == PL_MOVE_ANIM_STATE.PL_W)
+            {
+                transform.LookAt(targetPos);
+            }
+            Vector3 angle = transform.eulerAngles;
+            angle.x = 0;
+            angle.z = 0;
+            transform.eulerAngles = angle;
+            float step = vspeed * Time.deltaTime;
+            gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, targetPos, step));
+        }
+        else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) <= 0.1f && (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !characAnimator.GetBool("IsIdle")))
+        {
+            if (isWater > 0)
+            {
+                StopSwimming();
+            }
+            else if (!isJump)
+            {
+                StopMove();
+            }
+        }
     }
 
     public void SetSwimmingState(PL_MOVE_ANIM_STATE mState)
@@ -152,7 +171,6 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsLeftTurning", false);
                 characAnimator.SetBool("IsRunning", false);
                 characAnimator.SetBool("IsNE", false);
-
                 characAnimator.SetBool("IsSW", false);
                 characAnimator.SetBool("IsSE", false);
                 characAnimator.SetBool("IsE", false);
@@ -202,7 +220,6 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsW", false);
                 characAnimator.SetBool("IsSW", false);
                 characAnimator.SetBool("IsSE", false);
-
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
@@ -442,7 +459,7 @@ public class WorldObject : MonoBehaviour
         }
     }
 
-    public void StopMove()
+    private void StopMove()
     {
         if (characAnimator.GetBool("IsRunning"))
         {
@@ -467,17 +484,40 @@ public class WorldObject : MonoBehaviour
         characAnimator.SetBool("IsNW", false);
     }
 
-    IEnumerator StopJump()
+    private void StopSwimming()
+    {
+        characAnimator.SetBool("IsWalkingBackwards", false);
+        characAnimator.SetBool("IsIdle", false);
+        characAnimator.SetBool("IsStandingJump", false);
+        characAnimator.SetBool("IsFarJump", false);
+        characAnimator.SetBool("IsRightTurning", false);
+        characAnimator.SetBool("IsLeftTurning", false);
+        characAnimator.SetBool("IsRunning", false);
+        characAnimator.SetBool("IsNE", false);
+        characAnimator.SetBool("IsW", false);
+        characAnimator.SetBool("IsSW", false);
+        characAnimator.SetBool("IsSE", false);
+        characAnimator.SetBool("IsE", false);
+        characAnimator.SetBool("IsNW", false);
+        if (animState != PL_MOVE_ANIM_STATE.PL_IDLE || !characAnimator.GetBool("IsSwimmingIdle"))
+        {
+            characAnimator.Play("Treading Water");
+            characAnimator.SetBool("IsSwimmingIdle", true);
+            animState = PL_MOVE_ANIM_STATE.PL_IDLE;
+        }
+    }
+
+    private IEnumerator StopJump()
     {
         if (characAnimator.GetBool("IsStandingJump"))
         {
-            jpDelayTime = 0.7f;
+            jumpDelayTime = 0.7f;
         }
         else
         {
-            jpDelayTime = 0.5f;
+            jumpDelayTime = 0.5f;
         }
-        yield return new WaitForSeconds(jpDelayTime);
+        yield return new WaitForSeconds(jumpDelayTime);
         characAnimator.SetBool("IsWalkingBackwards", false);
         characAnimator.SetBool("IsStandingJump", false);
         characAnimator.SetBool("IsFarJump", false);
@@ -545,82 +585,5 @@ public class WorldObject : MonoBehaviour
                 }
             }
         }
-    }
-
-    public bool Grounded()
-    {
-        return Physics.Raycast(targetPos, Vector3.down, moveSetting.distToGrounded, moveSetting.ground);
-    }
-
-    void FixedUpdate()
-    {
-        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) > 0.1f)
-        {
-            if (animState == PL_MOVE_ANIM_STATE.PL_W)
-            {
-                transform.LookAt(targetPos);
-            }
-            Vector3 angle = transform.eulerAngles;
-            angle.x = 0;
-            angle.z = 0;
-            transform.eulerAngles = angle;
-            float step = vspeed * Time.deltaTime;
-            gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, targetPos, step));
-        }
-        else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) <= 0.1f && (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !characAnimator.GetBool("IsIdle")))
-        {
-            if (isWater > 0)
-            {
-                StopSwimming();
-            }
-            else
-            {
-                StopMove();
-            }
-        }
-    }
-
-    void StopSwimming()
-    {
-        characAnimator.SetBool("IsWalkingBackwards", false);
-        characAnimator.SetBool("IsIdle", false);
-        characAnimator.SetBool("IsStandingJump", false);
-        characAnimator.SetBool("IsFarJump", false);
-        characAnimator.SetBool("IsRightTurning", false);
-        characAnimator.SetBool("IsLeftTurning", false);
-        characAnimator.SetBool("IsRunning", false);
-        characAnimator.SetBool("IsNE", false);
-        characAnimator.SetBool("IsW", false);
-        characAnimator.SetBool("IsSW", false);
-        characAnimator.SetBool("IsSE", false);
-        characAnimator.SetBool("IsE", false);
-        characAnimator.SetBool("IsNW", false);
-        if (animState != PL_MOVE_ANIM_STATE.PL_IDLE || !characAnimator.GetBool("IsSwimmingIdle"))
-        {
-            characAnimator.Play("Treading Water");
-            characAnimator.SetBool("IsSwimmingIdle", true);
-            animState = PL_MOVE_ANIM_STATE.PL_IDLE;
-        }
-    }
-
-    int GetAnimState()
-    {
-        if (characAnimator.GetBool("IsWalking"))
-        {
-            return 1;
-        }
-        else if (characAnimator.GetBool("IsRunning"))
-        {
-            return 2;
-        }
-        else if (characAnimator.GetBool("IsStandingJump"))
-        {
-            return 3;
-        }
-        else if (characAnimator.GetBool("IsFarJump"))
-        {
-            return 4;
-        }
-        return 0;
     }
 }

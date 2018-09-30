@@ -11,9 +11,9 @@ public class PlayerInformation
         float posX = packet.ReadFloat();
         float posY = packet.ReadFloat();
         float posZ = packet.ReadFloat();
-        int posHeading = packet.ReadInt();
+        float heading = packet.ReadFloat();
         //TODO: Manage PlayerInformation
 
-        WorldManager.instance.UpdateObject(objectId, classId, posX, posY, posZ, posHeading);
+        WorldManager.instance.UpdateObject(objectId, classId, posX, posY, posZ, heading);
     }
 }

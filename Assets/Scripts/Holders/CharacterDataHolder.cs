@@ -11,7 +11,7 @@ public class CharacterDataHolder
     private float x = 0;
     private float y = 0;
     private float z = 0;
-    private int heading = 0;
+    private float heading = 0;
     private long experience = 0;
     private long hp = 0;
     private long mp = 0;
@@ -97,12 +97,12 @@ public class CharacterDataHolder
         this.z = z;
     }
 
-    public int GetHeading()
+    public float GetHeading()
     {
         return heading;
     }
 
-    public void SetHeading(int heading)
+    public void SetHeading(float heading)
     {
         this.heading = heading;
     }

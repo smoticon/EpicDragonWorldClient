@@ -189,7 +189,7 @@ public class PlayerController : MonoBehaviour
             gameObject.GetComponent<PlayerAnimationController>().SetMoveState(playerMoveState);
             if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f) && Grounded())
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(PlayerManager.instance.selectedCharacterObjectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
                 oldX = transform.position.x;
                 // oldY = transform.position.y;
                 oldZ = transform.position.z;
@@ -201,7 +201,7 @@ public class PlayerController : MonoBehaviour
             gameObject.GetComponent<PlayerAnimationController>().SetSwimmingState(playerMoveState);
             if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f))
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(PlayerManager.instance.selectedCharacterObjectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
                 oldX = transform.position.x;
                 // oldY = transform.position.y;
                 oldZ = transform.position.z;
@@ -290,7 +290,7 @@ public class PlayerController : MonoBehaviour
             velocity.z = 0;
             velocity.x = 0;
             playerMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
-            NetworkManager.instance.ChannelSend(new LocationUpdate(PlayerManager.instance.selectedCharacterObjectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
+            NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
         }
         forwardInputByMouse = 0;
     }
@@ -365,7 +365,7 @@ public class PlayerController : MonoBehaviour
             jumpDelay = 0;
             if (NetworkManager.instance != null)
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(PlayerManager.instance.selectedCharacterObjectId, transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, 32, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, 32, isInsideWater));
             }
         }
         else if (jumpDelay >= 0.15f && velocity.z > 3.5f) // Moving jump.
@@ -374,7 +374,7 @@ public class PlayerController : MonoBehaviour
             jumpDelay = 0;
             if (NetworkManager.instance != null)
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(PlayerManager.instance.selectedCharacterObjectId, transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, 31, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, 31, isInsideWater));
             }
         }
     }
@@ -411,7 +411,7 @@ public class PlayerController : MonoBehaviour
             isInsideWater = true;
             if (NetworkManager.instance != null)
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(PlayerManager.instance.selectedCharacterObjectId, transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
             }
         }
     }
@@ -427,7 +427,7 @@ public class PlayerController : MonoBehaviour
             isInsideWater = false;
             if (NetworkManager.instance != null)
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(PlayerManager.instance.selectedCharacterObjectId, transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
             }
         }
     }

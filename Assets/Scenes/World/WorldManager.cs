@@ -71,7 +71,7 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public void UpdateObject(long objectId, int classId, float posX, float posY, float posZ, int heading)
+    public void UpdateObject(long objectId, int classId, float posX, float posY, float posZ, float heading)
     {
         // Check for existing objects.
         foreach (GameObject gameObject in gameObjects)

@@ -9,6 +9,7 @@ public class PlayerAnimationController : MonoBehaviour
     public Animator animController;
     public bool isJump = false;
     public PL_MOVE_ANIM_STATE curMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
+    float jumpDelayTime = 0.7f;
 
     private void Start()
     {
@@ -93,22 +94,17 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.Play("Idle");
             }
             animController.SetBool("IsIdle", true);
-
-            if (gameObject.GetComponent<WorldObject>() != null)
-            {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(gameObject.GetComponent<WorldObject>().objectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
-            }
         }
         curMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
     }
 
-    IEnumerator StopMovement()
+    private IEnumerator StopMovement()
     {
         animController.Play("Standing Run Forward Stop");
         yield return new WaitForSeconds(0.4f);
     }
 
-    public void Jump(bool jpState)
+    public void Jump(bool jumpState)
     {
         if (isJump)
         {
@@ -121,7 +117,7 @@ public class PlayerAnimationController : MonoBehaviour
         animController.SetBool("IsRightTurning", false);
         animController.SetBool("IsLeftTurning", false);
         animController.SetBool("IsRunning", false);
-        if (jpState)
+        if (jumpState)
         {
             animController.SetBool("IsFarJump", true);
             animController.SetBool("IsStandingJump", false);
@@ -135,19 +131,18 @@ public class PlayerAnimationController : MonoBehaviour
         }
         StartCoroutine("StopJumping");
     }
-    float jpDelayTime = 0.7f;
 
-    IEnumerator StopJumping()
+    private IEnumerator StopJumping()
     {
         if (animController.GetBool("IsStandingJump"))
         {
-            jpDelayTime = 0.7f;
+            jumpDelayTime = 0.7f;
         }
         else
         {
-            jpDelayTime = 0.5f;
+            jumpDelayTime = 0.5f;
         }
-        yield return new WaitForSeconds(jpDelayTime);
+        yield return new WaitForSeconds(jumpDelayTime);
         isJump = false;
         animController.SetBool("IsWalkingBackwards", false);
         animController.SetBool("IsStandingJump", false);
@@ -155,7 +150,6 @@ public class PlayerAnimationController : MonoBehaviour
         animController.SetBool("IsRightTurning", false);
         animController.SetBool("IsLeftTurning", false);
         animController.SetBool("IsRunning", false);
-        SetMoveState(gameObject.GetComponent<PlayerController>().playerMoveState);
     }
 
     public void SetSwimmingState(PL_MOVE_ANIM_STATE mState)
@@ -229,10 +223,6 @@ public class PlayerAnimationController : MonoBehaviour
                     animController.SetBool("IsSwimmingIdle", true);
                     curMoveState = mState;
                 }
-                if (gameObject.GetComponent<WorldObject>() != null)
-                {
-                    NetworkManager.instance.ChannelSend(new LocationUpdate(gameObject.GetComponent<WorldObject>().objectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
-                }
                 break;
 
             default:
@@ -255,10 +245,6 @@ public class PlayerAnimationController : MonoBehaviour
                     animController.Play("Swimming");
                     animController.SetBool("IsSwimming", true);
                     curMoveState = mState;
-                }
-                if (gameObject.GetComponent<WorldObject>() != null)
-                {
-                    NetworkManager.instance.ChannelSend(new LocationUpdate(gameObject.GetComponent<WorldObject>().objectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)curMoveState, gameObject.GetComponent<PlayerController>().isInsideWater));
                 }
                 break;
         }

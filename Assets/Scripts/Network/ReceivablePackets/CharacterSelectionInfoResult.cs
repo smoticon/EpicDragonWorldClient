@@ -23,7 +23,7 @@ public class CharacterSelectionInfoResult
             characterData.SetX(packet.ReadFloat());
             characterData.SetY(packet.ReadFloat());
             characterData.SetZ(packet.ReadFloat());
-            characterData.SetHeading(packet.ReadInt());
+            characterData.SetHeading(packet.ReadFloat());
             characterData.SetExperience(packet.ReadLong());
             characterData.SetHp(packet.ReadLong());
             characterData.SetMp(packet.ReadLong());
