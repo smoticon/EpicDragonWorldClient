@@ -5,6 +5,6 @@ public class EnterWorldInformation
 {
     public static void notify(ReceivablePacket packet)
     {
-        // TODO: Read player information.
+        PlayerManager.instance.selectedCharacterObjectId = packet.ReadLong();
     }
 }

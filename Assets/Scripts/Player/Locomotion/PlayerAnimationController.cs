@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Runtime.InteropServices;
 
 /**
  * @author DaeChol
@@ -8,11 +7,8 @@ using System.Runtime.InteropServices;
 public class PlayerAnimationController : MonoBehaviour
 {
     public Animator animController;
-    public bool isMe = false;
-	public bool isJump = false;
+    public bool isJump = false;
     public PL_MOVE_ANIM_STATE curMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
-    private int lastMousePositionX = 0;
-    private int lastMousePositionY = 0;
 
     private void Start()
     {
@@ -22,41 +18,9 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 
-    // Update is called once per frame.
-    private void Update()
-    {
-        // Hide the mouse.
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-        {
-#if UNITY_STANDALONE_WIN
-            Win32Cursor.POINT point = new Win32Cursor.POINT();
-            Win32Cursor.GetCursorPos(out point);
-            lastMousePositionX = point.X;
-            lastMousePositionY = point.Y;
-#endif
-            Cursor.visible = false;
-        }
-        else if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
-        {
-#if UNITY_STANDALONE_WIN
-            if (!Cursor.visible)
-            {
-                Win32Cursor.SetCursorPos(lastMousePositionX, lastMousePositionY);
-            }
-#endif
-            Cursor.visible = true;
-        }
-
-        // TODO: Move to menu.
-        if (Input.GetKey("escape"))
-        {
-            Application.Quit();
-        }
-    }
-
     public void MoveForward()
     {
-        if (isJump)
+        if (animController == null || isJump)
         {
             return;
         }
@@ -79,7 +43,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void MoveBackWards()
     {
-        if (isJump)
+        if (animController == null || isJump)
         {
             return;
         }
@@ -102,7 +66,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void StopMoving()
     {
-        if (isJump)
+        if (animController == null || isJump)
         {
             return;
         }
@@ -130,7 +94,10 @@ public class PlayerAnimationController : MonoBehaviour
             }
             animController.SetBool("IsIdle", true);
 
-            NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
+            if (gameObject.GetComponent<WorldObject>() != null)
+            {
+                NetworkManager.instance.ChannelSend(new LocationUpdate(gameObject.GetComponent<WorldObject>().objectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
+            }
         }
         curMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
     }
@@ -262,7 +229,10 @@ public class PlayerAnimationController : MonoBehaviour
                     animController.SetBool("IsSwimmingIdle", true);
                     curMoveState = mState;
                 }
-                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
+                if (gameObject.GetComponent<WorldObject>() != null)
+                {
+                    NetworkManager.instance.ChannelSend(new LocationUpdate(gameObject.GetComponent<WorldObject>().objectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)PL_MOVE_ANIM_STATE.PL_IDLE, gameObject.GetComponent<PlayerController>().isInsideWater));
+                }
                 break;
 
             default:
@@ -286,42 +256,11 @@ public class PlayerAnimationController : MonoBehaviour
                     animController.SetBool("IsSwimming", true);
                     curMoveState = mState;
                 }
-                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)curMoveState, gameObject.GetComponent<PlayerController>().isInsideWater));
+                if (gameObject.GetComponent<WorldObject>() != null)
+                {
+                    NetworkManager.instance.ChannelSend(new LocationUpdate(gameObject.GetComponent<WorldObject>().objectId, transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)curMoveState, gameObject.GetComponent<PlayerController>().isInsideWater));
+                }
                 break;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (ChatBoxManager.instance.isFocused)
-        {
-            return;
-        }
-
-        if (!isMe)
-        {
-            return;
-        }
-
-        if (gameObject.GetComponent<PlayerController>().isInsideWater)
-        {
-            SetSwimmingState(gameObject.GetComponent<PlayerController>().playerMoveState);
-        }
-        else
-        {
-            SetMoveState(gameObject.GetComponent<PlayerController>().playerMoveState);
-
-            if (NetworkManager.instance != null && Input.GetKeyDown(KeyCode.Space) && gameObject.GetComponent<PlayerController>().Grounded())
-            {
-                if (gameObject.GetComponent<PlayerController>().forwardInput != 0)
-                {
-                    NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, 31, gameObject.GetComponent<PlayerController>().isInsideWater));
-                }
-                else
-                {
-                    NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, 32, gameObject.GetComponent<PlayerController>().isInsideWater));
-                }
-            }
         }
     }
 
@@ -517,29 +456,3 @@ public class PlayerAnimationController : MonoBehaviour
         }
     }
 }
-
-// Windows only fix for locking mouse cursor position, since Unity does not support setting cursor position.
-#if UNITY_STANDALONE_WIN
-public class Win32Cursor
-{
-    [DllImport("User32.Dll")]
-    public static extern long SetCursorPos(int x, int y);
-
-    [DllImport("user32.dll")]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    public static extern bool GetCursorPos(out POINT lpPoint);
-
-    [StructLayout(LayoutKind.Sequential)]
-    public struct POINT
-    {
-        public int X;
-        public int Y;
-
-        public POINT(int x, int y)
-        {
-            this.X = x;
-            this.Y = y;
-        }
-    }
-}
-#endif

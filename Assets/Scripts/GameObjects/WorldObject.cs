@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /**
@@ -10,7 +9,7 @@ public class WorldObject : MonoBehaviour
     [System.Serializable]
     public class MoveSettings
     {
-        public float forwardVel = 7;
+        public float forwardVel = 4;
         public float rotateVel = 100;
         public float jumpVel = 17;
         public float distToGrounded = 2f;
@@ -36,10 +35,6 @@ public class WorldObject : MonoBehaviour
             characAnimator = gameObject.GetComponent<Animator>();
         }
         targetPos = transform.position;
-    }
-
-    private void Update()
-    {
     }
 
     public void SetSwimmingState(PL_MOVE_ANIM_STATE mState)

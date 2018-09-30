@@ -71,7 +71,7 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public void UpdateObject(long objectId, int classId, float posX, float posY, float posZ, int posHeading)
+    public void UpdateObject(long objectId, int classId, float posX, float posY, float posZ, int heading)
     {
         // Check for existing objects.
         foreach (GameObject gameObject in gameObjects)
@@ -102,14 +102,14 @@ public class WorldManager : MonoBehaviour
         gameObjects.Add(obj);
     }
 
-    public void MoveObject(long objectId, float posX, float posY, float posZ, float angleY, int animState, int waterState)
+    public void MoveObject(long objectId, float posX, float posY, float posZ, float heading, int animState, int waterState)
     {
         foreach (GameObject gameObject in gameObjects)
         {
             if (gameObject.GetComponent<WorldObject>().objectId == objectId)
             {
                 gameObject.GetComponent<WorldObject>().targetPos = gameObject.transform.position;
-                gameObject.GetComponent<WorldObject>().PlayAnimation(new Vector3(posX, posY, posZ), angleY, animState, waterState);
+                gameObject.GetComponent<WorldObject>().PlayAnimation(new Vector3(posX, posY, posZ), heading, animState, waterState);
                 return;
             }
         }

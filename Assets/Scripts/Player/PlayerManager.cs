@@ -16,6 +16,8 @@ public class PlayerManager : MonoBehaviour
     public ArrayList characterList;
     [HideInInspector]
     public CharacterDataHolder selectedCharacterData;
+    [HideInInspector]
+    public long selectedCharacterObjectId = 0;
 
     void Start()
     {

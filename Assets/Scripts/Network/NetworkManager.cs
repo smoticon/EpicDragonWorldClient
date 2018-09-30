@@ -55,6 +55,7 @@ public class NetworkManager : MonoBehaviour
         PlayerManager.instance.accountName = null;
         PlayerManager.instance.characterList = null;
         PlayerManager.instance.selectedCharacterData = null;
+        PlayerManager.instance.selectedCharacterObjectId = 0;
     }
 
     // Best to call this only once per login attempt.
