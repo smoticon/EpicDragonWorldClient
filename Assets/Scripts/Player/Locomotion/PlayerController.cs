@@ -177,17 +177,11 @@ public class PlayerController : MonoBehaviour
             rBody.velocity = transform.TransformDirection(velocity);
         }
 
-        // Footstep sounds.
-        if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && (forwardInput > 0 || movementLock) && Grounded())
-        {
-            FootstepAudioSource.PlayOneShot(FootstepSounds[0], 1f);
-        }
-
         // Send position to server.
-        if(!isInsideWater)
+        if(isInsideWater)
         {
-            gameObject.GetComponent<PlayerAnimationController>().SetMoveState(playerMoveState);
-            if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f) && Grounded())
+            gameObject.GetComponent<PlayerAnimationController>().SetSwimmingState(playerMoveState);
+            if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f))
             {
                 NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
                 oldX = transform.position.x;
@@ -198,14 +192,20 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<PlayerAnimationController>().SetSwimmingState(playerMoveState);
-            if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f))
+            gameObject.GetComponent<PlayerAnimationController>().SetMoveState(playerMoveState);
+            if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f) && Grounded())
             {
                 NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
                 oldX = transform.position.x;
                 // oldY = transform.position.y;
                 oldZ = transform.position.z;
                 oldYAngle = transform.localRotation.eulerAngles.y;
+            }
+
+            // Footstep sounds.
+            if (!FootstepAudioSource.isPlaying && rBody.velocity.magnitude > 2f && (forwardInput > 0 || movementLock) && Grounded())
+            {
+                FootstepAudioSource.PlayOneShot(FootstepSounds[0], 1f);
             }
         }
     }
