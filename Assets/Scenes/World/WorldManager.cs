@@ -19,7 +19,7 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     ArrayList gameObjects = new ArrayList();
     [HideInInspector]
-    private static readonly int visibilityRange = 10000; // This is the maximum allowed visibility range.
+    private static readonly int visibilityRadius = 10000; // This is the maximum allowed visibility radius.
 
     private void Start()
     {
@@ -90,7 +90,7 @@ public class WorldManager : MonoBehaviour
 
         // Object is out of sight.
         Vector3 position = new Vector3(posX, posY, posZ);
-        if (CalculateDistance(position) > visibilityRange)
+        if (CalculateDistance(position) > visibilityRadius)
         {
             return;
         }
@@ -128,7 +128,7 @@ public class WorldManager : MonoBehaviour
         {
             if (gameObject.GetComponent<WorldObject>().objectId == objectId)
             {
-                if (CalculateDistance(position) > visibilityRange) // Moved out of sight.
+                if (CalculateDistance(position) > visibilityRadius) // Moved out of sight.
                 {
                     DeleteObject(gameObject);
                 }
@@ -142,7 +142,7 @@ public class WorldManager : MonoBehaviour
         }
 
         // Request unknown object info from server.
-        if (CalculateDistance(position) <= visibilityRange)
+        if (CalculateDistance(position) <= visibilityRadius)
         {
             NetworkManager.instance.ChannelSend(new ObjectInfoRequest(objectId));
         }
