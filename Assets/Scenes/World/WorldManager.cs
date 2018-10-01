@@ -63,6 +63,13 @@ public class WorldManager : MonoBehaviour
             // Set position.
             playerCharacter.transform.position = new Vector3(PlayerManager.instance.selectedCharacterData.GetX(), PlayerManager.instance.selectedCharacterData.GetY(), PlayerManager.instance.selectedCharacterData.GetZ());
 
+            // Set heading.
+            Quaternion curHeading = transform.localRotation;
+            Vector3 curvAngle = curHeading.eulerAngles;
+            curvAngle.y = PlayerManager.instance.selectedCharacterData.GetHeading();
+            curHeading.eulerAngles = curvAngle;
+            transform.localRotation = curHeading;
+
             // Request world info from server.
             NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
 
@@ -97,6 +104,13 @@ public class WorldManager : MonoBehaviour
         rigidBody.mass = 1;
         rigidBody.angularDrag = 0.05f;
         rigidBody.freezeRotation = true;
+
+        // Set heading.
+        Quaternion curHeading = transform.localRotation;
+        Vector3 curvAngle = curHeading.eulerAngles;
+        curvAngle.y = heading;
+        curHeading.eulerAngles = curvAngle;
+        transform.localRotation = curHeading;
 
         // Add to game object list.
         gameObjects.Add(obj);
