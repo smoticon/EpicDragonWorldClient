@@ -11,7 +11,7 @@ public class WorldObject : MonoBehaviour
     public int curAnimState = 0;
     public int curVelocity = 0;
     Animator characAnimator;
-    public float vspeed = 3f;
+    public float forwardVel = 4f;
     public bool isJump = false;
     int isWater = 0;
     float jumpDelayTime = 0.7f;
@@ -39,7 +39,7 @@ public class WorldObject : MonoBehaviour
             angle.x = 0;
             angle.z = 0;
             transform.eulerAngles = angle;
-            float step = vspeed * Time.deltaTime;
+            float step = forwardVel * Time.deltaTime;
             gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, targetPos, step));
         }
         else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) <= 0.1f && (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !characAnimator.GetBool("IsIdle")))
