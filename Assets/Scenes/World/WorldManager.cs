@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 /**
@@ -18,7 +19,7 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     ArrayList gameObjects = new ArrayList();
     [HideInInspector]
-    private static readonly int visibilityRange = 3000;
+    private static readonly int visibilityRange = 10000; // This is the maximum allowed visibility range.
 
     private void Start()
     {
@@ -72,9 +73,6 @@ public class WorldManager : MonoBehaviour
 
             // Request world info from server.
             NetworkManager.instance.ChannelSend(new EnterWorldRequest(PlayerManager.instance.selectedCharacterData.GetName()));
-
-            // Object distance forget task.
-            StartCoroutine(DistanceCheck());
         }
     }
 
@@ -90,8 +88,15 @@ public class WorldManager : MonoBehaviour
             }
         }
 
+        // Object is out of sight.
+        Vector3 position = new Vector3(posX, posY, posZ);
+        if (CalculateDistance(position) > visibilityRange)
+        {
+            return;
+        }
+
         // Object does not exist. Instantiate.
-        GameObject obj = Instantiate(GameObjectManager.instance.gameObjectList[classId], new Vector3(posX, posY, posZ), Quaternion.identity) as GameObject;
+        GameObject obj = Instantiate(GameObjectManager.instance.gameObjectList[classId], position, Quaternion.identity) as GameObject;
 
         // TODO: Proper appearance.
 
@@ -118,18 +123,38 @@ public class WorldManager : MonoBehaviour
 
     public void MoveObject(long objectId, float posX, float posY, float posZ, float heading, int animState, int waterState)
     {
+        Vector3 position = new Vector3(posX, posY, posZ);
         foreach (GameObject gameObject in gameObjects)
         {
             if (gameObject.GetComponent<WorldObject>().objectId == objectId)
             {
-                gameObject.GetComponent<WorldObject>().targetPos = gameObject.transform.position;
-                gameObject.GetComponent<WorldObject>().PlayAnimation(new Vector3(posX, posY, posZ), heading, animState, waterState);
+                if (CalculateDistance(position) > visibilityRange) // Moved out of sight.
+                {
+                    DeleteObject(gameObject);
+                }
+                else
+                {
+                    gameObject.GetComponent<WorldObject>().targetPos = gameObject.transform.position;
+                    gameObject.GetComponent<WorldObject>().PlayAnimation(position, heading, animState, waterState);
+                }
                 return;
             }
         }
 
         // Request unknown object info from server.
-        NetworkManager.instance.ChannelSend(new ObjectInfoRequest(objectId));
+        if (CalculateDistance(position) <= visibilityRange)
+        {
+            NetworkManager.instance.ChannelSend(new ObjectInfoRequest(objectId));
+        }
+    }
+
+    private void DeleteObject(GameObject gameObject)
+    {
+        // Remove from objects list.
+        gameObjects.Remove(gameObject);
+
+        // Delete game object from world.
+        Destroy(gameObject);
     }
 
     public void DeleteObject(long objectId)
@@ -144,27 +169,9 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    private void DeleteObject(GameObject gameObject)
+    // Calculate distance between player and a Vector3.
+    public double CalculateDistance(Vector3 vector)
     {
-        // Remove from objects list.
-        gameObjects.Remove(gameObject);
-
-        // Delete game object from world.
-        Destroy(gameObject);
-    }
-
-    IEnumerator DistanceCheck()
-    {
-        while (true)
-        {
-            foreach (GameObject gameObject in gameObjects)
-            {
-                if (Vector3.Distance(playerCharacter.transform.position, gameObject.transform.position) > visibilityRange)
-                {
-                    DeleteObject(gameObject);
-                }
-            }
-            yield return new WaitForSeconds(3);
-        }
+        return Math.Pow(playerCharacter.transform.position.x - vector.x, 2) + Math.Pow(playerCharacter.transform.position.y - vector.y, 2) + Math.Pow(playerCharacter.transform.position.z - vector.z, 2);
     }
 }
