@@ -13,11 +13,10 @@ public class WorldManager : MonoBehaviour
     public GameObject playerFemale;
     public GameObject cameraMale;
     public GameObject cameraFemale;
-
     [HideInInspector]
     public static WorldManager instance;
     [HideInInspector]
-    ArrayList gameObjects = new ArrayList();
+    ArrayList gameObjects = ArrayList.Synchronized(new ArrayList());
     [HideInInspector]
     private static readonly int visibilityRadius = 10000; // This is the maximum allowed visibility radius.
 
@@ -134,7 +133,6 @@ public class WorldManager : MonoBehaviour
                 }
                 else
                 {
-                    gameObject.GetComponent<WorldObject>().targetPos = gameObject.transform.position;
                     gameObject.GetComponent<WorldObject>().PlayAnimation(position, heading, animState, waterState);
                 }
                 return;
@@ -169,7 +167,7 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    // Calculate distance between player and a Vector3.
+    // Calculate distance between player and a Vector3 location.
     public double CalculateDistance(Vector3 vector)
     {
         return Math.Pow(playerCharacter.transform.position.x - vector.x, 2) + Math.Pow(playerCharacter.transform.position.y - vector.y, 2) + Math.Pow(playerCharacter.transform.position.z - vector.z, 2);

@@ -157,6 +157,10 @@ Prefab:
       propertyPath: m_Name
       value: UMA
       objectReference: {fileID: 0}
+    - target: {fileID: 176442, guid: fe29e3c90ef88194184c6f3656db5ec5, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe29e3c90ef88194184c6f3656db5ec5, type: 2}
   m_IsPrefabAsset: 0
@@ -265,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   accountName: 
+  selectedCharacterObjectId: 0
 --- !u!4 &790248095
 Transform:
   m_ObjectHideFlags: 0

@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     private float oldZ = 0;
     private float oldYAngle = 0f;
 
-    public PL_MOVE_ANIM_STATE playerMoveState;
+    private PL_MOVE_ANIM_STATE playerMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
 
     private int lastMousePositionX = 0;
     private int lastMousePositionY = 0;
@@ -83,32 +83,6 @@ public class PlayerController : MonoBehaviour
         forwardInput = 0;
         turnInput = 0;
         jumpInput = 0;
-    }
-
-    private void GetInput()
-    {
-        forwardInput = Input.GetAxis(inputSetting.FORWARD_AXIS); // Interpolated.
-        turnInput = Input.GetAxis(inputSetting.TURN_AXIS); // Interpolated.
-        jumpInput = Input.GetAxisRaw(inputSetting.JUMP_AXIS); // Non-interpolated.
-
-        // Movement lock.
-        if (Input.GetKeyDown(KeyCode.Numlock) || Input.GetMouseButtonDown(3))
-        {
-            movementLock = !movementLock;
-        }
-        if (forwardInput < 0 || (Input.GetMouseButton(0) && Input.GetMouseButton(1)))
-        {
-            movementLock = false;
-        }
-
-        if(Input.GetMouseButton(1) && turnInput != 0)
-        {
-            sideWalking = true;
-        }
-        else
-        {
-            sideWalking = false;
-        }
     }
 
     private void Update()
@@ -150,18 +124,44 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void GetInput()
+    {
+        forwardInput = Input.GetAxis(inputSetting.FORWARD_AXIS); // Interpolated.
+        turnInput = Input.GetAxis(inputSetting.TURN_AXIS); // Interpolated.
+        jumpInput = Input.GetAxisRaw(inputSetting.JUMP_AXIS); // Non-interpolated.
+
+        // Movement lock.
+        if (Input.GetKeyDown(KeyCode.Numlock) || Input.GetMouseButtonDown(3))
+        {
+            movementLock = !movementLock;
+        }
+        if (forwardInput < 0 || (Input.GetMouseButton(0) && Input.GetMouseButton(1)))
+        {
+            movementLock = false;
+        }
+
+        if (Input.GetMouseButton(1) && turnInput != 0)
+        {
+            sideWalking = true;
+        }
+        else
+        {
+            sideWalking = false;
+        }
+    }
+
     private void FixedUpdate()
     {
         Run();
         Jump();
 
-        if(isInsideWater)
+        if (isInsideWater)
         {
-            if(targetCamera.transform.localRotation.eulerAngles.x > 0 && targetCamera.transform.localRotation.eulerAngles.x < 80f)
+            if (targetCamera.transform.localRotation.eulerAngles.x > 0 && targetCamera.transform.localRotation.eulerAngles.x < 80f)
             {
                 velocity.y = -0.5f;
             }
-            else if((targetCamera.transform.localRotation.eulerAngles.x < 0 || targetCamera.transform.localRotation.eulerAngles.x > 80f) && transform.position.y < 8f)
+            else if ((targetCamera.transform.localRotation.eulerAngles.x < 0 || targetCamera.transform.localRotation.eulerAngles.x > 80f) && transform.position.y < 8f)
             {
                 velocity.y = 0.5f;
             }
@@ -178,7 +178,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Send position to server.
-        if(isInsideWater)
+        if (isInsideWater)
         {
             gameObject.GetComponent<PlayerAnimationController>().SetSwimmingState(playerMoveState);
             if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f))
@@ -242,7 +242,7 @@ public class PlayerController : MonoBehaviour
                     velocity.z = moveSetting.forwardVel * forwardInput;
                 }
             }
-            else if(sideWalking)
+            else if (sideWalking)
             {
                 if (forwardInput < 0)
                 {
@@ -272,9 +272,9 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
-        else if(Mathf.Abs(forwardInput) < inputSetting.inputDelay && sideWalking && !isInsideWater)
+        else if (Mathf.Abs(forwardInput) < inputSetting.inputDelay && sideWalking && !isInsideWater)
         {
-            if(turnInput > 0)
+            if (turnInput > 0)
             {
                 playerMoveState = PL_MOVE_ANIM_STATE.PL_D;
             }
@@ -297,7 +297,7 @@ public class PlayerController : MonoBehaviour
 
     private void Turn()
     {
-        if(sideWalking)
+        if (sideWalking)
         {
             return;
         }
@@ -350,7 +350,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             // Decrease velocity.y
-            if(!isInsideWater)
+            if (!isInsideWater)
             {
                 velocity.y -= physSetting.downAccel;
             }
@@ -377,27 +377,6 @@ public class PlayerController : MonoBehaviour
                 NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, 31, isInsideWater));
             }
         }
-    }
-
-    public int GetAnimState()
-    {
-        Animator anim = gameObject.GetComponent<Animator>();
-        if (anim == null)
-        {
-            return 0;
-        }
-        else
-        {
-            if (anim.GetBool("IsWalkingForward"))
-            {
-                return 22;
-            }
-            if (anim.GetBool("IsRunning"))
-            {
-                return 21;
-            }
-        }
-        return 0;
     }
 
     void OnTriggerEnter(Collider other)
@@ -445,7 +424,7 @@ public enum PL_MOVE_ANIM_STATE
     PL_SA = 28,
     PL_IDLE = 29,
     PL_JUMP = 31,
-    PL_STAND_JUMP= 32
+    PL_STAND_JUMP = 32
 };
 
 // Windows only fix for locking mouse cursor position, since Unity does not support setting cursor position.

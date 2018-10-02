@@ -7,16 +7,14 @@ using UnityEngine;
 public class WorldObject : MonoBehaviour
 {
     public long objectId;
-    public Vector3 targetPos;
-    public int curAnimState = 0;
-    public int curVelocity = 0;
-    Animator characAnimator;
-    public float forwardVel = 4f;
-    public bool isJump = false;
-    int isWater = 0;
-    float jumpDelayTime = 0.7f;
-    public bool isInsidewater = false;
-    PL_MOVE_ANIM_STATE animState = PL_MOVE_ANIM_STATE.PL_IDLE;
+    private bool isNew = true; // Used to avoid animation stuck on idle, when new moving object is entering visibily radius.
+    private bool isJump = false;
+    private Vector3 targetPos;
+    private Animator characAnimator;
+    private float forwardVel = 4f;
+    private float jumpDelayTime = 0.7f;
+    private int isWater = 0;
+    private PL_MOVE_ANIM_STATE animState = PL_MOVE_ANIM_STATE.PL_IDLE;
 
     private void Start()
     {
@@ -25,11 +23,20 @@ public class WorldObject : MonoBehaviour
             characAnimator = gameObject.GetComponent<Animator>();
         }
         targetPos = transform.position;
+
+        // Remove isNew flag.
+        StartCoroutine("RemoveIsNew");
+    }
+
+    private IEnumerator RemoveIsNew()
+    {
+        yield return new WaitForSeconds(0.3f);
+        isNew = false;
     }
 
     private void FixedUpdate()
     {
-        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) > 0.1f)
+        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) >= 0.1f)
         {
             if (animState == PL_MOVE_ANIM_STATE.PL_W)
             {
@@ -42,7 +49,7 @@ public class WorldObject : MonoBehaviour
             float step = forwardVel * Time.deltaTime;
             gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, targetPos, step));
         }
-        else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) <= 0.1f && (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !characAnimator.GetBool("IsIdle")))
+        else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) < 0.1f && (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !characAnimator.GetBool("IsIdle")))
         {
             if (isWater > 0)
             {
@@ -52,104 +59,6 @@ public class WorldObject : MonoBehaviour
             {
                 StopMove();
             }
-        }
-    }
-
-    public void SetSwimmingState(PL_MOVE_ANIM_STATE mState)
-    {
-        switch (mState)
-        {
-            case PL_MOVE_ANIM_STATE.PL_S:
-                characAnimator.SetBool("IsWalkingBackwards", false);
-                characAnimator.SetBool("IsIdle", false);
-                characAnimator.SetBool("IsStandingJump", false);
-                characAnimator.SetBool("IsFarJump", false);
-                characAnimator.SetBool("IsRightTurning", false);
-                characAnimator.SetBool("IsLeftTurning", false);
-                characAnimator.SetBool("IsRunning", false);
-                characAnimator.SetBool("IsNE", false);
-                characAnimator.SetBool("IsW", false);
-                characAnimator.SetBool("IsSW", false);
-                characAnimator.SetBool("IsSE", false);
-                characAnimator.SetBool("IsE", false);
-                characAnimator.SetBool("IsNW", false);
-                characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsSwimming"))
-                {
-                    characAnimator.Play("Swimming");
-                    characAnimator.SetBool("IsSwimming", true);
-                    animState = mState;
-                }
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_W:
-                characAnimator.SetBool("IsWalkingBackwards", false);
-                characAnimator.SetBool("IsIdle", false);
-                characAnimator.SetBool("IsStandingJump", false);
-                characAnimator.SetBool("IsFarJump", false);
-                characAnimator.SetBool("IsRightTurning", false);
-                characAnimator.SetBool("IsLeftTurning", false);
-                characAnimator.SetBool("IsRunning", false);
-                characAnimator.SetBool("IsSwimmingIdle", false);
-                characAnimator.SetBool("IsNE", false);
-                characAnimator.SetBool("IsW", false);
-                characAnimator.SetBool("IsSW", false);
-                characAnimator.SetBool("IsSE", false);
-                characAnimator.SetBool("IsE", false);
-                characAnimator.SetBool("IsNW", false);
-                if (animState != mState || !characAnimator.GetBool("IsSwimming"))
-                {
-                    characAnimator.Play("Swimming");
-                    characAnimator.SetBool("IsSwimming", true);
-                    animState = mState;
-                }
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_IDLE:
-                characAnimator.SetBool("IsWalkingBackwards", false);
-                characAnimator.SetBool("IsIdle", false);
-                characAnimator.SetBool("IsStandingJump", false);
-                characAnimator.SetBool("IsFarJump", false);
-                characAnimator.SetBool("IsRightTurning", false);
-                characAnimator.SetBool("IsLeftTurning", false);
-                characAnimator.SetBool("IsRunning", false);
-                characAnimator.SetBool("IsNE", false);
-                characAnimator.SetBool("IsW", false);
-                characAnimator.SetBool("IsSW", false);
-                characAnimator.SetBool("IsSE", false);
-                characAnimator.SetBool("IsE", false);
-                characAnimator.SetBool("IsNW", false);
-                characAnimator.SetBool("IsSwimming", false);
-                if (animState != mState || !characAnimator.GetBool("IsSwimmingIdle"))
-                {
-                    characAnimator.Play("Treading Water");
-                    characAnimator.SetBool("IsSwimmingIdle", true);
-                    animState = mState;
-                }
-                break;
-
-            default:
-                characAnimator.SetBool("IsWalkingBackwards", false);
-                characAnimator.SetBool("IsIdle", false);
-                characAnimator.SetBool("IsStandingJump", false);
-                characAnimator.SetBool("IsFarJump", false);
-                characAnimator.SetBool("IsRightTurning", false);
-                characAnimator.SetBool("IsLeftTurning", false);
-                characAnimator.SetBool("IsRunning", false);
-                characAnimator.SetBool("IsNE", false);
-                characAnimator.SetBool("IsW", false);
-                characAnimator.SetBool("IsSW", false);
-                characAnimator.SetBool("IsSE", false);
-                characAnimator.SetBool("IsE", false);
-                characAnimator.SetBool("IsNW", false);
-                characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsSwimmingIdle"))
-                {
-                    characAnimator.Play("Swimming");
-                    characAnimator.SetBool("IsSwimming", true);
-                    animState = mState;
-                }
-                break;
         }
     }
 
@@ -177,12 +86,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsW"))
-                {
-                    characAnimator.Play("W");
-                    animState = mState;
-                    characAnimator.SetBool("IsW", true);
-                }
+                characAnimator.Play("W");
+                characAnimator.SetBool("IsW", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_S:
@@ -200,12 +106,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsWalkingBackwards"))
-                {
-                    characAnimator.Play("Walking Backward");
-                    characAnimator.SetBool("IsWalkingBackwards", true);
-                    animState = mState;
-                }
+                characAnimator.Play("Walking Backward");
+                characAnimator.SetBool("IsWalkingBackwards", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_D:
@@ -223,12 +126,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsE"))
-                {
-                    characAnimator.Play("E");
-                    animState = mState;
-                    characAnimator.SetBool("IsE", true);
-                }
+                characAnimator.Play("E");
+                characAnimator.SetBool("IsE", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_W:
@@ -251,12 +151,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsRunning"))
-                {
-                    characAnimator.Play("Run");
-                    characAnimator.SetBool("IsRunning", true);
-                    animState = mState;
-                }
+                characAnimator.Play("Run");
+                characAnimator.SetBool("IsRunning", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_AW:
@@ -274,12 +171,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsE", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsNW"))
-                {
-                    characAnimator.Play("NW1");
-                    characAnimator.SetBool("IsNW", true);
-                    animState = mState;
-                }
+                characAnimator.Play("NW1");
+                characAnimator.SetBool("IsNW", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_WD:
@@ -297,12 +191,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsNE"))
-                {
-                    characAnimator.Play("NE");
-                    characAnimator.SetBool("IsNE", true);
-                    animState = mState;
-                }
+                characAnimator.Play("NE");
+                characAnimator.SetBool("IsNE", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_DS:
@@ -320,12 +211,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsSE"))
-                {
-                    characAnimator.Play("SE");
-                    characAnimator.SetBool("IsSE", true);
-                    animState = mState;
-                }
+                characAnimator.Play("SE");
+                characAnimator.SetBool("IsSE", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_SA:
@@ -343,12 +231,9 @@ public class WorldObject : MonoBehaviour
                 characAnimator.SetBool("IsNW", false);
                 characAnimator.SetBool("IsSwimming", false);
                 characAnimator.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !characAnimator.GetBool("IsSW"))
-                {
-                    characAnimator.Play("SW");
-                    animState = mState;
-                    characAnimator.SetBool("IsSW", true);
-                }
+                characAnimator.Play("SW");
+                characAnimator.SetBool("IsSW", true);
+                animState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_IDLE:
@@ -377,12 +262,15 @@ public class WorldObject : MonoBehaviour
                         characAnimator.Play("Idle");
                         characAnimator.SetBool("IsIdle", true);
                     }
-
                     animState = mState;
                 }
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_JUMP:
+                if (isJump)
+                {
+                    return;
+                }
                 isJump = true;
                 characAnimator.SetBool("IsWalkingBackwards", false);
                 characAnimator.SetBool("IsIdle", false);
@@ -405,6 +293,10 @@ public class WorldObject : MonoBehaviour
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_STAND_JUMP:
+                if (isJump)
+                {
+                    return;
+                }
                 isJump = true;
                 characAnimator.SetBool("IsWalkingBackwards", false);
                 characAnimator.SetBool("IsIdle", false);
@@ -452,9 +344,94 @@ public class WorldObject : MonoBehaviour
                         characAnimator.Play("Idle");
                         characAnimator.SetBool("IsIdle", true);
                     }
-
                     animState = PL_MOVE_ANIM_STATE.PL_IDLE;
                 }
+                break;
+        }
+    }
+
+    public void SetSwimmingState(PL_MOVE_ANIM_STATE mState)
+    {
+        switch (mState)
+        {
+            case PL_MOVE_ANIM_STATE.PL_S:
+                characAnimator.SetBool("IsWalkingBackwards", false);
+                characAnimator.SetBool("IsIdle", false);
+                characAnimator.SetBool("IsStandingJump", false);
+                characAnimator.SetBool("IsFarJump", false);
+                characAnimator.SetBool("IsRightTurning", false);
+                characAnimator.SetBool("IsLeftTurning", false);
+                characAnimator.SetBool("IsRunning", false);
+                characAnimator.SetBool("IsNE", false);
+                characAnimator.SetBool("IsW", false);
+                characAnimator.SetBool("IsSW", false);
+                characAnimator.SetBool("IsSE", false);
+                characAnimator.SetBool("IsE", false);
+                characAnimator.SetBool("IsNW", false);
+                characAnimator.SetBool("IsSwimmingIdle", false);
+                characAnimator.Play("Swimming");
+                characAnimator.SetBool("IsSwimming", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_W:
+                characAnimator.SetBool("IsWalkingBackwards", false);
+                characAnimator.SetBool("IsIdle", false);
+                characAnimator.SetBool("IsStandingJump", false);
+                characAnimator.SetBool("IsFarJump", false);
+                characAnimator.SetBool("IsRightTurning", false);
+                characAnimator.SetBool("IsLeftTurning", false);
+                characAnimator.SetBool("IsRunning", false);
+                characAnimator.SetBool("IsSwimmingIdle", false);
+                characAnimator.SetBool("IsNE", false);
+                characAnimator.SetBool("IsW", false);
+                characAnimator.SetBool("IsSW", false);
+                characAnimator.SetBool("IsSE", false);
+                characAnimator.SetBool("IsE", false);
+                characAnimator.SetBool("IsNW", false);
+                characAnimator.Play("Swimming");
+                characAnimator.SetBool("IsSwimming", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_IDLE:
+                characAnimator.SetBool("IsWalkingBackwards", false);
+                characAnimator.SetBool("IsIdle", false);
+                characAnimator.SetBool("IsStandingJump", false);
+                characAnimator.SetBool("IsFarJump", false);
+                characAnimator.SetBool("IsRightTurning", false);
+                characAnimator.SetBool("IsLeftTurning", false);
+                characAnimator.SetBool("IsRunning", false);
+                characAnimator.SetBool("IsNE", false);
+                characAnimator.SetBool("IsW", false);
+                characAnimator.SetBool("IsSW", false);
+                characAnimator.SetBool("IsSE", false);
+                characAnimator.SetBool("IsE", false);
+                characAnimator.SetBool("IsNW", false);
+                characAnimator.SetBool("IsSwimming", false);
+                characAnimator.Play("Treading Water");
+                characAnimator.SetBool("IsSwimmingIdle", true);
+                animState = mState;
+                break;
+
+            default:
+                characAnimator.SetBool("IsWalkingBackwards", false);
+                characAnimator.SetBool("IsIdle", false);
+                characAnimator.SetBool("IsStandingJump", false);
+                characAnimator.SetBool("IsFarJump", false);
+                characAnimator.SetBool("IsRightTurning", false);
+                characAnimator.SetBool("IsLeftTurning", false);
+                characAnimator.SetBool("IsRunning", false);
+                characAnimator.SetBool("IsNE", false);
+                characAnimator.SetBool("IsW", false);
+                characAnimator.SetBool("IsSW", false);
+                characAnimator.SetBool("IsSE", false);
+                characAnimator.SetBool("IsE", false);
+                characAnimator.SetBool("IsNW", false);
+                characAnimator.SetBool("IsSwimmingIdle", false);
+                characAnimator.Play("Swimming");
+                characAnimator.SetBool("IsSwimming", true);
+                animState = mState;
                 break;
         }
     }
@@ -482,6 +459,7 @@ public class WorldObject : MonoBehaviour
         characAnimator.SetBool("IsSE", false);
         characAnimator.SetBool("IsE", false);
         characAnimator.SetBool("IsNW", false);
+        animState = PL_MOVE_ANIM_STATE.PL_IDLE;
     }
 
     private void StopSwimming()
@@ -499,23 +477,20 @@ public class WorldObject : MonoBehaviour
         characAnimator.SetBool("IsSE", false);
         characAnimator.SetBool("IsE", false);
         characAnimator.SetBool("IsNW", false);
-        if (animState != PL_MOVE_ANIM_STATE.PL_IDLE || !characAnimator.GetBool("IsSwimmingIdle"))
-        {
-            characAnimator.Play("Treading Water");
-            characAnimator.SetBool("IsSwimmingIdle", true);
-            animState = PL_MOVE_ANIM_STATE.PL_IDLE;
-        }
+        characAnimator.Play("Treading Water");
+        characAnimator.SetBool("IsSwimmingIdle", true);
+        animState = PL_MOVE_ANIM_STATE.PL_IDLE;
     }
 
     private IEnumerator StopJump()
     {
         if (characAnimator.GetBool("IsStandingJump"))
         {
-            jumpDelayTime = 0.7f;
+            jumpDelayTime = 0.65f;
         }
         else
         {
-            jumpDelayTime = 0.5f;
+            jumpDelayTime = 0.7f;
         }
         yield return new WaitForSeconds(jumpDelayTime);
         characAnimator.SetBool("IsWalkingBackwards", false);
@@ -531,6 +506,19 @@ public class WorldObject : MonoBehaviour
     public void PlayAnimation(Vector3 movePos, float heading, int animId, int wState)
     {
         targetPos = movePos;
+        // Heading.
+        if (Mathf.Abs(heading - transform.localRotation.eulerAngles.y) > 3f)
+        {
+            if (animState != PL_MOVE_ANIM_STATE.PL_W)
+            {
+                Quaternion curHeading = transform.localRotation;
+                Vector3 curvAngle = curHeading.eulerAngles;
+                curvAngle.y = heading;
+                curHeading.eulerAngles = curvAngle;
+                transform.localRotation = curHeading;
+            }
+        }
+        // Water.
         if (isWater != wState)
         {
             if (wState > 0)
@@ -543,17 +531,6 @@ public class WorldObject : MonoBehaviour
             }
         }
         isWater = wState;
-        if (Mathf.Abs(heading - transform.localRotation.eulerAngles.y) > 3f)
-        {
-            if (animState != PL_MOVE_ANIM_STATE.PL_W)
-            {
-                Quaternion curHeading = transform.localRotation;
-                Vector3 curvAngle = curHeading.eulerAngles;
-                curvAngle.y = heading;
-                curHeading.eulerAngles = curvAngle;
-                transform.localRotation = curHeading;
-            }
-        }
         if (wState > 0)
         {
             gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -566,10 +543,10 @@ public class WorldObject : MonoBehaviour
                 SetSwimmingState((PL_MOVE_ANIM_STATE)animId);
             }
         }
-        else
+        else // Normal movement.
         {
             gameObject.GetComponent<Rigidbody>().useGravity = true;
-            if (animState != (PL_MOVE_ANIM_STATE)animId || (PL_MOVE_ANIM_STATE)animId == PL_MOVE_ANIM_STATE.PL_JUMP || (PL_MOVE_ANIM_STATE)animId == PL_MOVE_ANIM_STATE.PL_STAND_JUMP)
+            if (animState != (PL_MOVE_ANIM_STATE)animId || (PL_MOVE_ANIM_STATE)animId == PL_MOVE_ANIM_STATE.PL_JUMP || (PL_MOVE_ANIM_STATE)animId == PL_MOVE_ANIM_STATE.PL_STAND_JUMP || isNew)
             {
                 if ((PL_MOVE_ANIM_STATE)animId == PL_MOVE_ANIM_STATE.PL_IDLE)
                 {

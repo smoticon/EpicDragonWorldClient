@@ -171,12 +171,9 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
                 animController.SetBool("IsSwimmingIdle", false);
-                if (curMoveState != mState || !animController.GetBool("IsSwimming"))
-                {
-                    animController.Play("Swimming");
-                    animController.SetBool("IsSwimming", true);
-                    curMoveState = mState;
-                }
+                animController.Play("Swimming");
+                animController.SetBool("IsSwimming", true);
+                curMoveState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_W:
@@ -194,12 +191,9 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
-                if (curMoveState != mState || !animController.GetBool("IsSwimming"))
-                {
-                    animController.Play("Swimming");
-                    animController.SetBool("IsSwimming", true);
-                    curMoveState = mState;
-                }
+                animController.Play("Swimming");
+                animController.SetBool("IsSwimming", true);
+                curMoveState = mState;
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_IDLE:
@@ -217,12 +211,9 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
                 animController.SetBool("IsSwimming", false);
-                if (curMoveState != mState || !animController.GetBool("IsSwimmingIdle"))
-                {
-                    animController.Play("Treading Water");
-                    animController.SetBool("IsSwimmingIdle", true);
-                    curMoveState = mState;
-                }
+                animController.Play("Treading Water");
+                animController.SetBool("IsSwimmingIdle", true);
+                curMoveState = mState;
                 break;
 
             default:
@@ -240,12 +231,9 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
                 animController.SetBool("IsSwimmingIdle", false);
-                if (curMoveState != mState || !animController.GetBool("IsSwimming"))
-                {
-                    animController.Play("Swimming");
-                    animController.SetBool("IsSwimming", true);
-                    curMoveState = mState;
-                }
+                animController.Play("Swimming");
+                animController.SetBool("IsSwimming", true);
+                curMoveState = mState;
                 break;
         }
     }
@@ -271,11 +259,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
-                if (curMoveState != mState || !animController.GetBool("IsW"))
-                {
-                    animController.Play("W");
-                    animController.SetBool("IsW", true);
-                }
+                animController.Play("W");
+                animController.SetBool("IsW", true);
                 curMoveState = mState;
                 break;
 
@@ -292,11 +277,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
-                if (curMoveState != mState || !animController.GetBool("IsWalkingBackwards"))
-                {
-                    animController.Play("Walking Backward");
-                    animController.SetBool("IsWalkingBackwards", true);
-                }
+                animController.Play("Walking Backward");
+                animController.SetBool("IsWalkingBackwards", true);
                 curMoveState = mState;
                 break;
 
@@ -313,11 +295,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSW", false);
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsNW", false);
-                if (curMoveState != mState || !animController.GetBool("IsE"))
-                {
-                    animController.Play("E");
-                    animController.SetBool("IsE", true);
-                }
+                animController.Play("E");
+                animController.SetBool("IsE", true);
                 curMoveState = mState;
                 break;
 
@@ -338,12 +317,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
-                if (curMoveState != mState || !animController.GetBool("IsRunning"))
-                {
-                    animController.Play("Run");
-                    animController.SetBool("IsRunning", true);
-
-                }
+                animController.Play("Run");
+                animController.SetBool("IsRunning", true);
                 curMoveState = mState;
                 break;
 
@@ -360,11 +335,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSW", false);
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsE", false);
-                if (curMoveState != mState || !animController.GetBool("IsNW"))
-                {
-                    animController.Play("NW1");
-                    animController.SetBool("IsNW", true);
-                }
+                animController.Play("NW1");
+                animController.SetBool("IsNW", true);
                 curMoveState = mState;
                 break;
 
@@ -381,11 +353,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", true);
-                if (curMoveState != mState || !animController.GetBool("IsNE"))
-                {
-                    animController.Play("NE");
-                    animController.SetBool("IsNE", true);
-                }
+                animController.Play("NE");
+                animController.SetBool("IsNE", true);
                 curMoveState = mState;
                 break;
 
@@ -402,12 +371,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSW", false);
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
-                if (curMoveState != mState || !animController.GetBool("IsSE"))
-                {
-                    animController.Play("SE");
-                    animController.SetBool("IsSE", true);
-
-                }
+                animController.Play("SE");
+                animController.SetBool("IsSE", true);
                 curMoveState = mState;
                 break;
 
@@ -424,11 +389,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsSE", false);
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
-                if (curMoveState != mState || !animController.GetBool("IsSW"))
-                {
-                    animController.Play("SW");
-                    animController.SetBool("IsSW", true);
-                }
+                animController.Play("SW");
+                animController.SetBool("IsSW", true);
                 curMoveState = mState;
                 break;
 
