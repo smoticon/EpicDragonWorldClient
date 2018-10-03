@@ -120,6 +120,11 @@ public class AuthenticationManager : MonoBehaviour
                     authenticating = false;
                     break;
 
+                case 7:
+                    messageText.text = "Server is not available.";
+                    authenticating = false;
+                    break;
+
                 case 100:
                     messageText.text = "Authenticated.";
                     authenticating = false;
