@@ -75,7 +75,7 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    public void UpdateObject(long objectId, int classId, float posX, float posY, float posZ, float heading)
+    public void UpdateObject(long objectId, int classId, string name, float posX, float posY, float posZ, float heading)
     {
         // Check for existing objects.
         foreach (GameObject gameObject in gameObjects)
@@ -97,8 +97,6 @@ public class WorldManager : MonoBehaviour
         // Object does not exist. Instantiate.
         GameObject obj = Instantiate(GameObjectManager.instance.gameObjectList[classId], position, Quaternion.identity) as GameObject;
 
-        // TODO: Proper appearance.
-
         // Assign object id.
         obj.AddComponent<WorldObject>();
         obj.GetComponent<WorldObject>().objectId = objectId;
@@ -115,6 +113,10 @@ public class WorldManager : MonoBehaviour
         curvAngle.y = heading;
         curHeading.eulerAngles = curvAngle;
         transform.localRotation = curHeading;
+
+		// TODO: Show name.
+
+        // TODO: Proper appearance.
 
         // Add to game object list.
         gameObjects.Add(obj);
