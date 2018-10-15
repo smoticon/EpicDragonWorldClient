@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            gameObject.GetComponent<PlayerAnimationController>().SetMoveState(playerMoveState);
+            gameObject.GetComponent<PlayerAnimationController>().SetAnimState(playerMoveState);
             if (NetworkManager.instance != null && (Vector2.Distance(new Vector2(oldX, oldZ), new Vector2(transform.position.x, transform.position.z)) > 0.2f || Mathf.Abs(oldYAngle - transform.localRotation.eulerAngles.y) > 3f) && Grounded())
             {
                 NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y, (int)playerMoveState, isInsideWater));
@@ -390,7 +390,7 @@ public class PlayerController : MonoBehaviour
             isInsideWater = true;
             if (NetworkManager.instance != null)
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().animState, isInsideWater));
             }
         }
     }
@@ -406,7 +406,7 @@ public class PlayerController : MonoBehaviour
             isInsideWater = false;
             if (NetworkManager.instance != null)
             {
-                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().curMoveState, isInsideWater));
+                NetworkManager.instance.ChannelSend(new LocationUpdate(transform.position.x, transform.position.y, transform.position.z, gameObject.transform.localRotation.eulerAngles.y, (int)gameObject.GetComponent<PlayerAnimationController>().animState, isInsideWater));
             }
         }
     }

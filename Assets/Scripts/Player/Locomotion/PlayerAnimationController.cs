@@ -1,21 +1,187 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 /**
- * @author DaeChol
- */
+* @author Pantelis Andrianakis
+*/
 public class PlayerAnimationController : MonoBehaviour
 {
     public Animator animController;
     public bool isJump = false;
-    public PL_MOVE_ANIM_STATE curMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
     float jumpDelayTime = 0.7f;
+    public PL_MOVE_ANIM_STATE animState = PL_MOVE_ANIM_STATE.PL_IDLE;
 
     private void Start()
     {
         if (animController == null)
         {
             animController = transform.gameObject.GetComponent<Animator>();
+        }
+    }
+
+    public void SetAnimState(PL_MOVE_ANIM_STATE mState)
+    {
+        switch (mState)
+        {
+            case PL_MOVE_ANIM_STATE.PL_A:
+                if (isJump)
+                {
+                    return;
+                }
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("W");
+                animController.SetBool("IsW", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_S:
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("Walking Backward");
+                animController.SetBool("IsWalkingBackwards", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_D:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("E");
+                animController.SetBool("IsE", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_W:
+                if (isJump)
+                {
+                    return;
+                }
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("Run");
+                animController.SetBool("IsRunning", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_AW:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.Play("NW1");
+                animController.SetBool("IsNW", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_WD:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("NE");
+                animController.SetBool("IsNE", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_DS:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("SE");
+                animController.SetBool("IsSE", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_SA:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("SW");
+                animController.SetBool("IsSW", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_IDLE:
+                StopMoving();
+                break;
+
+            default:
+                StopMoving();
+                break;
         }
     }
 
@@ -39,7 +205,7 @@ public class PlayerAnimationController : MonoBehaviour
         animController.SetBool("IsE", false);
         animController.SetBool("IsNW", false);
         animController.Play("Run");
-        curMoveState = PL_MOVE_ANIM_STATE.PL_W;
+        animState = PL_MOVE_ANIM_STATE.PL_W;
     }
 
     public void MoveBackWards()
@@ -62,7 +228,93 @@ public class PlayerAnimationController : MonoBehaviour
         animController.SetBool("IsE", false);
         animController.SetBool("IsNW", false);
         animController.Play("Walking Backward");
-        curMoveState = PL_MOVE_ANIM_STATE.PL_S;
+        animState = PL_MOVE_ANIM_STATE.PL_S;
+    }
+
+    public void SetSwimmingState(PL_MOVE_ANIM_STATE mState)
+    {
+        switch (mState)
+        {
+            case PL_MOVE_ANIM_STATE.PL_S:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.SetBool("IsSwimmingIdle", false);
+                animController.Play("Swimming");
+                animController.SetBool("IsSwimming", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_W:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsSwimmingIdle", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.Play("Swimming");
+                animController.SetBool("IsSwimming", true);
+                animState = mState;
+                break;
+
+            case PL_MOVE_ANIM_STATE.PL_IDLE:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.SetBool("IsSwimming", false);
+                animController.Play("Treading Water");
+                animController.SetBool("IsSwimmingIdle", true);
+                animState = mState;
+                break;
+
+            default:
+                animController.SetBool("IsWalkingBackwards", false);
+                animController.SetBool("IsIdle", false);
+                animController.SetBool("IsStandingJump", false);
+                animController.SetBool("IsFarJump", false);
+                animController.SetBool("IsRightTurning", false);
+                animController.SetBool("IsLeftTurning", false);
+                animController.SetBool("IsRunning", false);
+                animController.SetBool("IsNE", false);
+                animController.SetBool("IsW", false);
+                animController.SetBool("IsSW", false);
+                animController.SetBool("IsSE", false);
+                animController.SetBool("IsE", false);
+                animController.SetBool("IsNW", false);
+                animController.SetBool("IsSwimmingIdle", false);
+                animController.Play("Swimming");
+                animController.SetBool("IsSwimming", true);
+                animState = mState;
+                break;
+        }
     }
 
     public void StopMoving()
@@ -83,9 +335,9 @@ public class PlayerAnimationController : MonoBehaviour
         animController.SetBool("IsSE", false);
         animController.SetBool("IsE", false);
         animController.SetBool("IsNW", false);
-        if (curMoveState != PL_MOVE_ANIM_STATE.PL_IDLE || !animController.GetBool("IsIdle"))
+        if (animState != PL_MOVE_ANIM_STATE.PL_IDLE || !animController.GetBool("IsIdle"))
         {
-            if (curMoveState == PL_MOVE_ANIM_STATE.PL_W)
+            if (animState == PL_MOVE_ANIM_STATE.PL_W)
             {
                 animController.Play("Standing Run Forward Stop");
             }
@@ -95,7 +347,7 @@ public class PlayerAnimationController : MonoBehaviour
             }
             animController.SetBool("IsIdle", true);
         }
-        curMoveState = PL_MOVE_ANIM_STATE.PL_IDLE;
+        animState = PL_MOVE_ANIM_STATE.PL_IDLE;
     }
 
     private IEnumerator StopMovement()
@@ -132,7 +384,7 @@ public class PlayerAnimationController : MonoBehaviour
         StartCoroutine("StopJumping");
     }
 
-    private IEnumerator StopJumping()
+    private IEnumerator StopJump()
     {
         if (animController.GetBool("IsStandingJump"))
         {
@@ -143,264 +395,12 @@ public class PlayerAnimationController : MonoBehaviour
             jumpDelayTime = 0.5f;
         }
         yield return new WaitForSeconds(jumpDelayTime);
-        isJump = false;
         animController.SetBool("IsWalkingBackwards", false);
         animController.SetBool("IsStandingJump", false);
         animController.SetBool("IsFarJump", false);
         animController.SetBool("IsRightTurning", false);
         animController.SetBool("IsLeftTurning", false);
         animController.SetBool("IsRunning", false);
-    }
-
-    public void SetSwimmingState(PL_MOVE_ANIM_STATE mState)
-    {
-        switch (mState)
-        {
-            case PL_MOVE_ANIM_STATE.PL_S:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.SetBool("IsSwimmingIdle", false);
-                animController.Play("Swimming");
-                animController.SetBool("IsSwimming", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_W:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsSwimmingIdle", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("Swimming");
-                animController.SetBool("IsSwimming", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_IDLE:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.SetBool("IsSwimming", false);
-                animController.Play("Treading Water");
-                animController.SetBool("IsSwimmingIdle", true);
-                curMoveState = mState;
-                break;
-
-            default:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.SetBool("IsSwimmingIdle", false);
-                animController.Play("Swimming");
-                animController.SetBool("IsSwimming", true);
-                curMoveState = mState;
-                break;
-        }
-    }
-
-    public void SetMoveState(PL_MOVE_ANIM_STATE mState)
-    {
-        switch (mState)
-        {
-            case PL_MOVE_ANIM_STATE.PL_A:
-                if (isJump)
-                {
-                    return;
-                }
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("W");
-                animController.SetBool("IsW", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_S:
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("Walking Backward");
-                animController.SetBool("IsWalkingBackwards", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_D:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("E");
-                animController.SetBool("IsE", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_W:
-                if (isJump)
-                {
-                    return;
-                }
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("Run");
-                animController.SetBool("IsRunning", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_AW:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.Play("NW1");
-                animController.SetBool("IsNW", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_WD:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", true);
-                animController.Play("NE");
-                animController.SetBool("IsNE", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_DS:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("SE");
-                animController.SetBool("IsSE", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_SA:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("SW");
-                animController.SetBool("IsSW", true);
-                curMoveState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_IDLE:
-                StopMoving();
-                break;
-
-            default:
-                StopMoving();
-                break;
-        }
+        isJump = false;
     }
 }
