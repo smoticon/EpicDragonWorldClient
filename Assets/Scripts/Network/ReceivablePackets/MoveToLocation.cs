@@ -11,7 +11,7 @@ public class MoveToLocation
         float posZ = packet.ReadFloat();
         float heading = packet.ReadFloat();
         int animState = packet.ReadShort();
-        int waterState = packet.ReadShort();
+        int waterState = packet.ReadByte();
         WorldManager.instance.MoveObject(objectId, posX, posY, posZ, heading, animState, waterState);
     }
 }

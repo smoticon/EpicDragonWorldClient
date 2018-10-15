@@ -361,7 +361,7 @@ public class PlayerController : MonoBehaviour
     {
         if (jumpDelay >= 0.13f && velocity.z <= 3.5f) // Jump on spot.
         {
-            gameObject.GetComponent<PlayerAnimationController>().Jump(false);
+            gameObject.GetComponent<PlayerAnimationController>().SetAnimState(PL_MOVE_ANIM_STATE.PL_STAND_JUMP);
             jumpDelay = 0;
             if (NetworkManager.instance != null)
             {
@@ -370,7 +370,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (jumpDelay >= 0.15f && velocity.z > 3.5f) // Moving jump.
         {
-            gameObject.GetComponent<PlayerAnimationController>().Jump(true);
+            gameObject.GetComponent<PlayerAnimationController>().SetAnimState(PL_MOVE_ANIM_STATE.PL_JUMP);
             jumpDelay = 0;
             if (NetworkManager.instance != null)
             {

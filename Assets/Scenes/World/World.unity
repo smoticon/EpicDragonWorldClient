@@ -732,7 +732,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animController: {fileID: 0}
   isJump: 0
-  curMoveState: 29
+  animState: 29
 --- !u!54 &760237085
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1365,7 +1365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 2.0000262, y: 0.000015258789}
+  m_AnchoredPosition: {x: 2.0000262, y: -0.000015258789}
   m_SizeDelta: {x: -2, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1628341724
@@ -1797,7 +1797,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 472806059}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2692,7 +2692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animController: {fileID: 0}
   isJump: 0
-  curMoveState: 29
+  animState: 29
 --- !u!1 &2116095776
 GameObject:
   m_ObjectHideFlags: 0

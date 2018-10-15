@@ -3,7 +3,7 @@
 */
 public class LocationUpdate : SendablePacket
 {
-    public LocationUpdate(float posX, float posY, float posZ, float heading, int animState, bool isWater)
+    public LocationUpdate(float posX, float posY, float posZ, float heading, int animState, bool isInsideWater)
     {
         WriteShort(8); // Packet id.
         WriteDouble(posX); // TODO: WriteFloat
@@ -11,13 +11,6 @@ public class LocationUpdate : SendablePacket
         WriteDouble(posZ); // TODO: WriteFloat
         WriteDouble(heading); // TODO: WriteFloat
         WriteShort(animState);
-        if(isWater)
-        {
-            WriteShort(1);
-        }
-        else
-        {
-            WriteShort(0);
-        }
+        WriteByte(isInsideWater ? 1 : 0);
     }
 }

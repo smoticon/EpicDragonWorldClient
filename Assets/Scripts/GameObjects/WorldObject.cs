@@ -9,11 +9,11 @@ public class WorldObject : MonoBehaviour
     public long objectId;
     private bool isNew = true; // Used to avoid animation stuck on idle, when new moving object is entering visibily radius.
     private bool isJump = false;
+    private int currentWaterState = 0;
     private Vector3 targetPos;
     private Animator animController;
     private float forwardVel = 4f;
     private float jumpDelayTime = 0.7f;
-    private int isWater = 0;
     private PL_MOVE_ANIM_STATE animState = PL_MOVE_ANIM_STATE.PL_IDLE;
 
     private void Start()
@@ -51,18 +51,18 @@ public class WorldObject : MonoBehaviour
         }
         else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) < 0.1f && (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !animController.GetBool("IsIdle")))
         {
-            if (isWater > 0)
+            if (currentWaterState > 0)
             {
-                StopSwimming();
+                SetSwimmingState(PL_MOVE_ANIM_STATE.PL_IDLE);
             }
-            else if (!isJump)
+            else
             {
-                StopMoving();
+                SetAnimState(PL_MOVE_ANIM_STATE.PL_IDLE);
             }
         }
     }
 
-    public void PlayAnimation(Vector3 movePos, float heading, int animId, int wState)
+    public void PlayAnimation(Vector3 movePos, float heading, int animId, int waterState)
     {
         targetPos = movePos;
         // Heading.
@@ -78,9 +78,9 @@ public class WorldObject : MonoBehaviour
             }
         }
         // Water.
-        if (isWater != wState)
+        if (currentWaterState != waterState)
         {
-            if (wState > 0)
+            if (waterState > 0)
             {
                 SetSwimmingState(PL_MOVE_ANIM_STATE.PL_IDLE);
             }
@@ -89,8 +89,8 @@ public class WorldObject : MonoBehaviour
                 SetAnimState(PL_MOVE_ANIM_STATE.PL_IDLE);
             }
         }
-        isWater = wState;
-        if (wState > 0)
+        currentWaterState = waterState;
+        if (waterState > 0)
         {
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             if ((PL_MOVE_ANIM_STATE)animId == PL_MOVE_ANIM_STATE.PL_IDLE)
@@ -193,11 +193,6 @@ public class WorldObject : MonoBehaviour
                 break;
 
             case PL_MOVE_ANIM_STATE.PL_W:
-                if (isJump)
-                {
-                    return;
-                }
-                transform.LookAt(targetPos);
                 animController.SetBool("IsWalkingBackwards", false);
                 animController.SetBool("IsIdle", false);
                 animController.SetBool("IsStandingJump", false);
@@ -297,36 +292,6 @@ public class WorldObject : MonoBehaviour
                 animState = mState;
                 break;
 
-            case PL_MOVE_ANIM_STATE.PL_IDLE:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.SetBool("IsSwimming", false);
-                animController.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !animController.GetBool("IsIdle"))
-                {
-                    if (animState == PL_MOVE_ANIM_STATE.PL_W)
-                    {
-                        animController.Play("Standing Run Forward Stop");
-                    }
-                    else
-                    {
-                        animController.Play("Idle");
-                        animController.SetBool("IsIdle", true);
-                    }
-                    animState = mState;
-                }
-                break;
-
             case PL_MOVE_ANIM_STATE.PL_JUMP:
                 if (isJump)
                 {
@@ -379,7 +344,12 @@ public class WorldObject : MonoBehaviour
                 StartCoroutine("StopJump");
                 break;
 
+            case PL_MOVE_ANIM_STATE.PL_IDLE:
             default:
+                if (animController == null)
+                {
+                    return;
+                }
                 animController.SetBool("IsWalkingBackwards", false);
                 animController.SetBool("IsStandingJump", false);
                 animController.SetBool("IsFarJump", false);
@@ -394,19 +364,9 @@ public class WorldObject : MonoBehaviour
                 animController.SetBool("IsNW", false);
                 animController.SetBool("IsSwimming", false);
                 animController.SetBool("IsSwimmingIdle", false);
-                if (animState != mState || !animController.GetBool("IsIdle"))
-                {
-                    if (animState == PL_MOVE_ANIM_STATE.PL_W)
-                    {
-                        animController.Play("Standing Run Forward Stop");
-                    }
-                    else
-                    {
-                        animController.Play("Idle");
-                        animController.SetBool("IsIdle", true);
-                    }
-                    animState = PL_MOVE_ANIM_STATE.PL_IDLE;
-                }
+                animController.SetBool("IsIdle", true);
+                // animController.Play("Idle");
+                animState = PL_MOVE_ANIM_STATE.PL_IDLE;
                 break;
         }
     }
@@ -495,52 +455,6 @@ public class WorldObject : MonoBehaviour
                 animState = mState;
                 break;
         }
-    }
-
-    private void StopMoving()
-    {
-        if (animController.GetBool("IsRunning"))
-        {
-            animController.Play("Standing Run Forward Stop");
-        }
-        else
-        {
-            animController.Play("Idle");
-        }
-        animController.SetBool("IsWalkingBackwards", false);
-        animController.SetBool("IsIdle", true);
-        animController.SetBool("IsStandingJump", false);
-        animController.SetBool("IsFarJump", false);
-        animController.SetBool("IsRightTurning", false);
-        animController.SetBool("IsLeftTurning", false);
-        animController.SetBool("IsRunning", false);
-        animController.SetBool("IsNE", false);
-        animController.SetBool("IsW", false);
-        animController.SetBool("IsSW", false);
-        animController.SetBool("IsSE", false);
-        animController.SetBool("IsE", false);
-        animController.SetBool("IsNW", false);
-        animState = PL_MOVE_ANIM_STATE.PL_IDLE;
-    }
-
-    private void StopSwimming()
-    {
-        animController.SetBool("IsWalkingBackwards", false);
-        animController.SetBool("IsIdle", false);
-        animController.SetBool("IsStandingJump", false);
-        animController.SetBool("IsFarJump", false);
-        animController.SetBool("IsRightTurning", false);
-        animController.SetBool("IsLeftTurning", false);
-        animController.SetBool("IsRunning", false);
-        animController.SetBool("IsNE", false);
-        animController.SetBool("IsW", false);
-        animController.SetBool("IsSW", false);
-        animController.SetBool("IsSE", false);
-        animController.SetBool("IsE", false);
-        animController.SetBool("IsNW", false);
-        animController.Play("Treading Water");
-        animController.SetBool("IsSwimmingIdle", true);
-        animState = PL_MOVE_ANIM_STATE.PL_IDLE;
     }
 
     private IEnumerator StopJump()
