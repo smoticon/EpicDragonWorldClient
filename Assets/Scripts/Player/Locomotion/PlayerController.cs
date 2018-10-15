@@ -385,7 +385,6 @@ public class PlayerController : MonoBehaviour
         {
             Animator anim = gameObject.GetComponent<Animator>();
             anim.SetBool("IsSwimming", true);
-            anim.Play("Swimming");
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             isInsideWater = true;
             if (NetworkManager.instance != null)

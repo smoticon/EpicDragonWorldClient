@@ -286,28 +286,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
                 animController.SetBool("IsSwimmingIdle", false);
-                animController.Play("Swimming");
                 animController.SetBool("IsSwimming", true);
-                animState = mState;
-                break;
-
-            case PL_MOVE_ANIM_STATE.PL_W:
-                animController.SetBool("IsWalkingBackwards", false);
-                animController.SetBool("IsIdle", false);
-                animController.SetBool("IsStandingJump", false);
-                animController.SetBool("IsFarJump", false);
-                animController.SetBool("IsRightTurning", false);
-                animController.SetBool("IsLeftTurning", false);
-                animController.SetBool("IsRunning", false);
-                animController.SetBool("IsSwimmingIdle", false);
-                animController.SetBool("IsNE", false);
-                animController.SetBool("IsW", false);
-                animController.SetBool("IsSW", false);
-                animController.SetBool("IsSE", false);
-                animController.SetBool("IsE", false);
-                animController.SetBool("IsNW", false);
-                animController.Play("Swimming");
-                animController.SetBool("IsSwimming", true);
+                // animController.Play("Swimming");
                 animState = mState;
                 break;
 
@@ -326,11 +306,12 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
                 animController.SetBool("IsSwimming", false);
-                animController.Play("Treading Water");
                 animController.SetBool("IsSwimmingIdle", true);
+                // animController.Play("Treading Water");
                 animState = mState;
                 break;
 
+            case PL_MOVE_ANIM_STATE.PL_W:
             default:
                 animController.SetBool("IsWalkingBackwards", false);
                 animController.SetBool("IsIdle", false);
@@ -346,8 +327,8 @@ public class PlayerAnimationController : MonoBehaviour
                 animController.SetBool("IsE", false);
                 animController.SetBool("IsNW", false);
                 animController.SetBool("IsSwimmingIdle", false);
-                animController.Play("Swimming");
                 animController.SetBool("IsSwimming", true);
+                // animController.Play("Swimming");
                 animState = mState;
                 break;
         }
