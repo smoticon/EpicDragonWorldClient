@@ -34,7 +34,7 @@ public class WorldObject : MonoBehaviour
         isNew = false;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) >= 0.1f)
         {
