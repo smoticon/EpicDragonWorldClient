@@ -49,7 +49,7 @@ public class WorldObject : MonoBehaviour
             float step = forwardVel * Time.deltaTime;
             gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, targetPos, step));
         }
-        else if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) < 0.1f && (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !animController.GetBool("IsIdle")))
+        else if (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !animController.GetBool("IsIdle"))
         {
             if (currentWaterState > 0)
             {
