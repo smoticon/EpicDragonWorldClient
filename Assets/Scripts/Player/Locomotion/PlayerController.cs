@@ -92,9 +92,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        GetInput();
-        Turn();
-
         // Hide the mouse.
         if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
         {
@@ -122,36 +119,10 @@ public class PlayerController : MonoBehaviour
         {
             Application.Quit();
         }
-    }
 
-    private void GetInput()
-    {
-        forwardInput = Input.GetAxis(inputSetting.FORWARD_AXIS); // Interpolated.
-        turnInput = Input.GetAxis(inputSetting.TURN_AXIS); // Interpolated.
-        jumpInput = Input.GetAxisRaw(inputSetting.JUMP_AXIS); // Non-interpolated.
+        GetInput();
+        Turn();
 
-        // Movement lock.
-        if (Input.GetKeyDown(KeyCode.Numlock) || Input.GetMouseButtonDown(3))
-        {
-            movementLock = !movementLock;
-        }
-        if (forwardInput < 0 || (Input.GetMouseButton(0) && Input.GetMouseButton(1)))
-        {
-            movementLock = false;
-        }
-
-        if (Input.GetMouseButton(1) && turnInput != 0)
-        {
-            sideWalking = true;
-        }
-        else
-        {
-            sideWalking = false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
         Run();
         Jump();
 
@@ -207,6 +178,32 @@ public class PlayerController : MonoBehaviour
             {
                 FootstepAudioSource.PlayOneShot(FootstepSounds[0], 1f);
             }
+        }
+    }
+
+    private void GetInput()
+    {
+        forwardInput = Input.GetAxis(inputSetting.FORWARD_AXIS); // Interpolated.
+        turnInput = Input.GetAxis(inputSetting.TURN_AXIS); // Interpolated.
+        jumpInput = Input.GetAxisRaw(inputSetting.JUMP_AXIS); // Non-interpolated.
+
+        // Movement lock.
+        if (Input.GetKeyDown(KeyCode.Numlock) || Input.GetMouseButtonDown(3))
+        {
+            movementLock = !movementLock;
+        }
+        if (forwardInput < 0 || (Input.GetMouseButton(0) && Input.GetMouseButton(1)))
+        {
+            movementLock = false;
+        }
+
+        if (Input.GetMouseButton(1) && turnInput != 0)
+        {
+            sideWalking = true;
+        }
+        else
+        {
+            sideWalking = false;
         }
     }
 
@@ -328,7 +325,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (ChatBoxManager.instance.isFocused)
+        if (ChatBoxManager.instance.isFocused || isInsideWater)
         {
             return;
         }
@@ -341,19 +338,13 @@ public class PlayerController : MonoBehaviour
         }
         else if (jumpInput == 0 && Grounded())
         {
-            if (!isInsideWater)
-            {
-                // Zero out velocity.y
-                velocity.y = 0;
-            }
+            // Zero out velocity.y
+            velocity.y = 0;
         }
         else
         {
             // Decrease velocity.y
-            if (!isInsideWater)
-            {
-                velocity.y -= physSetting.downAccel;
-            }
+            velocity.y -= physSetting.downAccel;
         }
     }
 

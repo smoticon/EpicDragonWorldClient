@@ -12,7 +12,7 @@ public class WorldObject : MonoBehaviour
     private int currentWaterState = 0;
     private Vector3 targetPos;
     private Animator animController;
-    private float forwardVel = 4f;
+    private float forwardVel = 6f; // PlayerController forwardVel * 1.5 to sync players.
     private float jumpDelayTime = 0.7f;
     private PL_MOVE_ANIM_STATE animState = PL_MOVE_ANIM_STATE.PL_IDLE;
 
@@ -36,7 +36,7 @@ public class WorldObject : MonoBehaviour
 
     private void Update()
     {
-        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) >= 0.1f)
+        if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) > 0.2f)
         {
             if (animState == PL_MOVE_ANIM_STATE.PL_W)
             {
