@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 95480666412506258}
   - component: {fileID: 136191986265470652}
   m_Layer: 0
-  m_Name: CharacterFemale
+  m_Name: PlayerFemale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

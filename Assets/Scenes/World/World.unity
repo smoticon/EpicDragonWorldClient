@@ -677,7 +677,7 @@ GameObject:
   - component: {fileID: 760237082}
   - component: {fileID: 760237083}
   m_Layer: 0
-  m_Name: CharacterMale
+  m_Name: PlayerMale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -730,8 +730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15676a16407b7df4caaaadf981391e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animController: {fileID: 0}
-  isJump: 0
   animState: 29
 --- !u!54 &760237085
 Rigidbody:
@@ -2483,7 +2481,7 @@ GameObject:
   - component: {fileID: 2104336903}
   - component: {fileID: 2104336909}
   m_Layer: 0
-  m_Name: CharacterFemale
+  m_Name: PlayerFemale
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2690,8 +2688,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15676a16407b7df4caaaadf981391e71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animController: {fileID: 0}
-  isJump: 0
   animState: 29
 --- !u!1 &2116095776
 GameObject:
