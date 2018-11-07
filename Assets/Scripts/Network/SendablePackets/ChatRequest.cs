@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class ChatRequest : SendablePacket
 {
     public ChatRequest(string message)

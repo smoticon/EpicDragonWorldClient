@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class CharacterCreationRequest : SendablePacket
 {
     public CharacterCreationRequest(string name, int classId)

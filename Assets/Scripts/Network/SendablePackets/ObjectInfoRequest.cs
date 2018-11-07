@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class ObjectInfoRequest : SendablePacket
 {
     public ObjectInfoRequest(long objectId)

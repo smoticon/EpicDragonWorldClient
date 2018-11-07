@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 
 /**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class CharacterSelectionInfoResult
 {
     public static void notify(ReceivablePacket packet)

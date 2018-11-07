@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class LocationUpdate : SendablePacket
 {
     public LocationUpdate(float posX, float posY, float posZ, float heading, int animState, bool isInsideWater)

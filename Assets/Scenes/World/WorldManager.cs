@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Concurrent;
 using UnityEngine;
 
 /**
@@ -16,7 +16,7 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     public static WorldManager instance;
     [HideInInspector]
-    ArrayList gameObjects = ArrayList.Synchronized(new ArrayList());
+    BlockingCollection<GameObject> gameObjects = new BlockingCollection<GameObject>();
     [HideInInspector]
     private static readonly int visibilityRadius = 10000; // This is the maximum allowed visibility radius.
 
@@ -151,7 +151,7 @@ public class WorldManager : MonoBehaviour
     private void DeleteObject(GameObject gameObject)
     {
         // Remove from objects list.
-        gameObjects.Remove(gameObject);
+        gameObjects.TryTake(out gameObject);
 
         // Delete game object from world.
         Destroy(gameObject);

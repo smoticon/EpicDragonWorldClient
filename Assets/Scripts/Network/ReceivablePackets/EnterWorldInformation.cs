@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class EnterWorldInformation
 {
     public static void notify(ReceivablePacket packet)

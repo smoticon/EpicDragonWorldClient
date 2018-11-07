@@ -133,7 +133,7 @@ public class NetworkManager : MonoBehaviour
     {
         if (SocketConnected())
         {
-            socket.Send(Encryption.Encrypt(packet.GetSendableBytes()));
+            socket.Send(packet.GetSendableBytes());
         }
         else // Connection closed.
         {

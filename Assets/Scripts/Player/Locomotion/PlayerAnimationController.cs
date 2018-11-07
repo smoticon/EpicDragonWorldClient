@@ -2,8 +2,8 @@
 using UnityEngine;
 
 /**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class PlayerAnimationController : MonoBehaviour
 {
     private bool isJump = false;

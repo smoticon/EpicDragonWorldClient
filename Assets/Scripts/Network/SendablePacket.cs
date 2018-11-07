@@ -67,7 +67,7 @@ public class SendablePacket
         memoryStream.WriteByte((byte)(value >> 56));
     }
 
-    // TODO: WriteFloat (SingleToInt32Bits)
+    // TODO: Needs SingleToInt32Bits .Net support.
     // public void WriteFloat(float fvalue)
     // {
     // long value = BitConverter.SingleToInt32Bits(fvalue);
@@ -92,6 +92,21 @@ public class SendablePacket
 
     public byte[] GetSendableBytes()
     {
-        return memoryStream.ToArray();
+        // Encrypt bytes.
+        byte[] encryptedBytes = Encryption.Encrypt(memoryStream.ToArray());
+        int size = encryptedBytes.Length;
+
+        // Create two bytes for length (short - max length 32767).
+        byte[] lengthBytes = new byte[2];
+        lengthBytes[0] = (byte)(size & 0xff);
+        lengthBytes[1] = (byte)((size >> 8) & 0xff);
+
+        // Join bytes.
+        byte[] result = new byte[size + 2];
+        Array.Copy(lengthBytes, 0, result, 0, 2);
+        Array.Copy(encryptedBytes, 0, result, 2, size);
+
+        // Return the data.
+        return result;
     }
 }

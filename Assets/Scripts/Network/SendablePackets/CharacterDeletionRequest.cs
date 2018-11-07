@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class CharacterDeletionRequest : SendablePacket
 {
     public CharacterDeletionRequest(int slot)

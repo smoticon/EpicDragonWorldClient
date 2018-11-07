@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class CharacterSlotUpdate : SendablePacket
 {
     public CharacterSlotUpdate(int oldSlotId, int newSlotId)

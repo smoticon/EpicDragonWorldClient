@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class AccountAuthenticationRequest : SendablePacket
 {
     public AccountAuthenticationRequest(double clientVersion, string accountName, string password)

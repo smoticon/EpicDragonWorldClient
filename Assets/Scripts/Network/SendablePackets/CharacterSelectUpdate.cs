@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class CharacterSelectUpdate : SendablePacket
 {
     public CharacterSelectUpdate(int slot)

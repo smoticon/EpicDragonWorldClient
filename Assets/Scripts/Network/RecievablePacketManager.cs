@@ -1,6 +1,6 @@
 ﻿/**
-* @author Pantelis Andrianakis
-*/
+ * @author Pantelis Andrianakis
+ */
 public class RecievablePacketManager
 {
     public static void handle(ReceivablePacket packet)

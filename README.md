@@ -1,8 +1,8 @@
 # Epic Dragon World Client
-Unity3D/C# client that connects with Java/Netty server.
+Unity3D client that connects with .NET Core server.
 
 ## Progress
-- Connect to Java server.
+- Connect to .NET Core server.
 - Packet communication.
 - Network encryption.
 - Scene fader.
@@ -17,4 +17,4 @@ Unity3D/C# client that connects with Java/Netty server.
 UMA: [http://www.mediafire.com/file/qmua80jtfs9m8wd/UMA.zip](http://www.mediafire.com/file/qmua80jtfs9m8wd/UMA.zip)
 
 ### You can see the latest development progress on YouTube.
-[![Video demonstration](https://img.youtube.com/vi/I5hA0cYZCoE/0.jpg)](https://www.youtube.com/watch?v=I5hA0cYZCoE&list=PLNuit1aMUWTDRll1MGF7Cqn_lX-BqKpZn)
+[![Video demonstration](https://img.youtube.com/vi/e28z8jHUR-0/0.jpg)](https://www.youtube.com/watch?v=e28z8jHUR-0&index=3&list=PLNuit1aMUWTDRll1MGF7Cqn_lX-BqKpZn)
