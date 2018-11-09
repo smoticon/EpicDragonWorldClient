@@ -1,5 +1,6 @@
 ﻿/**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: December 29th 2017
  */
 public class CharacterCreationRequest : SendablePacket
 {

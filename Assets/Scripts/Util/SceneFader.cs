@@ -2,8 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /**
- * @author FlatTutorials
- * @URL https://www.assetstore.unity3d.com/en/#!/content/81753
+ * Author: FlatTutorials
+ * Date: December 25th 2017
+ * URL: https://www.assetstore.unity3d.com/en/#!/content/81753
  */
 public class SceneFader : MonoBehaviour
 {

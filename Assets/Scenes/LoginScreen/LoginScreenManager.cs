@@ -4,8 +4,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /**
- * @author ConflictedDev
- * @URL https://forum.unity.com/threads/tab-between-input-fields.263779/
+ * Author ConflictedDev
+ * Date: December 25th 2017
+ * URL: https://forum.unity.com/threads/tab-between-input-fields.263779/
  */
 public class LoginScreenManager : MonoBehaviour
 {

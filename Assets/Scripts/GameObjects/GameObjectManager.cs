@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 /**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: May 21st 2018
  */
 public class GameObjectManager : MonoBehaviour
 {

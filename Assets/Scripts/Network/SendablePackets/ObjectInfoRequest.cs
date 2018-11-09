@@ -1,5 +1,6 @@
 ﻿/**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: June 11th 2018
  */
 public class ObjectInfoRequest : SendablePacket
 {

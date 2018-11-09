@@ -5,7 +5,8 @@ using System.Text.RegularExpressions;
 using System.Collections;
 
 /**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: September 26th 2018
  */
 public class ChatBoxManager : MonoBehaviour
 {

@@ -2,7 +2,8 @@
 using UnityEngine;
 
 /**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: December 23rd 2017
  */
 public class DisclaimerManager : MonoBehaviour
 {

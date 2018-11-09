@@ -2,7 +2,8 @@
 using UnityEngine;
 
 /**
- * @author Pantelis Andrianakis, Abdallah Azzami
+ * Authors: Pantelis Andrianakis, Abdallah Azzami
+ * Date: July 24th 2018
  */
 public class PlayerController : MonoBehaviour
 {

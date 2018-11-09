@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 /**
- * @author Paintbrush
+ * Author: Paintbrush
+ * Date: July 24th 2018
  */
 public class CameraController : MonoBehaviour
 {

@@ -2,7 +2,8 @@
 using UnityEngine;
 
 /**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: June 11th 2018
  */
 public class WorldObject : MonoBehaviour
 {

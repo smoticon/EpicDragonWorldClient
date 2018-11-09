@@ -1,5 +1,6 @@
 ﻿/**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: May 18th 2018
  */
 public class EnterWorldRequest : SendablePacket
 {

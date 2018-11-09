@@ -2,7 +2,8 @@
 using UnityEngine.UI;
 
 /**
- * @author Pantelis Andrianakis
+ * Author: Pantelis Andrianakis
+ * Date: December 25th 2017
  */
 public class ButtonQuitGame : MonoBehaviour
 {
