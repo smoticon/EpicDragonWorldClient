@@ -92,7 +92,7 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        if (target != null && target.GetComponent<PlayerController>() != null && target.GetComponent<PlayerController>().isInsideWater && this.transform.position.y < 9f)
+        if (target != null && target.GetComponent<PlayerController>() != null && target.GetComponent<PlayerController>().isInsideWater && transform.position.y < 9f)
         {
             SetCameraState(false);
         }

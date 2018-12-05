@@ -35,7 +35,7 @@ public class WorldObject : MonoBehaviour
         isNew = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (Vector2.Distance(new Vector2(transform.position.x, transform.position.z), new Vector2(targetPos.x, targetPos.z)) > 0.2f)
         {
@@ -43,12 +43,13 @@ public class WorldObject : MonoBehaviour
             {
                 transform.LookAt(targetPos);
             }
-            Vector3 angle = transform.eulerAngles;
-            angle.x = 0;
-            angle.z = 0;
-            transform.eulerAngles = angle;
+            // Rotation.
+            // Vector3 angle = transform.eulerAngles;
+            // angle.x = 0;
+            // angle.z = 0;
+            // transform.eulerAngles = angle;
             float step = forwardVel * Time.deltaTime;
-            gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.MoveTowards(transform.position, targetPos, step));
+            gameObject.GetComponent<Rigidbody>().MovePosition(Vector3.Lerp(transform.position, targetPos, step));
         }
         else if (animState == PL_MOVE_ANIM_STATE.PL_IDLE && !animController.GetBool("IsIdle"))
         {
