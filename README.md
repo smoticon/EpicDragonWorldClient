@@ -20,6 +20,8 @@ Unity3D client that connects with .NET Core server.
 
 Standard Assets: [https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip](https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip)
 
+TextMesh Pro: [https://www.mediafire.com/file/cg2h7p6ivpq1t4r/TextMesh_Pro.zip](https://www.mediafire.com/file/cg2h7p6ivpq1t4r/TextMesh_Pro.zip)
+
 UMA: [https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip](https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip)
 
 
