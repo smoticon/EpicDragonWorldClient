@@ -4,17 +4,23 @@
  */
 public class PlayerInformation
 {
-    public static void notify(ReceivablePacket packet)
+    public static void Notify(ReceivablePacket packet)
     {
         long objectId = packet.ReadLong();
-        int classId = packet.ReadShort();
-        string name = packet.ReadString();
-        float posX = packet.ReadFloat();
-        float posY = packet.ReadFloat();
-        float posZ = packet.ReadFloat();
-        float heading = packet.ReadFloat();
-        //TODO: Manage PlayerInformation
+        CharacterDataHolder characterData = new CharacterDataHolder();
+        characterData.SetName(packet.ReadString());
+        characterData.SetRace((byte)packet.ReadByte());
+        characterData.SetHeight(packet.ReadFloat());
+        characterData.SetBelly(packet.ReadFloat());
+        characterData.SetHairType((byte)packet.ReadByte());
+        characterData.SetHairColor(packet.ReadInt());
+        characterData.SetSkinColor(packet.ReadInt());
+        characterData.SetEyeColor(packet.ReadInt());
+        characterData.SetX(packet.ReadFloat());
+        characterData.SetY(packet.ReadFloat());
+        characterData.SetZ(packet.ReadFloat());
+        characterData.SetHeading(packet.ReadFloat());
 
-        WorldManager.instance.UpdateObject(objectId, classId, name, posX, posY, posZ, heading);
+        WorldManager.Instance.UpdateObject(objectId, characterData);
     }
 }

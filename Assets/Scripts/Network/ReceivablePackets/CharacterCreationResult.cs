@@ -4,8 +4,8 @@
  */
 public class CharacterCreationResult
 {
-    public static void notify(ReceivablePacket packet)
+    public static void Notify(ReceivablePacket packet)
     {
-        CharacterCreationManager.instance.creationResult = packet.ReadByte();
+        CharacterCreationManager.Instance.creationResult = packet.ReadByte();
     }
 }

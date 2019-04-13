@@ -4,8 +4,8 @@
  */
 public class CharacterDeletionResult
 {
-    public static void notify(ReceivablePacket packet)
+    public static void Notify(ReceivablePacket packet)
     {
-        CharacterSelectionManager.instance.waitingServer = false;
+        CharacterSelectionManager.Instance.waitingServer = false;
     }
 }

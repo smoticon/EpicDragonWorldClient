@@ -4,10 +4,16 @@
  */
 public class CharacterCreationRequest : SendablePacket
 {
-    public CharacterCreationRequest(string name, int classId)
+    public CharacterCreationRequest(CharacterDataHolder dataHolder)
     {
         WriteShort(3); // Packet id.
-        WriteString(name);
-        WriteByte(classId);
+        WriteString(dataHolder.GetName());
+        WriteByte(dataHolder.GetRace());
+        WriteFloat(dataHolder.GetHeight());
+        WriteFloat(dataHolder.GetBelly());
+        WriteByte(dataHolder.GetHairType());
+        WriteInt(dataHolder.GetHairColor());
+        WriteInt(dataHolder.GetSkinColor());
+        WriteInt(dataHolder.GetEyeColor());
     }
 }

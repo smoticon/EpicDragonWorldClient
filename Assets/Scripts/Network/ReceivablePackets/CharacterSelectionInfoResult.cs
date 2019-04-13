@@ -6,11 +6,10 @@
  */
 public class CharacterSelectionInfoResult
 {
-    public static void notify(ReceivablePacket packet)
+    public static void Notify(ReceivablePacket packet)
     {
         // Get player list size.
         int listSize = packet.ReadByte();
-
         // Read the data.
         ArrayList characterList = new ArrayList(listSize);
         for (int i = 0; i < listSize; i++)
@@ -19,8 +18,13 @@ public class CharacterSelectionInfoResult
             characterData.SetName(packet.ReadString());
             characterData.SetSlot((byte)packet.ReadByte());
             characterData.SetSelected(packet.ReadByte() == 1 ? true : false);
-            characterData.SetClassId((byte)packet.ReadByte());
-            characterData.SetLocationName(packet.ReadString());
+            characterData.SetRace((byte)packet.ReadByte());
+            characterData.SetHeight(packet.ReadFloat());
+            characterData.SetBelly(packet.ReadFloat());
+            characterData.SetHairType(packet.ReadByte());
+            characterData.SetHairColor(packet.ReadInt());
+            characterData.SetSkinColor(packet.ReadInt());
+            characterData.SetEyeColor(packet.ReadInt());
             characterData.SetX(packet.ReadFloat());
             characterData.SetY(packet.ReadFloat());
             characterData.SetZ(packet.ReadFloat());
@@ -33,9 +37,9 @@ public class CharacterSelectionInfoResult
         }
 
         // Send the data.
-        PlayerManager.instance.characterList = characterList;
+        MainManager.Instance.characterList = characterList;
 
         // Enable player selection.
-        CharacterSelectionManager.instance.waitingServer = false;
+        CharacterSelectionManager.Instance.waitingServer = false;
     }
 }

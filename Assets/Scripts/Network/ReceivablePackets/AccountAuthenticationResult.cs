@@ -4,8 +4,8 @@
  */
 public class AccountAuthenticationResult
 {
-    public static void notify(ReceivablePacket packet)
+    public static void Notify(ReceivablePacket packet)
     {
-        AuthenticationManager.instance.status = packet.ReadByte();
+        LoginManager.Instance.status = packet.ReadByte();
     }
 }

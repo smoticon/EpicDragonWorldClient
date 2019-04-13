@@ -68,15 +68,20 @@ public class SendablePacket
         memoryStream.WriteByte((byte)(value >> 56));
     }
 
-    // TODO: Needs SingleToInt32Bits .Net support.
-    // public void WriteFloat(float fvalue)
-    // {
-    // long value = BitConverter.SingleToInt32Bits(fvalue);
-    // memoryStream.WriteByte((byte)value);
-    // memoryStream.WriteByte((byte)(value >> 8));
-    // memoryStream.WriteByte((byte)(value >> 16));
-    // memoryStream.WriteByte((byte)(value >> 24));
-    // }
+    // TODO: Until BitConverter SingleToInt32Bits .Net support for Unity is added.
+    private unsafe int SingleToInt32Bits(float fvalue)
+    {
+        return *(int*)(&fvalue);
+    }
+
+    public void WriteFloat(float fvalue)
+    {
+        long value = SingleToInt32Bits(fvalue);
+        memoryStream.WriteByte((byte)value);
+        memoryStream.WriteByte((byte)(value >> 8));
+        memoryStream.WriteByte((byte)(value >> 16));
+        memoryStream.WriteByte((byte)(value >> 24));
+    }
 
     public void WriteDouble(double dvalue)
     {

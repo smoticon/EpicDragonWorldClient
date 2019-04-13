@@ -7,8 +7,13 @@ public class CharacterDataHolder
     private string name = "";
     private byte slot = 0;
     private bool selected = false;
-    private byte classId = 0;
-    private string locationName = "";
+    private byte race = 0;
+    private float height = 0.5f;
+    private float belly = 0.5f;
+    private byte hairType = 0;
+    private int hairColor = 2695723;
+    private int skinColor = 15847869;
+    private int eyeColor = 2695723;
     private float x = 0;
     private float y = 0;
     private float z = 0;
@@ -48,24 +53,74 @@ public class CharacterDataHolder
         this.selected = selected;
     }
 
-    public byte GetClassId()
+    public byte GetRace()
     {
-        return classId;
+        return race;
     }
 
-    public void SetClassId(byte classId)
+    public void SetRace(byte race)
     {
-        this.classId = classId;
+        this.race = race;
     }
 
-    public string GetLocationName()
+    public float GetHeight()
     {
-        return locationName;
+        return height;
     }
 
-    public void SetLocationName(string locationName)
+    public void SetHeight(float height)
     {
-        this.locationName = locationName;
+        this.height = height;
+    }
+
+    public float GetBelly()
+    {
+        return belly;
+    }
+
+    public void SetBelly(float belly)
+    {
+        this.belly = belly;
+    }
+
+    public byte GetHairType()
+    {
+        return hairType;
+    }
+
+    public void SetHairType(int hairType)
+    {
+        this.hairType = (byte)hairType;
+    }
+
+    public int GetHairColor()
+    {
+        return hairColor;
+    }
+
+    public void SetHairColor(int hairColor)
+    {
+        this.hairColor = hairColor;
+    }
+
+    public int GetSkinColor()
+    {
+        return skinColor;
+    }
+
+    public void SetSkinColor(int skinColor)
+    {
+        this.skinColor = skinColor;
+    }
+
+    public int GetEyeColor()
+    {
+        return eyeColor;
+    }
+
+    public void SetEyeColor(int eyeColor)
+    {
+        this.eyeColor = eyeColor;
     }
 
     public float GetX()

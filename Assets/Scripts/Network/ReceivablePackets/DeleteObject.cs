@@ -4,9 +4,9 @@
  */
 public class DeleteObject
 {
-    public static void notify(ReceivablePacket packet)
+    public static void Notify(ReceivablePacket packet)
     {
         long objectId = packet.ReadLong();
-        WorldManager.instance.DeleteObject(objectId);
+        WorldManager.Instance.DeleteObject(objectId);
     }
 }
