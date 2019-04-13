@@ -10,7 +10,7 @@ public class MovementController : MonoBehaviour
     public float speed = 1.0f;
     public float speedRotation = 2.0f;
     public float speedRotationSide = 4.0f;
-    public float speedWater = 0.99f;
+    public float speedWater = 0.999f;
     public float speedJump = 5.0f;
     public float jumpHeight = 7.0f;
     public float distToGround = 0.1f;

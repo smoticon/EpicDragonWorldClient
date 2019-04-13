@@ -16,6 +16,7 @@ public class AnimationController : MonoBehaviour
     public readonly static string TRIGGER_JUMP_VALUE = "TriggerJump";
     // Non-static values.
     private Animator animator;
+    private AudioSource audioSource;
     private float currentVelocityX;
     private float currentVelocityZ;
     private bool lockedMovement = false;
@@ -31,6 +32,7 @@ public class AnimationController : MonoBehaviour
     {
         animator = gameObject.GetComponent<Animator>();
         animator.applyRootMotion = true;
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     private void LateUpdate()
@@ -146,6 +148,12 @@ public class AnimationController : MonoBehaviour
             triggerJump = false;
             lastWaterState = WorldManager.Instance.isPlayerInWater;
             lastGroundedState = WorldManager.Instance.isPlayerOnTheGround;
+        }
+
+        // Animation related sounds.
+        if (currentVelocityZ > 2 && !WorldManager.Instance.isPlayerInWater && WorldManager.Instance.isPlayerOnTheGround && !audioSource.isPlaying)
+        {
+            audioSource.PlayOneShot(SoundManager.Instance.FOOTSTEP_SOUND, 1);
         }
     }
 }

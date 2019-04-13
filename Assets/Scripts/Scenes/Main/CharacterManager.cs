@@ -56,6 +56,9 @@ public class CharacterManager : MonoBehaviour
         // Customize character.
         StartCoroutine(CustomizeCharacterAppearance(characterData, newAvatar));
 
+        // Add AudioSource.
+        newAvatar.gameObject.AddComponent<AudioSource>();
+
         // Return GameObject.
         return newAvatar;
     }
