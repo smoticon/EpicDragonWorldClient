@@ -58,7 +58,7 @@ public class ConfirmDialog : MonoBehaviour
         switch (confirmDialogId)
         {
             case 1:
-                Application.Quit();
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
                 break;
 
             case 2:
