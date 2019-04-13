@@ -26,6 +26,9 @@ public class WorldManager : MonoBehaviour
     {
         Instance = this;
 
+        // Start music.
+        MusicManager.Instance.PlayMusic(MusicManager.Instance.EnterWorld);
+
         if (MainManager.Instance.selectedCharacterData != null)
         {
             // Create player character.

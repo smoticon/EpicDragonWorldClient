@@ -18,6 +18,8 @@ Unity3D client that connects with .NET Core server.
 ### Necessary additional assets. (Put in assets folder)
 3dModels: [https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip](https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip)
 
+Audio: [https://www.mediafire.com/file/9q9l08z8hkrfp4r/Audio.zip](https://www.mediafire.com/file/9q9l08z8hkrfp4r/Audio.zip)
+
 Standard Assets: [https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip](https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip)
 
 TextMesh Pro: [https://www.mediafire.com/file/cg2h7p6ivpq1t4r/TextMesh_Pro.zip](https://www.mediafire.com/file/cg2h7p6ivpq1t4r/TextMesh_Pro.zip)

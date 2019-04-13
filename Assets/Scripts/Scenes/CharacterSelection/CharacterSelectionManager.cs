@@ -49,6 +49,9 @@ public class CharacterSelectionManager : MonoBehaviour
         // Restore Camera Position
         Camera.main.transform.position = new Vector3(8.29f, 1.29f, 17.7f);
 
+        // Start music.
+        MusicManager.Instance.PlayMusic(MusicManager.Instance.CharacterSelection);
+
         // Schedule exit to login screen.
         StartCoroutine(ExitToLoginScreen());
 
