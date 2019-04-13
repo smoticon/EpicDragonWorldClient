@@ -7,6 +7,7 @@
 public class WorldObject : MonoBehaviour
 {
     public long objectId;
+    public double distance = 0;
 
     private Animator animator;
     private Rigidbody rigidBody;
@@ -14,9 +15,9 @@ public class WorldObject : MonoBehaviour
 
     // Is grounded related.
     public bool isGrounded = false;
-    private static LayerMask layerGround;
-    private static readonly float GROUND_DISTANCE = 0.1f;
-    private static readonly string LAYER_GROUND_VALUE = "Everything";
+
+    // Is in water related.
+    public bool isInWater = false;
 
     // Sound related.
     private AudioSource audioSource;
@@ -24,11 +25,11 @@ public class WorldObject : MonoBehaviour
 
     private void Start()
     {
+        distance = WorldManager.Instance.CalculateDistance(transform.position);
         animator = GetComponent<Animator>();
         animator.applyRootMotion = true;
         rigidBody = GetComponent<Rigidbody>();
         audioSource = gameObject.GetComponent<AudioSource>();
-        layerGround = LayerMask.NameToLayer(LAYER_GROUND_VALUE);
     }
 
     internal void MoveObject(Vector3 newPosition, float heading)
@@ -42,23 +43,29 @@ public class WorldObject : MonoBehaviour
         curHeading.eulerAngles = curvAngle;
         transform.localRotation = curHeading;
 
-        // Update isGrounded value.
-        isGrounded = Physics.Raycast(rigidBody.transform.position, Vector3.down, GROUND_DISTANCE, layerGround);
+        // Update distance value.
+        distance = WorldManager.Instance.CalculateDistance(transform.position);
 
         // Set audioSource volume based on distance.
-        double distance = WorldManager.Instance.CalculateDistance(transform.position);
         audioSource.volume = 1 - (float) (distance / SOUND_DISTANCE);
 
         // Animation related sounds.
-        if (isGrounded && rigidBody.velocity.magnitude > 2 && distance < SOUND_DISTANCE && !audioSource.isPlaying)
+        if (distance < SOUND_DISTANCE)
         {
-            audioSource.PlayOneShot(SoundManager.Instance.FOOTSTEP_SOUND, 1);
+            // Movement footstep sounds.
+            if (!audioSource.isPlaying && rigidBody.velocity.magnitude > 2 && isGrounded)
+            {
+                audioSource.PlayOneShot(SoundManager.Instance.FOOTSTEP_SOUND, 1);
+            }
         }
     }
 
     internal void AnimateObject(float velocityX, float velocityZ, bool triggerJump, bool isInWater, bool isGrounded)
     {
+        this.isGrounded = isGrounded;
+        this.isInWater = isInWater;
         rigidBody.useGravity = !isInWater;
+
         animator.SetBool(AnimationController.IS_GROUNDED_VALUE, isGrounded);
         animator.SetBool(AnimationController.IS_IN_WATER_VALUE, isInWater);
         animator.SetFloat(AnimationController.VELOCITY_Z_VALUE, velocityZ);
@@ -68,9 +75,19 @@ public class WorldObject : MonoBehaviour
             animator.SetTrigger(AnimationController.TRIGGER_JUMP_VALUE);
         }
     }
-
-    public bool isObjectGrounded()
+    
+    public bool IsObjectGrounded()
     {
         return isGrounded;
+    }
+
+    public bool IsObjectInWater()
+    {
+        return isInWater;
+    }
+
+    public double GetDistance()
+    {
+        return distance;
     }
 }

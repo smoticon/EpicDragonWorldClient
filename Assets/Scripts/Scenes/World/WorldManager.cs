@@ -90,15 +90,16 @@ public class WorldManager : MonoBehaviour
         Vector3 position = new Vector3(posX, posY, posZ);
         foreach (GameObject gameObject in gameObjects)
         {
-            if (gameObject.GetComponent<WorldObject>().objectId == objectId)
+            WorldObject worldObject = gameObject.GetComponent<WorldObject>();
+            if (worldObject.objectId == objectId)
             {
-                if (CalculateDistance(position) > visibilityRadius) // Moved out of sight.
+                if (worldObject.GetDistance() > visibilityRadius) // Moved out of sight.
                 {
                     DeleteObject(gameObject);
                 }
                 else
                 {
-                    gameObject.GetComponent<WorldObject>().MoveObject(position, heading);
+                    worldObject.MoveObject(position, heading);
                 }
                 return;
             }
@@ -118,7 +119,7 @@ public class WorldManager : MonoBehaviour
             WorldObject worldObject = gameObject.GetComponent<WorldObject>();
             if (worldObject.objectId == objectId)
             {
-                if (CalculateDistance(gameObject.transform.position) <= visibilityRadius) // Object is in sight radius.
+                if (worldObject.GetDistance() <= visibilityRadius) // Object is in sight radius.
                 {
                     worldObject.AnimateObject(velocityX, velocityZ, triggerJump, isInWater, isGrounded);
                 }
