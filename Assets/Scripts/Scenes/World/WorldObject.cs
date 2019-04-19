@@ -7,17 +7,17 @@
 public class WorldObject : MonoBehaviour
 {
     public long objectId;
-    public double distance = 0;
+    private double distance = 0;
 
     private Animator animator;
     private Rigidbody rigidBody;
     private readonly float VELOCITY = 6;
 
     // Is grounded related.
-    public bool isGrounded = false;
+    public volatile bool isGrounded = false;
 
     // Is in water related.
-    public bool isInWater = false;
+    public volatile bool isInWater = false;
 
     // Sound related.
     private AudioSource audioSource;
@@ -32,7 +32,7 @@ public class WorldObject : MonoBehaviour
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
-    internal void MoveObject(Vector3 newPosition, float heading)
+    public void MoveObject(Vector3 newPosition, float heading)
     {
         float step = VELOCITY * Time.deltaTime;
         rigidBody.MovePosition(Vector3.Lerp(transform.position, newPosition, step));
@@ -60,7 +60,7 @@ public class WorldObject : MonoBehaviour
         }
     }
 
-    internal void AnimateObject(float velocityX, float velocityZ, bool triggerJump, bool isInWater, bool isGrounded)
+    public void AnimateObject(float velocityX, float velocityZ, bool triggerJump, bool isInWater, bool isGrounded)
     {
         this.isGrounded = isGrounded;
         this.isInWater = isInWater;

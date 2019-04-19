@@ -20,7 +20,7 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     BlockingCollection<GameObject> gameObjects = new BlockingCollection<GameObject>();
     [HideInInspector]
-    private static readonly int visibilityRadius = 10000; // This is the maximum allowed visibility radius.
+    public static readonly int VISIBILITY_RADIUS = 10000; // This is the maximum allowed visibility radius.
 
     private void Start()
     {
@@ -56,9 +56,9 @@ public class WorldManager : MonoBehaviour
     public void UpdateObject(long objectId, CharacterDataHolder characterdata)
     {
         // Check for existing objects.
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject obj in gameObjects)
         {
-            if (gameObject.GetComponent<WorldObject>().objectId == objectId)
+            if (obj.GetComponent<WorldObject>().objectId == objectId)
             {
                 // TODO: Update object info.
                 return;
@@ -66,36 +66,36 @@ public class WorldManager : MonoBehaviour
         }
 
         // Object is out of sight.
-        if (CalculateDistance(new Vector3(characterdata.GetX(), characterdata.GetY(), characterdata.GetZ())) > visibilityRadius)
+        if (CalculateDistance(new Vector3(characterdata.GetX(), characterdata.GetY(), characterdata.GetZ())) > VISIBILITY_RADIUS)
         {
             return;
         }
 
         // Object does not exist. Instantiate.
-        GameObject obj = CharacterManager.Instance.CreateCharacter(characterdata).gameObject;
+        GameObject newObj = CharacterManager.Instance.CreateCharacter(characterdata).gameObject;
 
         // Assign object id and name.
-        WorldObject worldObject = obj.AddComponent<WorldObject>();
+        WorldObject worldObject = newObj.AddComponent<WorldObject>();
         worldObject.objectId = objectId;
-        WorldObjectText worldObjectText = obj.AddComponent<WorldObjectText>();
+        WorldObjectText worldObjectText = newObj.AddComponent<WorldObjectText>();
         worldObjectText.worldObjectName = characterdata.GetName();
-        worldObjectText.attachedObject = obj;
+        worldObjectText.attachedObject = newObj;
 
         // Add to game object list.
-        gameObjects.Add(obj);
+        gameObjects.Add(newObj);
     }
 
     public void MoveObject(long objectId, float posX, float posY, float posZ, float heading)
     {
         Vector3 position = new Vector3(posX, posY, posZ);
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject obj in gameObjects)
         {
-            WorldObject worldObject = gameObject.GetComponent<WorldObject>();
+            WorldObject worldObject = obj.GetComponent<WorldObject>();
             if (worldObject.objectId == objectId)
             {
-                if (worldObject.GetDistance() > visibilityRadius) // Moved out of sight.
+                if (worldObject.GetDistance() > VISIBILITY_RADIUS) // Moved out of sight.
                 {
-                    DeleteObject(gameObject);
+                    DeleteObject(obj);
                 }
                 else
                 {
@@ -106,7 +106,7 @@ public class WorldManager : MonoBehaviour
         }
 
         // Request unknown object info from server.
-        if (CalculateDistance(position) <= visibilityRadius)
+        if (CalculateDistance(position) <= VISIBILITY_RADIUS)
         {
             NetworkManager.ChannelSend(new ObjectInfoRequest(objectId));
         }
@@ -114,12 +114,12 @@ public class WorldManager : MonoBehaviour
 
     public void AnimateObject(long objectId, float velocityX, float velocityZ, bool triggerJump, bool isInWater, bool isGrounded)
     {
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject obj in gameObjects)
         {
-            WorldObject worldObject = gameObject.GetComponent<WorldObject>();
+            WorldObject worldObject = obj.GetComponent<WorldObject>();
             if (worldObject.objectId == objectId)
             {
-                if (worldObject.GetDistance() <= visibilityRadius) // Object is in sight radius.
+                if (worldObject.GetDistance() <= VISIBILITY_RADIUS) // Object is in sight radius.
                 {
                     worldObject.AnimateObject(velocityX, velocityZ, triggerJump, isInWater, isGrounded);
                 }
@@ -134,23 +134,23 @@ public class WorldManager : MonoBehaviour
         return Math.Pow(activeCharacter.transform.position.x - vector.x, 2) + Math.Pow(activeCharacter.transform.position.y - vector.y, 2) + Math.Pow(activeCharacter.transform.position.z - vector.z, 2);
     }
 
-    private void DeleteObject(GameObject gameObject)
+    private void DeleteObject(GameObject obj)
     {
         // Remove from objects list.
-        gameObjects.TryTake(out gameObject);
+        gameObjects.TryTake(out obj);
 
         // Delete game object from world.
-        Destroy(gameObject.GetComponent<WorldObjectText>().nameMesh.gameObject);
-        Destroy(gameObject);
+        Destroy(obj.GetComponent<WorldObjectText>().nameMesh.gameObject);
+        Destroy(obj);
     }
 
     public void DeleteObject(long objectId)
     {
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject obj in gameObjects)
         {
-            if (gameObject.GetComponent<WorldObject>().objectId == objectId)
+            if (obj.GetComponent<WorldObject>().objectId == objectId)
             {
-                DeleteObject(gameObject);
+                DeleteObject(obj);
                 return;
             }
         }
@@ -165,10 +165,10 @@ public class WorldManager : MonoBehaviour
         }
         isPlayerInWater = false;
         isPlayerOnTheGround = false;
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject obj in gameObjects)
         {
-            Destroy(gameObject.GetComponent<WorldObjectText>().nameMesh.gameObject);
-            Destroy(gameObject);
+            Destroy(obj.GetComponent<WorldObjectText>().nameMesh.gameObject);
+            Destroy(obj);
         }
     }
 }
