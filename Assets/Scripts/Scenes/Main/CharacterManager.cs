@@ -59,6 +59,9 @@ public class CharacterManager : MonoBehaviour
         // Add AudioSource.
         newAvatar.gameObject.AddComponent<AudioSource>();
 
+        // Disable avatar until race customization ends.
+        newAvatar.gameObject.SetActive(false);
+
         // Return GameObject.
         return newAvatar;
     }
@@ -66,7 +69,11 @@ public class CharacterManager : MonoBehaviour
     public IEnumerator CustomizeCharacterAppearance(CharacterDataHolder characterData, DynamicCharacterAvatar newAvatar)
     {
         // Unfortunately UMA needs a small delay to initialize.
+        // Without this delay, on slower machines, we got a crash.
         yield return new WaitForSeconds(0.1f);
+
+        // Re-enable avatar since customization delay ended.
+        newAvatar.gameObject.SetActive(true);
 
         // Customize character.
         int hairType = characterData.GetHairType();
