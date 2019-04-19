@@ -13,7 +13,7 @@ Unity3D client that connects with .NET Core server.
 - Chat and messaging.
 
 ### Unity version.
-2018.3.12f1
+2019.1.0f2
 
 ### Necessary additional assets. (Put in assets folder)
 3dModels: [https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip](https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip)
@@ -22,7 +22,7 @@ Audio: [https://www.mediafire.com/file/9q9l08z8hkrfp4r/Audio.zip](https://www.me
 
 Standard Assets: [https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip](https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip)
 
-TextMesh Pro: [https://www.mediafire.com/file/cg2h7p6ivpq1t4r/TextMesh_Pro.zip](https://www.mediafire.com/file/cg2h7p6ivpq1t4r/TextMesh_Pro.zip)
+TextMesh Pro: [https://www.mediafire.com/file/3n3zy4npinl55o7/TextMesh_Pro.zip](https://www.mediafire.com/file/3n3zy4npinl55o7/TextMesh_Pro.zip)
 
 UMA: [https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip](https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip)
 
