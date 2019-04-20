@@ -16,7 +16,7 @@ public class CharacterManager : MonoBehaviour
     public List<string> hairModelsMale = new List<string>();
     public List<string> hairModelsFemale = new List<string>();
 
-    void Start()
+    private void Start()
     {
         Instance = this;
     }

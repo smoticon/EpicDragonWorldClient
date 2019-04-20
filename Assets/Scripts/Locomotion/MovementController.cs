@@ -23,8 +23,8 @@ public class MovementController : MonoBehaviour
     private float speedCurrent = 0;
     private bool lockedMovement = false;
     private bool sideMovement = false;
-    private Vector3 oldPosition;
     private float oldRotation;
+    public static Vector3 oldPosition = Vector3.zero;
 
     private void Start()
     {

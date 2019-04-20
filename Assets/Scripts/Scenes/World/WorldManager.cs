@@ -131,7 +131,7 @@ public class WorldManager : MonoBehaviour
     // Calculate distance between player and a Vector3 location.
     public double CalculateDistance(Vector3 vector)
     {
-        return Math.Pow(activeCharacter.transform.position.x - vector.x, 2) + Math.Pow(activeCharacter.transform.position.y - vector.y, 2) + Math.Pow(activeCharacter.transform.position.z - vector.z, 2);
+        return Math.Pow(MovementController.oldPosition.x - vector.x, 2) + Math.Pow(MovementController.oldPosition.y - vector.y, 2) + Math.Pow(MovementController.oldPosition.z - vector.z, 2);
     }
 
     private void DeleteObject(GameObject obj)
