@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UMA.CharacterSystem;
 using UnityEngine;
@@ -16,9 +17,42 @@ public class CharacterManager : MonoBehaviour
     public List<string> hairModelsMale = new List<string>();
     public List<string> hairModelsFemale = new List<string>();
 
+    public ConcurrentDictionary<long, CharacterDataHolder> characterCreationQueue = new ConcurrentDictionary<long, CharacterDataHolder>();
+
     private void Start()
     {
         Instance = this;
+
+        StartCoroutine(CreationQueueCoroutine());
+    }
+
+    private IEnumerator CreationQueueCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.5f);
+
+            lock (WorldManager.updateLock)
+            {
+                foreach (KeyValuePair<long, CharacterDataHolder> entry in characterCreationQueue)
+                {
+                    // Object does not exist. Instantiate.
+                    GameObject newObj = CreateCharacter(entry.Value).gameObject;
+
+                    // Assign object id and name.
+                    WorldObject worldObject = newObj.AddComponent<WorldObject>();
+                    worldObject.objectId = entry.Key;
+                    WorldObjectText worldObjectText = newObj.AddComponent<WorldObjectText>();
+                    worldObjectText.worldObjectName = entry.Value.GetName();
+                    worldObjectText.attachedObject = newObj;
+
+                    ((IDictionary<long, GameObject>)WorldManager.Instance.gameObjects).Remove(entry.Key);
+                    WorldManager.Instance.gameObjects.TryAdd(entry.Key, newObj);
+
+                    ((IDictionary<long, CharacterDataHolder>)characterCreationQueue).Remove(entry.Key);
+                }
+            }
+        }
     }
 
     public DynamicCharacterAvatar CreateCharacter(CharacterDataHolder characterData)

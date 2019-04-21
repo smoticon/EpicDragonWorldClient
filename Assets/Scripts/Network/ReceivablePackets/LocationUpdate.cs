@@ -1,4 +1,6 @@
-﻿/**
+﻿using System.Collections.Generic;
+
+/**
  * Author: Pantelis Andrianakis
  * Date: June 11th 2018
  */
@@ -12,6 +14,7 @@ public class LocationUpdate
         float posZ = packet.ReadFloat();
         float heading = packet.ReadFloat();
 
-        WorldManager.Instance.MoveObject(objectId, posX, posY, posZ, heading);
+        ((IDictionary<long, MovementHolder>)WorldManager.Instance.moveQueue).Remove(objectId);
+        WorldManager.Instance.moveQueue.TryAdd(objectId, new MovementHolder(posX, posY, posZ, heading));
     }
 }

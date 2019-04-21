@@ -1,4 +1,6 @@
-﻿/**
+﻿using System.Collections.Generic;
+
+/**
  * Author: Pantelis Andrianakis
  * Date: June 11th 2018
  */
@@ -14,6 +16,7 @@ public class AnimatorUpdate
         bool isInWater = packet.ReadByte() == 1;
         bool isGrounded = packet.ReadByte() == 1;
 
-        WorldManager.Instance.AnimateObject(objectId, velocityX, velocityZ, triggerJump, isInWater, isGrounded);
+        ((IDictionary<long, AnimationHolder>)WorldManager.Instance.animationQueue).Remove(objectId);
+        WorldManager.Instance.animationQueue.TryAdd(objectId, new AnimationHolder(velocityX, velocityZ, triggerJump, isInWater, isGrounded));
     }
 }
