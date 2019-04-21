@@ -32,7 +32,7 @@ public class CharacterManager : MonoBehaviour
         {
             yield return new WaitForSeconds(0.5f);
 
-            lock (WorldManager.updateLock)
+            lock (WorldManager.updateObjectLock)
             {
                 foreach (KeyValuePair<long, CharacterDataHolder> entry in characterCreationQueue)
                 {

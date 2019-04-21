@@ -26,10 +26,12 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     public ConcurrentDictionary<long, AnimationHolder> animationQueue;
     [HideInInspector]
+    public List<long> deleteQueue;
+    [HideInInspector]
     public static readonly int VISIBILITY_RADIUS = 10000; // This is the maximum allowed visibility radius.
 
-    public static readonly object updateLock = new object();
-    private static readonly object moveLock = new object();
+    public static readonly object updateObjectLock = new object();
+    private static readonly object updateMethodLock = new object();
 
     private void Start()
     {
@@ -38,6 +40,7 @@ public class WorldManager : MonoBehaviour
         gameObjects = new ConcurrentDictionary<long, GameObject>();
         moveQueue = new ConcurrentDictionary<long, MovementHolder>();
         animationQueue = new ConcurrentDictionary<long, AnimationHolder>();
+        deleteQueue = new List<long>();
 
         // Start music.
         MusicManager.Instance.PlayMusic(MusicManager.Instance.EnterWorld);
@@ -68,8 +71,32 @@ public class WorldManager : MonoBehaviour
 
     private void Update()
     {
-        lock (moveLock)
+        lock (updateMethodLock)
         {
+            foreach (long objectId in deleteQueue)
+            {
+                if (gameObjects.ContainsKey(objectId))
+                {
+                    GameObject obj = gameObjects[objectId];
+                    if (obj != null)
+                    {
+                        // Disable.
+                        obj.GetComponent<WorldObjectText>().nameMesh.gameObject.SetActive(false);
+                        obj.SetActive(false);
+
+                        // Remove from objects list.
+                        ((IDictionary<long, GameObject>)gameObjects).Remove(obj.GetComponent<WorldObject>().objectId);
+
+                        // Delete game object from world with a delay.
+                        StartCoroutine(DelayedDestroy(obj));
+                    }
+                }
+            }
+            if (deleteQueue.Count > 0)
+            {
+                deleteQueue.Clear();
+            }
+
             foreach (KeyValuePair<long, MovementHolder> entry in moveQueue)
             {
                 Vector3 position = new Vector3(entry.Value.posX, entry.Value.posY, entry.Value.posZ);
@@ -85,7 +112,7 @@ public class WorldManager : MonoBehaviour
                             {
                                 // Broadcast self position, object out of sight.
                                 NetworkManager.ChannelSend(new LocationUpdateRequest(MovementController.storedPosition.x, MovementController.storedPosition.y, MovementController.storedPosition.z, MovementController.storedRotation));
-                                DeleteObject(obj);
+                                deleteQueue.Add(worldObject.objectId);
                             }
                             else
                             {
@@ -130,7 +157,7 @@ public class WorldManager : MonoBehaviour
 
     public void UpdateObject(long objectId, CharacterDataHolder characterdata)
     {
-        lock (updateLock) // Use lock to avoid adding duplicate gameObjects.
+        lock (updateObjectLock) // Use lock to avoid adding duplicate gameObjects.
         {
             // Check for existing objects.
             if (gameObjects.ContainsKey(objectId))
@@ -168,30 +195,13 @@ public class WorldManager : MonoBehaviour
         Destroy(obj);
     }
 
-    private void DeleteObject(GameObject obj)
-    {
-        // Disable.
-        obj.GetComponent<WorldObjectText>().nameMesh.gameObject.SetActive(false);
-        obj.SetActive(false);
-
-        // Remove from objects list.
-        ((IDictionary<long, GameObject>)gameObjects).Remove(obj.GetComponent<WorldObject>().objectId);
-
-        // Delete game object from world with a delay.
-        StartCoroutine(DelayedDestroy(obj));
-    }
-
     public void DeleteObject(long objectId)
     {
-        lock (updateLock)
+        lock (updateMethodLock)
         {
-            if (gameObjects.ContainsKey(objectId))
+            if (!deleteQueue.Contains(objectId))
             {
-                GameObject obj = gameObjects[objectId];
-                if (obj != null)
-                {
-                    DeleteObject(obj);
-                }
+                deleteQueue.Add(objectId);
             }
         }
     }
