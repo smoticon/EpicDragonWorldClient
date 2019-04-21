@@ -43,8 +43,7 @@ public class CharacterManager : MonoBehaviour
 
     public DynamicCharacterAvatar CreateCharacter(CharacterDataHolder characterData, float posX, float posY, float posZ)
     {
-        Vector3 position = new Vector3(posX, posY, posZ);
-        DynamicCharacterAvatar newAvatar = Instantiate(avatar, position, Quaternion.identity) as DynamicCharacterAvatar;
+        DynamicCharacterAvatar newAvatar = Instantiate(avatar, new Vector3(posX, posY, posZ), Quaternion.identity) as DynamicCharacterAvatar;
         newAvatar.BuildCharacter(); // Prevent UMA bone error.
 
         // Add a new Capsule Collider to prevent falling.

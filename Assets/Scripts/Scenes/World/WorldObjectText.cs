@@ -9,7 +9,7 @@ public class WorldObjectText : MonoBehaviour
     public GameObject attachedObject;
     public TextMesh nameMesh;
     public string worldObjectName = "";
-    private static readonly float NAME_HEIGHT = 1f;
+    private readonly float NAME_HEIGHT = 1f;
 
     private void Start()
     {
@@ -27,12 +27,14 @@ public class WorldObjectText : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (attachedObject != null)
+        if (attachedObject == null || gameObject == null || !attachedObject.activeSelf || !gameObject.activeSelf)
         {
-            nameMesh.text = worldObjectName;
-            nameMesh.transform.position = new Vector3(attachedObject.transform.position.x, attachedObject.transform.position.y + attachedObject.transform.lossyScale.y + NAME_HEIGHT, attachedObject.transform.position.z);
-            nameMesh.transform.LookAt(CameraController.Instance.transform.position);
-            nameMesh.transform.Rotate(0, 180, 0);
+            return;
         }
+
+        nameMesh.text = worldObjectName;
+        nameMesh.transform.position = new Vector3(attachedObject.transform.position.x, attachedObject.transform.position.y + attachedObject.transform.lossyScale.y + NAME_HEIGHT, attachedObject.transform.position.z);
+        nameMesh.transform.LookAt(CameraController.Instance.transform.position);
+        nameMesh.transform.Rotate(0, 180, 0);
     }
 }

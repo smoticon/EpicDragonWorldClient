@@ -34,6 +34,11 @@ public class WorldObject : MonoBehaviour
 
     public void MoveObject(Vector3 newPosition, float heading)
     {
+        if (gameObject == null || !gameObject.activeSelf)
+        {
+            return;
+        }
+
         float step = VELOCITY * Time.deltaTime;
         rigidBody.MovePosition(Vector3.Lerp(transform.position, newPosition, step));
 
@@ -47,7 +52,7 @@ public class WorldObject : MonoBehaviour
         distance = WorldManager.Instance.CalculateDistance(transform.position);
 
         // Set audioSource volume based on distance.
-        audioSource.volume = 1 - (float) (distance / SOUND_DISTANCE);
+        audioSource.volume = 1 - (float)(distance / SOUND_DISTANCE);
 
         // Animation related sounds.
         if (distance < SOUND_DISTANCE)
@@ -62,6 +67,11 @@ public class WorldObject : MonoBehaviour
 
     public void AnimateObject(float velocityX, float velocityZ, bool triggerJump, bool isInWater, bool isGrounded)
     {
+        if (gameObject == null || !gameObject.activeSelf)
+        {
+            return;
+        }
+
         this.isGrounded = isGrounded;
         this.isInWater = isInWater;
         rigidBody.useGravity = !isInWater;
@@ -75,7 +85,7 @@ public class WorldObject : MonoBehaviour
             animator.SetTrigger(AnimationController.TRIGGER_JUMP_VALUE);
         }
     }
-    
+
     public bool IsObjectGrounded()
     {
         return isGrounded;

@@ -114,7 +114,19 @@ public class NetworkManager
     {
         if (SocketConnected())
         {
-            socket.Send(packet.GetSendableBytes());
+            // socket.Send(packet.GetSendableBytes());
+
+            byte[] buffer = packet.GetSendableBytes();
+            SocketAsyncEventArgs args = new SocketAsyncEventArgs();
+            args.SetBuffer(buffer, 0, buffer.Length);
+            
+            try
+            {
+                socket.SendAsync(args);
+            }
+            catch (Exception)
+            {
+            }
         }
         else // Connection closed.
         {

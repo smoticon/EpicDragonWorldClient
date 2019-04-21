@@ -23,16 +23,16 @@ public class MovementController : MonoBehaviour
     private float speedCurrent = 0;
     private bool lockedMovement = false;
     private bool sideMovement = false;
-    private float oldRotation;
-    public static Vector3 oldPosition = Vector3.zero;
+    public static float storedRotation = 0;
+    public static Vector3 storedPosition = Vector3.zero;
 
     private void Start()
     {
         layerGround = LayerMask.NameToLayer(LAYER_GROUND_VALUE);
         rigidBody = GetComponent<Rigidbody>();
         rigidBody.useGravity = !WorldManager.Instance.isPlayerInWater;
-        oldPosition = transform.position;
-        oldRotation = transform.localRotation.eulerAngles.y;
+        storedPosition = transform.position;
+        storedRotation = transform.localRotation.eulerAngles.y;
     }
 
     private void Update()
@@ -109,14 +109,14 @@ public class MovementController : MonoBehaviour
         }
 
         // Send changes to network.
-        if (oldRotation != transform.localRotation.eulerAngles.y
-            || oldPosition.x != transform.position.x //
-            || oldPosition.y != transform.position.y //
-            || oldPosition.z != transform.position.z)
+        if (storedRotation != transform.localRotation.eulerAngles.y
+            || storedPosition.x != transform.position.x //
+            || storedPosition.y != transform.position.y //
+            || storedPosition.z != transform.position.z)
         {
             NetworkManager.ChannelSend(new LocationUpdateRequest(transform.position.x, transform.position.y, transform.position.z, transform.localRotation.eulerAngles.y));
-            oldPosition = transform.position;
-            oldRotation = transform.localRotation.eulerAngles.y;
+            storedPosition = transform.position;
+            storedRotation = transform.localRotation.eulerAngles.y;
         }
     }
 
