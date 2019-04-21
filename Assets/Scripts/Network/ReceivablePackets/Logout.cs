@@ -10,6 +10,8 @@ public class Logout
         NetworkManager.forcedDisconnection = true;
         NetworkManager.DisconnectFromServer();
         // Go to login screen.
-        MainManager.Instance.LoadScene(MainManager.LOGIN_SCENE);
+        // MainManager.Instance.LoadScene(MainManager.LOGIN_SCENE);
+        // TODO: Show disconnected message.
+        System.Diagnostics.Process.GetCurrentProcess().Kill();
     }
 }
