@@ -9,9 +9,7 @@ public class Logout
         // Used for kicked message.
         NetworkManager.forcedDisconnection = true;
         NetworkManager.DisconnectFromServer();
-        // Go to login screen.
-        // MainManager.Instance.LoadScene(MainManager.LOGIN_SCENE);
-        // TODO: Show disconnected message.
-        System.Diagnostics.Process.GetCurrentProcess().Kill();
+        // Force exiting to login screen.
+        WorldManager.Instance.kickFromWorld = true;
     }
 }

@@ -20,6 +20,10 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     public bool isPlayerOnTheGround = false;
     [HideInInspector]
+    public bool kickFromWorld = false;
+    [HideInInspector]
+    private bool exitingWorld = false;
+    [HideInInspector]
     public ConcurrentDictionary<long, GameObject> gameObjects;
     [HideInInspector]
     public ConcurrentDictionary<long, MovementHolder> moveQueue;
@@ -71,6 +75,17 @@ public class WorldManager : MonoBehaviour
 
     private void Update()
     {
+        if (exitingWorld)
+        {
+            return;
+        }
+        if (kickFromWorld)
+        {
+            ExitWorld();
+            MainManager.Instance.LoadScene(MainManager.LOGIN_SCENE);
+            return;
+        }
+
         lock (updateMethodLock)
         {
             foreach (long objectId in deleteQueue)
@@ -150,9 +165,15 @@ public class WorldManager : MonoBehaviour
                     }
                 }
 
-              ((IDictionary<long, AnimationHolder>)animationQueue).Remove(entry.Key);
+                ((IDictionary<long, AnimationHolder>)animationQueue).Remove(entry.Key);
             }
         }
+    }
+
+    // Calculate distance between player and a Vector3 location.
+    public double CalculateDistance(Vector3 vector)
+    {
+        return Math.Pow(MovementController.storedPosition.x - vector.x, 2) + Math.Pow(MovementController.storedPosition.y - vector.y, 2) + Math.Pow(MovementController.storedPosition.z - vector.z, 2);
     }
 
     public void UpdateObject(long objectId, CharacterDataHolder characterdata)
@@ -180,12 +201,6 @@ public class WorldManager : MonoBehaviour
         }
     }
 
-    // Calculate distance between player and a Vector3 location.
-    public double CalculateDistance(Vector3 vector)
-    {
-        return Math.Pow(MovementController.storedPosition.x - vector.x, 2) + Math.Pow(MovementController.storedPosition.y - vector.y, 2) + Math.Pow(MovementController.storedPosition.z - vector.z, 2);
-    }
-
     private IEnumerator DelayedDestroy(GameObject obj)
     {
         yield return new WaitForSeconds(0.5f);
@@ -208,6 +223,7 @@ public class WorldManager : MonoBehaviour
 
     public void ExitWorld()
     {
+        exitingWorld = true;
         if (activeCharacter != null)
         {
             Destroy(activeCharacter.GetComponent<WorldObjectText>().nameMesh.gameObject);
