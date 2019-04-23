@@ -2,6 +2,8 @@
 Unity3D client that connects with .NET Core server.
 
 ## Progress
+- Start client with command line arguments.
+- Load and save configurations to files.
 - Connect to .NET Core server.
 - Packet communication.
 - Network encryption.
@@ -28,4 +30,4 @@ UMA: [https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip](https://www.mediaf
 
 
 ### You can see the latest development progress on YouTube.
-[![Video demonstration](https://img.youtube.com/vi/e28z8jHUR-0/0.jpg)](https://www.youtube.com/watch?v=ZnFbbdPDezw&list=PLNuit1aMUWTDRll1MGF7Cqn_lX-BqKpZn&index=4)
+[![Video demonstration](https://img.youtube.com/vi/ZnFbbdPDezw/0.jpg)](https://www.youtube.com/watch?v=ZnFbbdPDezw&list=PLNuit1aMUWTDRll1MGF7Cqn_lX-BqKpZn&index=4)
