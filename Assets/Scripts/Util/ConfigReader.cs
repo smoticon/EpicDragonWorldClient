@@ -8,7 +8,7 @@ using System.Linq;
  * Author: Pantelis Andrianakis
  * Date: November 7th 2018
  */
-class ConfigReader
+public class ConfigReader
 {
     private readonly Dictionary<string, string> configs = new Dictionary<string, string>();
 
@@ -16,14 +16,14 @@ class ConfigReader
     {
         try
         {
-            foreach (string row in File.ReadAllLines(fileName))
+            foreach (string line in File.ReadAllLines(fileName))
             {
-                if (!row.StartsWith("#") && row.Trim().Length > 0)
+                if (!line.StartsWith("#") && line.Trim().Length > 0)
                 {
-                    string[] rowSplit = row.Split('=');
-                    if (rowSplit.Length > 1)
+                    string[] lineSplit = line.Split('=');
+                    if (lineSplit.Length > 1)
                     {
-                        configs.Add(rowSplit[0].Trim(), string.Join("=", rowSplit.Skip(1).ToArray()).Trim());
+                        configs.Add(lineSplit[0].Trim(), string.Join("=", lineSplit.Skip(1).ToArray()).Trim());
                     }
                 }
             }

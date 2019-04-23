@@ -33,9 +33,9 @@ public class ConfigWriter
             // Check for existing config.
             bool found = false;
             string contents = "";
-            foreach (string row in File.ReadAllLines(fileName))
+            foreach (string line in File.ReadAllLines(fileName))
             {
-                if (row.StartsWith(config + "=") || row.StartsWith(config + " ="))
+                if (line.StartsWith(config + "=") || line.StartsWith(config + " ="))
                 {
                     // Existing config found.
                     found = true;
@@ -43,7 +43,7 @@ public class ConfigWriter
                 }
                 else
                 {
-                    contents += row + Environment.NewLine;
+                    contents += line + Environment.NewLine;
                 }
             }
 
