@@ -12,10 +12,7 @@ public class ConfigWriter
     public ConfigWriter(string fileName)
     {
         this.fileName = fileName;
-    }
 
-    public void SetString(string config, string value)
-    {
         try
         {
             // Create file if it does not exist.
@@ -23,7 +20,16 @@ public class ConfigWriter
             {
                 File.Create(fileName).Dispose();
             }
+        }
+        catch (Exception)
+        {
+        }
+    }
 
+    public void SetString(string config, string value)
+    {
+        try
+        {
             // Check for existing config.
             bool found = false;
             string contents = "";
