@@ -85,6 +85,20 @@ public class WorldManager : MonoBehaviour
 
         lock (updateMethodLock)
         {
+            // Distance check.
+            foreach (GameObject obj in gameObjects.Values)
+            {
+                if (obj != null && CalculateDistance(obj.transform.position) > VISIBILITY_RADIUS)
+                {
+                    WorldObject worldObject = obj.GetComponent<WorldObject>();
+                    if (worldObject != null && !deleteQueue.Contains(worldObject.objectId))
+                    {
+                        deleteQueue.Add(worldObject.objectId);
+                    }
+                }
+            }
+
+            // Delete pending objects.
             foreach (long objectId in deleteQueue)
             {
                 if (gameObjects.ContainsKey(objectId))
@@ -109,6 +123,7 @@ public class WorldManager : MonoBehaviour
                 deleteQueue.Clear();
             }
 
+            // Move pending objects.
             foreach (KeyValuePair<long, MovementHolder> entry in moveQueue)
             {
                 Vector3 position = new Vector3(entry.Value.posX, entry.Value.posY, entry.Value.posZ);
@@ -137,6 +152,7 @@ public class WorldManager : MonoBehaviour
                 else if (entry.Key == 0)
                 {
                     activeCharacter.transform.localPosition = position;
+                    activeCharacter.GetComponent<Rigidbody>().position = position;
                 }
                 // Request unknown object info from server.
                 else if (CalculateDistance(position) <= VISIBILITY_RADIUS)
@@ -149,6 +165,7 @@ public class WorldManager : MonoBehaviour
                 ((IDictionary<long, MovementHolder>)moveQueue).Remove(entry.Key);
             }
 
+            // Animate pending objects.
             foreach (KeyValuePair<long, AnimationHolder> entry in animationQueue)
             {
                 if (gameObjects.ContainsKey(entry.Key))
