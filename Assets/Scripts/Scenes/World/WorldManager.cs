@@ -136,6 +136,11 @@ public class WorldManager : MonoBehaviour
                         }
                     }
                 }
+                // Check self teleporting.
+                else if (entry.Key == 0)
+                {
+                    activeCharacter.transform.localPosition = position;
+                }
                 // Request unknown object info from server.
                 else if (CalculateDistance(position) <= VISIBILITY_RADIUS)
                 {
