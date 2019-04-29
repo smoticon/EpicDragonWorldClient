@@ -1,96 +1,124 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Audio;
 
 /**
- * Author: Pantelis Andrianakis
- * Date: December 25th 2017
+ * Authors: NightBR
+ * Date: April 29th 2019
  */
 public class MusicManager : MonoBehaviour
 {
     public static MusicManager Instance { get; private set; }
 
     private readonly int musicFadeDuration = 4;
-    private float currentVolume;
+    private readonly float currentVolume;
 
-    // Audio outputs.
-    private AudioSource audioSource1;
-    private AudioSource audioSource2;
+    [Header("Mixers - Music Players")]
+    public AudioSource UIMixer;
+    public AudioSource GameMixer;
+    public AudioSource LoginMixer;
+    public AudioSource LoadingMixer;
+    public AudioSource CharSelectMixer;
+    public AudioSource CharCreationMixer;
 
-    // Music tracks.
-    public AudioClip LoginScreen;
-    public AudioClip CharacterSelection;
-    public AudioClip EnterWorld;
+    [Header("SnapShots - Music Players")]
+    public AudioMixerSnapshot[] AudioSnapshots;
+
+    [Header("SnapShots - Music Players")]
+    public AudioMixerSnapshot UISnapshot;
+    public AudioMixerSnapshot LoadingSnapshot;
+
+
+    // Initialize Transition Variables
+    public float bpm = 128;
+    private float m_TransitionIn;
+    private float m_TransitionOut;
+    private float m_QuarterNote;
+
+    public Canvas optionsCanvas;
 
     private void Start()
     {
         Instance = this;
 
-        // Initialize sources if running for the first time.
-        audioSource1 = gameObject.AddComponent<AudioSource>();
-        audioSource2 = gameObject.AddComponent<AudioSource>();
-        audioSource1.loop = true;
-        audioSource2.loop = true;
-        audioSource1.volume = 0;
-        audioSource2.volume = 1;
+        m_QuarterNote = 60 / bpm;
+        m_TransitionIn = m_QuarterNote;
+        m_TransitionOut = m_QuarterNote * 32;
     }
 
-    public void PlayMusic(AudioClip audioClip)
+    // Scene Verification
+    public void PlayMusic(int buildIndex)
     {
-        // Crude way to avoid starting other songs on startup.
-        if (Time.time < 5 && audioClip != LoginScreen)
+        if (buildIndex > 0)
         {
-            return;
-        }
-
-        // Switch audio outputs.
-        AudioSource audioSourceNext = audioSource1.isPlaying ? audioSource2 : audioSource1;
-        AudioSource audioSourcePrev = audioSourceNext == audioSource1 ? audioSource2 : audioSource1;
-
-        // Play music if not already playing.
-        if (audioSourcePrev.clip != audioClip)
-        {
-            currentVolume = audioSourcePrev.volume;
-            StartCoroutine(fadeOutAudio(audioSourcePrev));
-            audioSourceNext.clip = audioClip;
-            StartCoroutine(fadeInAudio(audioSourceNext));
+            AudioSnapshots[buildIndex].TransitionTo(m_TransitionIn); // current scene music
         }
     }
 
-    private IEnumerator fadeOutAudio(AudioSource audioSource)
+    public void PlayUIMusic(int buildIndex)
     {
-        float startTime = Time.time;
-        while (true)
+        if (optionsCanvas.GetComponent<Canvas>().enabled)
         {
-            float elapsed = Time.time - startTime;
-            audioSource.volume = Mathf.Clamp01(Mathf.Lerp(currentVolume, 0, elapsed / musicFadeDuration));
-
-            // Stop playing.
-            if (audioSource.volume == 0)
-            {
-                audioSource.Stop();
-                break;
-            }
-            yield return null;
+            UISnapshot.TransitionTo(m_TransitionIn);
+        }
+        else
+        {
+            AudioSnapshots[buildIndex].TransitionTo(m_TransitionIn);
         }
     }
 
-    private IEnumerator fadeInAudio(AudioSource audioSource)
+    public void PlayLoadingMusic(int buildIndex, bool playLoadMusic)
     {
-        // Start playing.
-        audioSource.Play();
-
-        float startTime = Time.time;
-        while (true)
+        if (playLoadMusic)
         {
-            float elapsed = Time.time - startTime;
-            audioSource.volume = Mathf.Clamp01(Mathf.Lerp(0, currentVolume, elapsed / musicFadeDuration));
-
-            // Stop increasing volume.
-            if (audioSource.volume == currentVolume)
-            {
-                break;
-            }
-            yield return null;
+            LoadingSnapshot.TransitionTo(m_TransitionIn);
         }
+        else
+        {
+            AudioSnapshots[buildIndex].TransitionTo(m_TransitionIn);
+        }
+    }
+    // Mute Music Section
+    public void MasterMute()
+    {
+        AudioListener.pause = !AudioListener.pause;
+       // MasterSnapshot.TransitionTo(m_TransitionOut);
+       /*
+	   UIMusicMute();
+       GameMusicMute();
+       LoginMusicMute();
+       LoadingMusicMute();
+       CharSelectMusicMute();
+       CharCreationMusicMute();
+       */
+    }
+
+    public void UIMusicMute()
+    {
+        UIMixer.mute = !UIMixer.mute;
+    }
+
+    public void GameMusicMute()
+    {
+        GameMixer.mute = !GameMixer.mute;
+    }
+
+    public void LoginMusicMute()
+    {
+        LoginMixer.mute = !LoginMixer.mute;
+    }
+
+    public void LoadingMusicMute()
+    {
+        LoadingMixer.mute = !LoadingMixer.mute;
+    }
+
+    public void CharSelectMusicMute()
+    {
+        CharSelectMixer.mute = !CharSelectMixer.mute;
+    }
+
+    public void CharCreationMusicMute()
+    {
+        CharCreationMixer.mute = !CharCreationMixer.mute;
     }
 }

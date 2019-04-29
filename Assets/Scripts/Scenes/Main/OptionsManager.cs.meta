@@ -3,7 +3,17 @@ guid: 4845c8889475a6b4d908bbbc7313b99b
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - resolutionDropdown: {instanceID: 0}
+  - qualityDropdown: {instanceID: 0}
+  - audioMixer: {instanceID: 0}
+  - closeOptionsButton: {instanceID: 0}
+  - controlsButton: {instanceID: 0}
+  - chatButton: {instanceID: 0}
+  - logoutButton: {instanceID: 0}
+  - exitGameButton: {instanceID: 0}
+  - chatUseTimestamps: {instanceID: 0}
+  - chatColorPickerCanvas: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

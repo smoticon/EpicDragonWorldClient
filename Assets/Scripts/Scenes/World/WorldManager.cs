@@ -46,9 +46,6 @@ public class WorldManager : MonoBehaviour
         animationQueue = new ConcurrentDictionary<long, AnimationHolder>();
         deleteQueue = new List<long>();
 
-        // Start music.
-        MusicManager.Instance.PlayMusic(MusicManager.Instance.EnterWorld);
-
         if (MainManager.Instance.selectedCharacterData != null)
         {
             // Create player character.

@@ -20,6 +20,7 @@ public class MainManager : MonoBehaviour
     public Slider loadingBar;
     public Text loadingPercentage;
     public Canvas optionsCanvas;
+    public MusicManager musicManager;
 
     [HideInInspector]
     public bool hasInitialized = false; // Set to true when login scene has initialized.
@@ -35,6 +36,26 @@ public class MainManager : MonoBehaviour
     public bool isChatBoxActive = false;
 
     private string previousLoadedScene;
+    private string previousScene;
+    [HideInInspector]
+    public int buildIndex;
+
+    void OnEnable()
+    {
+        previousScene = SceneManager.GetActiveScene().name;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        buildIndex = scene.buildIndex;
+        musicManager.PlayMusic(scene.buildIndex);
+    }
 
     private void Start()
     {
@@ -43,7 +64,7 @@ public class MainManager : MonoBehaviour
         // Loading canvas should be enabled.
         loadingCanvas.enabled = true;
         // Close UIs.
-        HideOptionsMenu();
+        OptionsManager.Instance.HideOptionsMenu();
         // Initialize network manager.
         new NetworkManager();
         // Load first scene.
@@ -54,14 +75,7 @@ public class MainManager : MonoBehaviour
     {
         if (InputManager.ESCAPE_DOWN && !ConfirmDialog.Instance.confirmDialogActive)
         {
-            if (optionsCanvas.enabled)
-            {
-                HideOptionsMenu();
-            }
-            else
-            {
-                ShowOptionsMenu();
-            }
+            OptionsManager.Instance.ShowOptionsMenu();
         }
     }
 
@@ -75,6 +89,7 @@ public class MainManager : MonoBehaviour
         loadingBar.value = 0;
         loadingPercentage.text = "0%";
         loadingCanvas.enabled = true;
+        musicManager.PlayLoadingMusic(buildIndex, true);
         AsyncOperation operation;
         if (previousLoadedScene != null)
         {
@@ -91,23 +106,6 @@ public class MainManager : MonoBehaviour
         }
         previousLoadedScene = scene;
         loadingCanvas.enabled = false;
-    }
-
-    public void ShowOptionsMenu()
-    {
-        if (!isChatBoxActive)
-        {
-            bool isInWorld = previousLoadedScene.Equals(WORLD_SCENE);
-            OptionsManager.Instance.controlsButton.gameObject.SetActive(isInWorld);
-            OptionsManager.Instance.chatButton.gameObject.SetActive(isInWorld);
-            OptionsManager.Instance.logoutButton.gameObject.SetActive(isInWorld);
-            OptionsManager.Instance.exitGameButton.gameObject.SetActive(isInWorld);
-            optionsCanvas.enabled = true;
-        }
-    }
-
-    public void HideOptionsMenu()
-    {
-        optionsCanvas.enabled = false;
+        musicManager.PlayLoadingMusic(buildIndex, false);
     }
 }

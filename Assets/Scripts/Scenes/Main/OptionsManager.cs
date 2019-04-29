@@ -4,8 +4,8 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 
 /**
- * Authors: Ilias Vlachos, Pantelis Andrianakis
- * Date: December 23th 2018
+ * Authors: NightBR
+ * Date: April 29th 2019
  */
 public class OptionsManager : MonoBehaviour
 {
@@ -43,6 +43,9 @@ public class OptionsManager : MonoBehaviour
     [HideInInspector]
     public bool useChatTimestamps = false;
 
+    public MusicManager musicManager;
+    public Canvas optionsCanvas;
+
     private void Start()
     {
         Instance = this;
@@ -69,14 +72,6 @@ public class OptionsManager : MonoBehaviour
         resolutionDropdown.AddOptions(resolutionOptions);
         resolutionDropdown.value = PlayerPrefs.GetInt(RESOLUTION_VALUE, currentResolutionIndex);
         resolutionDropdown.RefreshShownValue();
-
-        // Add listener.
-        logoutButton.onClick.AddListener(OnButtonLogoutClick);
-        exitGameButton.onClick.AddListener(OnButtonQuitClick);
-        closeOptionsButton.onClick.AddListener(HideOptionsMenu);
-        chatColorButtons[0].onClick.AddListener(NormalColorButtonSelected);
-        chatColorButtons[1].onClick.AddListener(MessageColorButtonSelected);
-        chatColorButtons[2].onClick.AddListener(SystemColorButtonSelected);
     }
 
     public void SetResolution(int resolutionIndex)
@@ -86,10 +81,10 @@ public class OptionsManager : MonoBehaviour
         PlayerPrefs.SetInt(RESOLUTION_VALUE, resolutionIndex);
     }
 
-    public void SetVolume(float volume)
+    public void SetVolume(float MasterVolume)
     {
-        audioMixer.SetFloat(MASTER_VOLUME_VALUE, volume);
-        PlayerPrefs.SetFloat(MASTER_VOLUME_VALUE, volume);
+        audioMixer.SetFloat(MASTER_VOLUME_VALUE, MasterVolume);
+        PlayerPrefs.SetFloat(MASTER_VOLUME_VALUE, MasterVolume);
     }
 
     public void SetQuality(int qualityIndex)
@@ -100,38 +95,44 @@ public class OptionsManager : MonoBehaviour
 
     public void SetFullscreen(bool isFullscreen)
     {
-        Screen.fullScreen = isFullscreen;
+        Screen.fullScreen = !Screen.fullScreen;
         PlayerPrefs.SetString(FULLSCREEN_VALUE, isFullscreen ? TRUE_VALUE : FALSE_VALUE);
     }
 
-    private void OnButtonLogoutClick()
+    public void OnButtonLogoutClick()
     {
         ConfirmDialog.Instance.PlayerConfirm("Are you sure you want to logout?", 3);
     }
 
-    private void OnButtonQuitClick()
+    public void OnButtonQuitClick()
     {
         ConfirmDialog.Instance.PlayerConfirm("Are you sure you want to quit the game?", 1);
     }
 
-    private void HideOptionsMenu()
+    public void ShowOptionsMenu()
     {
-        MainManager.Instance.optionsCanvas.enabled = false;
+        optionsCanvas.enabled = !optionsCanvas.enabled;
+        musicManager.PlayUIMusic(MainManager.Instance.buildIndex);
     }
 
-    private void NormalColorButtonSelected()
+    public void HideOptionsMenu()
+    {
+        optionsCanvas.enabled = false;
+    }
+
+    public void NormalColorButtonSelected()
     {
         lastSelectColorButtonIndex = 0;
         chatColorPickerCanvas.gameObject.SetActive(true);
     }
 
-    private void MessageColorButtonSelected()
+    public void MessageColorButtonSelected()
     {
         lastSelectColorButtonIndex = 1;
         chatColorPickerCanvas.gameObject.SetActive(true);
     }
 
-    private void SystemColorButtonSelected()
+    public void SystemColorButtonSelected()
     {
         lastSelectColorButtonIndex = 2;
         chatColorPickerCanvas.gameObject.SetActive(true);
@@ -176,5 +177,70 @@ public class OptionsManager : MonoBehaviour
     {
         useChatTimestamps = !useChatTimestamps;
         chatUseTimestamps.enabled = useChatTimestamps;
+    }
+
+    // Slider Volume Control Section
+    public void MasterVolume(float MasterVolume)
+    {
+        audioMixer.SetFloat("MasterVolume", Mathf.Log10(MasterVolume) * 20);
+        PlayerPrefs.SetFloat("MasterVolume", Mathf.Log10(MasterVolume) * 20);
+    }
+
+    public void GameMusic(float gamemusic)
+    {
+        audioMixer.SetFloat("gamemusic", Mathf.Log10(gamemusic) * 20);
+        PlayerPrefs.SetFloat("gamemusic", Mathf.Log10(gamemusic) * 20);
+    }
+
+    public void GameSFX(float gamesfx)
+    {
+        audioMixer.SetFloat("gamesfx", Mathf.Log10(gamesfx) * 20);
+        PlayerPrefs.SetFloat("gamesfx", Mathf.Log10(gamesfx) * 20);
+    }
+
+    public void UiMusic(float uimusic)
+    {
+        audioMixer.SetFloat("uimusic", Mathf.Log10(uimusic) * 20);
+        PlayerPrefs.SetFloat("uimusic", Mathf.Log10(uimusic) * 20);
+    }
+
+    public void UiSFX(float uisfx)
+    {
+        audioMixer.SetFloat("uisfx", Mathf.Log10(uisfx) * 20);
+        PlayerPrefs.SetFloat("uisfx", Mathf.Log10(uisfx) * 20);
+    }
+
+    public void LoginMusic(float loginmusic)
+    {
+        audioMixer.SetFloat("loginmusic", Mathf.Log10(loginmusic) * 20);
+        PlayerPrefs.SetFloat("loginmusic", Mathf.Log10(loginmusic) * 20);
+    }
+
+    public void LoadingMusic(float loadingmusic)
+    {
+        audioMixer.SetFloat("loadingmusic", Mathf.Log10(loadingmusic) * 20);
+        PlayerPrefs.SetFloat("loadingmusic", Mathf.Log10(loadingmusic) * 20);
+    }
+
+    public void CharSelectMusic(float charselectmusic)
+    {
+        audioMixer.SetFloat("charselectmusic", Mathf.Log10(charselectmusic) * 20);
+        PlayerPrefs.SetFloat("charselectmusic", Mathf.Log10(charselectmusic) * 20);
+    }
+    public void CharCreationMusic(float charcreationmusic)
+    {
+        audioMixer.SetFloat("charcreationmusic", Mathf.Log10(charcreationmusic) * 20);
+        PlayerPrefs.SetFloat("charcreationmusic", Mathf.Log10(charcreationmusic) * 20);
+    }
+
+    // Mute Volume Section
+    public void MuteMaster()
+    {
+        AudioListener.pause = !AudioListener.pause;
+    }
+
+    public void ClearVolume()
+    {
+        audioMixer.ClearFloat("mastervolume");
     }
 }

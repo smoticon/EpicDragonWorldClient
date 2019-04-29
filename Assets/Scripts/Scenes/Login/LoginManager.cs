@@ -36,9 +36,6 @@ public class LoginManager : MonoBehaviour
         RenderSettings.fogStartDistance = 500;
         RenderSettings.fogEndDistance = 1200;
 
-        // Start music.
-        MusicManager.Instance.PlayMusic(MusicManager.Instance.LoginScreen);
-
         loginButton.onClick.AddListener(OnButtonLoginClick);
         optionsButton.onClick.AddListener(OnButtonOptionsClick);
         quitButton.onClick.AddListener(OnButtonQuitClick);
@@ -223,7 +220,7 @@ public class LoginManager : MonoBehaviour
 
     private void OnButtonOptionsClick()
     {
-        MainManager.Instance.ShowOptionsMenu();
+        OptionsManager.Instance.ShowOptionsMenu();
     }
 
     private void OnButtonQuitClick()
