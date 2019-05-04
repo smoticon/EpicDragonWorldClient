@@ -8,19 +8,19 @@ using System.Text;
  */
 public class SendablePacket
 {
-    private MemoryStream memoryStream;
+    private readonly MemoryStream memoryStream;
 
     public SendablePacket()
     {
         memoryStream = new MemoryStream();
     }
 
-    public void WriteString(String value)
+    public void WriteString(string value)
     {
         if (value != null)
         {
             byte[] byteArray = Encoding.UTF8.GetBytes(value);
-            WriteByte(byteArray.Length);
+            WriteShort(byteArray.Length); // Maximum accepted byte array size for strings is 32767.
             WriteBytes(byteArray);
         }
         else
