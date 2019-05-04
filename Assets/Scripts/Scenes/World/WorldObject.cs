@@ -52,7 +52,7 @@ public class WorldObject : MonoBehaviour
         distance = WorldManager.Instance.CalculateDistance(transform.position);
 
         // Set audioSource volume based on distance.
-        audioSource.volume = 1 - (float)(distance / SOUND_DISTANCE);
+        audioSource.volume = (1 - (float)(distance / SOUND_DISTANCE) * OptionsManager.Instance.GetSfxVolume());
 
         // Animation related sounds.
         if (distance < SOUND_DISTANCE)

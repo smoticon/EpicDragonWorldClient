@@ -3822,7 +3822,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 360820755}
   m_HandleRect: {fileID: 360820754}
   m_Direction: 0
-  m_Value: -0.000119779186
+  m_Value: -0.00008853245
   m_Size: 0.99326223
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -20696,7 +20696,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 419061633}
   m_HandleRect: {fileID: 419061632}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -31664,7 +31664,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1542077412}
   - component: {fileID: 1542077411}
-  - component: {fileID: 1542077413}
   m_Layer: 0
   m_Name: Water4AdvancedReflectionCamera - MiniMap
   m_TagString: Untagged
@@ -31729,15 +31728,6 @@ Transform:
   m_Father: {fileID: 1588965333}
   m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!45 &1542077413
-Skybox:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1542077410}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 0}
 --- !u!1001 &1550566350
 PrefabInstance:
   m_ObjectHideFlags: 0

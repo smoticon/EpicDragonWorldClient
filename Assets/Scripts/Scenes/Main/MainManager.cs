@@ -36,33 +36,14 @@ public class MainManager : MonoBehaviour
     public bool isChatBoxActive = false;
 
     private string previousLoadedScene;
-    private string previousScene;
-    [HideInInspector]
-    public int buildIndex;
-
-    void OnEnable()
-    {
-        previousScene = SceneManager.GetActiveScene().name;
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        buildIndex = scene.buildIndex;
-        musicManager.PlayMusic(scene.buildIndex);
-    }
 
     private void Start()
     {
         Instance = this;
-
         // Loading canvas should be enabled.
         loadingCanvas.enabled = true;
+        // Load config values.
+        OptionsManager.Instance.LoadConfigValues();
         // Close UIs.
         OptionsManager.Instance.HideOptionsMenu();
         // Initialize network manager.
@@ -89,7 +70,6 @@ public class MainManager : MonoBehaviour
         loadingBar.value = 0;
         loadingPercentage.text = "0%";
         loadingCanvas.enabled = true;
-        musicManager.PlayLoadingMusic(buildIndex, true);
         AsyncOperation operation;
         if (previousLoadedScene != null)
         {
@@ -97,6 +77,7 @@ public class MainManager : MonoBehaviour
             yield return new WaitUntil(() => operation.isDone);
         }
         operation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+        musicManager.PlayMusic(SceneManager.GetSceneByName(scene).buildIndex);
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
@@ -106,6 +87,5 @@ public class MainManager : MonoBehaviour
         }
         previousLoadedScene = scene;
         loadingCanvas.enabled = false;
-        musicManager.PlayLoadingMusic(buildIndex, false);
     }
 }

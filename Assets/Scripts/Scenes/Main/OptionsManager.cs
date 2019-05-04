@@ -13,7 +13,8 @@ public class OptionsManager : MonoBehaviour
 
     public Dropdown resolutionDropdown;
     public Dropdown qualityDropdown;
-    public AudioMixer audioMixer;
+    public AudioMixer musicAudioMixer;
+    public AudioMixer sfxAudioMixer;
     public Button closeOptionsButton;
     public Button controlsButton;
     public Button chatButton;
@@ -23,13 +24,21 @@ public class OptionsManager : MonoBehaviour
 
     private Resolution[] resolutions;
 
-    private readonly string RESOLUTION_VALUE = "Resolution";
-    private readonly string MASTER_VOLUME_VALUE = "MasterVolume";
-    private readonly string QUALITY_VALUE = "Quality";
-    private readonly string FULLSCREEN_VALUE = "Fullscreen";
-    private readonly string TRUE_VALUE = "True";
-    private readonly string FALSE_VALUE = "False";
+    private readonly static string SETTINGS_FILE_NAME = "Settings.ini";
+    private readonly static string RESOLUTION_VALUE = "Resolution";
+    private readonly static string QUALITY_VALUE = "Quality";
+    private readonly static string FULLSCREEN_VALUE = "Fullscreen";
+    private readonly static string MUSIC_VOLUME_VALUE = "MusicVolume";
+    private readonly static string SFX_VOLUME_VALUE = "SfxVolume";
+    private readonly static string TRUE_VALUE = "True";
+    private readonly static string FALSE_VALUE = "False";
 
+    // Storage variables
+    private static int resolutionIndexSave;
+    private static int qualityIndexSave;
+    private static bool isFullscreenSave;
+    private static float masterVolumeSave;
+    private static float gameSfxSave;
     // Chat color related.
     public Button[] chatColorButtons;
     public Canvas chatColorPickerCanvas;
@@ -50,12 +59,8 @@ public class OptionsManager : MonoBehaviour
     {
         Instance = this;
 
-        // Load saved values.
-        SetVolume(PlayerPrefs.GetFloat(MASTER_VOLUME_VALUE, 1f));
-        SetQuality(PlayerPrefs.GetInt(QUALITY_VALUE, QualitySettings.GetQualityLevel()));
-        SetFullscreen(PlayerPrefs.GetString(FULLSCREEN_VALUE, TRUE_VALUE).Equals(TRUE_VALUE));
-
         // Set resolution after fullscreen.
+        ConfigReader configReader = new ConfigReader(SETTINGS_FILE_NAME);
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> resolutionOptions = new List<string>();
@@ -70,33 +75,56 @@ public class OptionsManager : MonoBehaviour
             }
         }
         resolutionDropdown.AddOptions(resolutionOptions);
-        resolutionDropdown.value = PlayerPrefs.GetInt(RESOLUTION_VALUE, currentResolutionIndex);
+        resolutionDropdown.value = configReader.GetInt(RESOLUTION_VALUE, currentResolutionIndex);
         resolutionDropdown.RefreshShownValue();
+    }
+
+    public void LoadConfigValues()
+    {
+        ConfigReader configReader = new ConfigReader(SETTINGS_FILE_NAME);
+        SetResolution(configReader.GetInt(RESOLUTION_VALUE, resolutionIndexSave));
+        SetQuality(configReader.GetInt(QUALITY_VALUE, QualitySettings.GetQualityLevel()));
+        if (Screen.fullScreen != configReader.GetString(FULLSCREEN_VALUE, TRUE_VALUE).Equals(TRUE_VALUE))
+        {
+            SetFullscreen(!Screen.fullScreen);
+        }
+        MasterVolume(configReader.GetFloat(MUSIC_VOLUME_VALUE, masterVolumeSave));
+        GameSFX(configReader.GetFloat(SFX_VOLUME_VALUE, gameSfxSave));
+    }
+
+    public void SaveConfigValues()
+    {
+        ConfigWriter configWriter = new ConfigWriter(SETTINGS_FILE_NAME);
+        configWriter.SetInt(RESOLUTION_VALUE, resolutionIndexSave);
+        configWriter.SetInt(QUALITY_VALUE, qualityIndexSave);
+        configWriter.SetString(FULLSCREEN_VALUE, isFullscreenSave ? TRUE_VALUE : FALSE_VALUE);
+        configWriter.SetFloat(MUSIC_VOLUME_VALUE, masterVolumeSave);
+        configWriter.SetFloat(SFX_VOLUME_VALUE, gameSfxSave);
     }
 
     public void SetResolution(int resolutionIndex)
     {
+        resolutionIndexSave = resolutionIndex;
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen, resolution.refreshRate);
-        PlayerPrefs.SetInt(RESOLUTION_VALUE, resolutionIndex);
     }
 
-    public void SetVolume(float MasterVolume)
+    public void SetVolume(float mastervolume)
     {
-        audioMixer.SetFloat(MASTER_VOLUME_VALUE, MasterVolume);
-        PlayerPrefs.SetFloat(MASTER_VOLUME_VALUE, MasterVolume);
+        masterVolumeSave = mastervolume;
+        musicAudioMixer.SetFloat(MUSIC_VOLUME_VALUE, mastervolume);
     }
 
     public void SetQuality(int qualityIndex)
     {
+        qualityIndexSave = qualityIndex;
         QualitySettings.SetQualityLevel(qualityIndex);
-        PlayerPrefs.SetInt(QUALITY_VALUE, qualityIndex);
     }
 
     public void SetFullscreen(bool isFullscreen)
     {
+        isFullscreenSave = isFullscreen;
         Screen.fullScreen = !Screen.fullScreen;
-        PlayerPrefs.SetString(FULLSCREEN_VALUE, isFullscreen ? TRUE_VALUE : FALSE_VALUE);
     }
 
     public void OnButtonLogoutClick()
@@ -112,12 +140,23 @@ public class OptionsManager : MonoBehaviour
     public void ShowOptionsMenu()
     {
         optionsCanvas.enabled = !optionsCanvas.enabled;
-        musicManager.PlayUIMusic(MainManager.Instance.buildIndex);
+        if (optionsCanvas.enabled)
+        {
+            // Load Config OptionsMenu values.
+            LoadConfigValues();
+        }
+        else
+        {
+            // Save Config OptionsMenu Values.
+            SaveConfigValues();
+        }
     }
 
     public void HideOptionsMenu()
     {
         optionsCanvas.enabled = false;
+        // Save Config OptionsMenu Values.
+        SaveConfigValues();
     }
 
     public void NormalColorButtonSelected()
@@ -179,58 +218,27 @@ public class OptionsManager : MonoBehaviour
         chatUseTimestamps.enabled = useChatTimestamps;
     }
 
+    public void OnButtonCloseClick()
+    {
+        ShowOptionsMenu();
+    }
+
     // Slider Volume Control Section
-    public void MasterVolume(float MasterVolume)
+    public void MasterVolume(float value)
     {
-        audioMixer.SetFloat("MasterVolume", Mathf.Log10(MasterVolume) * 20);
-        PlayerPrefs.SetFloat("MasterVolume", Mathf.Log10(MasterVolume) * 20);
+        masterVolumeSave = value;
+        musicAudioMixer.SetFloat(MUSIC_VOLUME_VALUE, Mathf.Log10(value) * 20);
     }
 
-    public void GameMusic(float gamemusic)
+    public void GameSFX(float value)
     {
-        audioMixer.SetFloat("gamemusic", Mathf.Log10(gamemusic) * 20);
-        PlayerPrefs.SetFloat("gamemusic", Mathf.Log10(gamemusic) * 20);
+        gameSfxSave = value;
+        sfxAudioMixer.SetFloat(SFX_VOLUME_VALUE, Mathf.Log10(value) * 20);
     }
 
-    public void GameSFX(float gamesfx)
+    public float GetSfxVolume()
     {
-        audioMixer.SetFloat("gamesfx", Mathf.Log10(gamesfx) * 20);
-        PlayerPrefs.SetFloat("gamesfx", Mathf.Log10(gamesfx) * 20);
-    }
-
-    public void UiMusic(float uimusic)
-    {
-        audioMixer.SetFloat("uimusic", Mathf.Log10(uimusic) * 20);
-        PlayerPrefs.SetFloat("uimusic", Mathf.Log10(uimusic) * 20);
-    }
-
-    public void UiSFX(float uisfx)
-    {
-        audioMixer.SetFloat("uisfx", Mathf.Log10(uisfx) * 20);
-        PlayerPrefs.SetFloat("uisfx", Mathf.Log10(uisfx) * 20);
-    }
-
-    public void LoginMusic(float loginmusic)
-    {
-        audioMixer.SetFloat("loginmusic", Mathf.Log10(loginmusic) * 20);
-        PlayerPrefs.SetFloat("loginmusic", Mathf.Log10(loginmusic) * 20);
-    }
-
-    public void LoadingMusic(float loadingmusic)
-    {
-        audioMixer.SetFloat("loadingmusic", Mathf.Log10(loadingmusic) * 20);
-        PlayerPrefs.SetFloat("loadingmusic", Mathf.Log10(loadingmusic) * 20);
-    }
-
-    public void CharSelectMusic(float charselectmusic)
-    {
-        audioMixer.SetFloat("charselectmusic", Mathf.Log10(charselectmusic) * 20);
-        PlayerPrefs.SetFloat("charselectmusic", Mathf.Log10(charselectmusic) * 20);
-    }
-    public void CharCreationMusic(float charcreationmusic)
-    {
-        audioMixer.SetFloat("charcreationmusic", Mathf.Log10(charcreationmusic) * 20);
-        PlayerPrefs.SetFloat("charcreationmusic", Mathf.Log10(charcreationmusic) * 20);
+        return gameSfxSave;
     }
 
     // Mute Volume Section
@@ -241,6 +249,6 @@ public class OptionsManager : MonoBehaviour
 
     public void ClearVolume()
     {
-        audioMixer.ClearFloat("mastervolume");
+        musicAudioMixer.ClearFloat("mastervolume");
     }
 }

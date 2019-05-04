@@ -153,6 +153,7 @@ public class AnimationController : MonoBehaviour
         // Animation related sounds.
         if (currentVelocityZ > 2 && !audioSource.isPlaying && !WorldManager.Instance.isPlayerInWater && WorldManager.Instance.isPlayerOnTheGround)
         {
+            audioSource.volume = OptionsManager.Instance.GetSfxVolume();
             audioSource.PlayOneShot(SoundManager.Instance.FOOTSTEP_SOUND, 1);
         }
     }
