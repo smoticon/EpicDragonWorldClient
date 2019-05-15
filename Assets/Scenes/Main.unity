@@ -14532,6 +14532,8 @@ MonoBehaviour:
   logoutButton: {fileID: 1464278600}
   exitGameButton: {fileID: 180000606}
   chatUseTimestamps: {fileID: 1995280252}
+  musicSlider: {fileID: 785990217}
+  sfxSlider: {fileID: 1517774620}
   chatColorButtons:
   - {fileID: 2118806506}
   - {fileID: 295455122}

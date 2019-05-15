@@ -21,6 +21,8 @@ public class OptionsManager : MonoBehaviour
     public Button logoutButton;
     public Button exitGameButton;
     public Toggle chatUseTimestamps;
+    public Slider musicSlider;
+    public Slider sfxSlider;
 
     private Resolution[] resolutions;
 
@@ -82,14 +84,23 @@ public class OptionsManager : MonoBehaviour
     public void LoadConfigValues()
     {
         ConfigReader configReader = new ConfigReader(SETTINGS_FILE_NAME);
-        SetResolution(configReader.GetInt(RESOLUTION_VALUE, resolutionIndexSave));
-        SetQuality(configReader.GetInt(QUALITY_VALUE, QualitySettings.GetQualityLevel()));
-        if (Screen.fullScreen != configReader.GetString(FULLSCREEN_VALUE, TRUE_VALUE).Equals(TRUE_VALUE))
+        SetResolution(configReader.GetInt(RESOLUTION_VALUE, 0));
+        SetQuality(configReader.GetInt(QUALITY_VALUE, 2));
+        bool fullScreen = configReader.GetString(FULLSCREEN_VALUE, TRUE_VALUE).Equals(TRUE_VALUE);
+        if (fullScreen && !Screen.fullScreen)
         {
-            SetFullscreen(!Screen.fullScreen);
+            SetFullscreen(false);
         }
-        MasterVolume(configReader.GetFloat(MUSIC_VOLUME_VALUE, masterVolumeSave));
-        GameSFX(configReader.GetFloat(SFX_VOLUME_VALUE, gameSfxSave));
+        else if (!fullScreen && Screen.fullScreen)
+        {
+            SetFullscreen(true);
+        }
+        float musicVolume = configReader.GetFloat(MUSIC_VOLUME_VALUE, 1);
+        MasterVolume(musicVolume);
+        musicSlider.value = musicVolume;
+        float sfxVolume = configReader.GetFloat(SFX_VOLUME_VALUE, 1);
+        GameSFX(sfxVolume);
+        sfxSlider.value = sfxVolume;
     }
 
     public void SaveConfigValues()
@@ -118,6 +129,7 @@ public class OptionsManager : MonoBehaviour
     public void SetQuality(int qualityIndex)
     {
         qualityIndexSave = qualityIndex;
+        qualityDropdown.value = qualityIndex;
         QualitySettings.SetQualityLevel(qualityIndex);
     }
 
@@ -140,12 +152,7 @@ public class OptionsManager : MonoBehaviour
     public void ShowOptionsMenu()
     {
         optionsCanvas.enabled = !optionsCanvas.enabled;
-        if (optionsCanvas.enabled)
-        {
-            // Load Config OptionsMenu values.
-            LoadConfigValues();
-        }
-        else
+        if (!optionsCanvas.enabled)
         {
             // Save Config OptionsMenu Values.
             SaveConfigValues();
