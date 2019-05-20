@@ -20,7 +20,10 @@ public class SendablePacket
         if (value != null)
         {
             byte[] byteArray = Encoding.UTF8.GetBytes(value);
-            WriteShort(byteArray.Length); // Maximum accepted byte array size for strings is 32767.
+            // Since we use short value maximum byte size for strings is 32767.
+            // Take care that maximum packet size data is 32767 bytes as well.
+            // Sending a 32767 byte string would require all the available packet size.
+            WriteShort(byteArray.Length);
             WriteBytes(byteArray);
         }
         else
