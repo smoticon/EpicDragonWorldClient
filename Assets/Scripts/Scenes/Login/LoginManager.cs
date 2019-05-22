@@ -36,6 +36,9 @@ public class LoginManager : MonoBehaviour
         RenderSettings.fogStartDistance = 500;
         RenderSettings.fogEndDistance = 1200;
 
+        // Make sure options manager has set fullscreen.
+        OptionsManager.Instance.CheckFullscreen();
+
         loginButton.onClick.AddListener(OnButtonLoginClick);
         optionsButton.onClick.AddListener(OnButtonOptionsClick);
         quitButton.onClick.AddListener(OnButtonQuitClick);
@@ -220,7 +223,7 @@ public class LoginManager : MonoBehaviour
 
     private void OnButtonOptionsClick()
     {
-        OptionsManager.Instance.ShowOptionsMenu();
+        OptionsManager.Instance.ToggleOptionsMenu();
     }
 
     private void OnButtonQuitClick()

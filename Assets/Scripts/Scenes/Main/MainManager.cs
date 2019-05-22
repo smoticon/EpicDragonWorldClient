@@ -35,29 +35,17 @@ public class MainManager : MonoBehaviour
     [HideInInspector]
     public bool isChatBoxActive = false;
 
-    private string previousLoadedScene;
+    public string lastLoadedScene = "";
 
     private void Start()
     {
         Instance = this;
         // Loading canvas should be enabled.
         loadingCanvas.enabled = true;
-        // Load config values.
-        OptionsManager.Instance.LoadConfigValues();
-        // Close UIs.
-        OptionsManager.Instance.HideOptionsMenu();
         // Initialize network manager.
         new NetworkManager();
         // Load first scene.
         LoadScene(LOGIN_SCENE);
-    }
-
-    private void Update()
-    {
-        if (InputManager.ESCAPE_DOWN && !ConfirmDialog.Instance.confirmDialogActive)
-        {
-            OptionsManager.Instance.ShowOptionsMenu();
-        }
     }
 
     public void LoadScene(string scene)
@@ -71,9 +59,9 @@ public class MainManager : MonoBehaviour
         loadingPercentage.text = "0%";
         loadingCanvas.enabled = true;
         AsyncOperation operation;
-        if (previousLoadedScene != null)
+        if (!lastLoadedScene.Equals(""))
         {
-            operation = SceneManager.UnloadSceneAsync(previousLoadedScene);
+            operation = SceneManager.UnloadSceneAsync(lastLoadedScene);
             yield return new WaitUntil(() => operation.isDone);
         }
         operation = SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
@@ -85,7 +73,7 @@ public class MainManager : MonoBehaviour
             loadingPercentage.text = (int)(progress * 100f) + "%";
             yield return null;
         }
-        previousLoadedScene = scene;
+        lastLoadedScene = scene;
         loadingCanvas.enabled = false;
     }
 }

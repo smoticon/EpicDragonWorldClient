@@ -21,6 +21,7 @@ public class OptionsManager : MonoBehaviour
     public Button logoutButton;
     public Button exitGameButton;
     public Toggle chatUseTimestamps;
+    public Toggle fullScreenToggle;
     public Slider musicSlider;
     public Slider sfxSlider;
 
@@ -45,14 +46,10 @@ public class OptionsManager : MonoBehaviour
     public Button[] chatColorButtons;
     public Canvas chatColorPickerCanvas;
     private int lastSelectColorButtonIndex;
-    [HideInInspector]
-    public int chatColorNormalIntValue = 16777215; // Cannot use Util.ColorToInt in packet, so we store value here.
-    [HideInInspector]
-    public int chatColorMessageIntValue = 16711760; // Cannot use Util.ColorToInt in packet, so we store value here.
-    [HideInInspector]
-    public int chatColorSystemIntValue = 16739840; // Cannot use Util.ColorToInt in packet, so we store value here.
-    [HideInInspector]
-    public bool useChatTimestamps = false;
+    public volatile static bool useChatTimestamps = false;
+    public volatile static int chatColorNormalIntValue = 16777215; // Cannot use Util.ColorToInt in packet, so we store value here.
+    public volatile static int chatColorMessageIntValue = 16711760; // Cannot use Util.ColorToInt in packet, so we store value here.
+    public volatile static int chatColorSystemIntValue = 16739840; // Cannot use Util.ColorToInt in packet, so we store value here.
 
     public MusicManager musicManager;
     public Canvas optionsCanvas;
@@ -79,28 +76,27 @@ public class OptionsManager : MonoBehaviour
         resolutionDropdown.AddOptions(resolutionOptions);
         resolutionDropdown.value = configReader.GetInt(RESOLUTION_VALUE, currentResolutionIndex);
         resolutionDropdown.RefreshShownValue();
-    }
 
-    public void LoadConfigValues()
-    {
-        ConfigReader configReader = new ConfigReader(SETTINGS_FILE_NAME);
-        SetResolution(configReader.GetInt(RESOLUTION_VALUE, 0));
+        // Load rest of configurations.
         SetQuality(configReader.GetInt(QUALITY_VALUE, 2));
-        bool fullScreen = configReader.GetString(FULLSCREEN_VALUE, TRUE_VALUE).Equals(TRUE_VALUE);
-        if (fullScreen && !Screen.fullScreen)
-        {
-            SetFullscreen(false);
-        }
-        else if (!fullScreen && Screen.fullScreen)
-        {
-            SetFullscreen(true);
-        }
+        isFullscreenSave = configReader.GetString(FULLSCREEN_VALUE, TRUE_VALUE).Equals(TRUE_VALUE);
+        SetFullscreen(isFullscreenSave);
+        fullScreenToggle.isOn = isFullscreenSave;
+
         float musicVolume = configReader.GetFloat(MUSIC_VOLUME_VALUE, 1);
         MasterVolume(musicVolume);
         musicSlider.value = musicVolume;
         float sfxVolume = configReader.GetFloat(SFX_VOLUME_VALUE, 1);
         GameSFX(sfxVolume);
         sfxSlider.value = sfxVolume;
+    }
+
+    private void Update()
+    {
+        if (InputManager.ESCAPE_DOWN && !ConfirmDialog.Instance.confirmDialogActive)
+        {
+            ToggleOptionsMenu();
+        }
     }
 
     public void SaveConfigValues()
@@ -139,6 +135,18 @@ public class OptionsManager : MonoBehaviour
         Screen.fullScreen = !Screen.fullScreen;
     }
 
+    public void CheckFullscreen()
+    {
+        if (isFullscreenSave && !Screen.fullScreen)
+        {
+            SetFullscreen(true);
+        }
+        else if (!isFullscreenSave && Screen.fullScreen)
+        {
+            SetFullscreen(false);
+        }
+    }
+
     public void OnButtonLogoutClick()
     {
         ConfirmDialog.Instance.PlayerConfirm("Are you sure you want to logout?", 3);
@@ -149,20 +157,21 @@ public class OptionsManager : MonoBehaviour
         ConfirmDialog.Instance.PlayerConfirm("Are you sure you want to quit the game?", 1);
     }
 
-    public void ShowOptionsMenu()
+    public void ToggleOptionsMenu()
     {
         optionsCanvas.enabled = !optionsCanvas.enabled;
-        if (!optionsCanvas.enabled)
-        {
-            // Save Config OptionsMenu Values.
-            SaveConfigValues();
-        }
-    }
 
-    public void HideOptionsMenu()
-    {
-        optionsCanvas.enabled = false;
-        // Save Config OptionsMenu Values.
+        bool isInWorld = MainManager.Instance.lastLoadedScene.Equals(MainManager.WORLD_SCENE);
+        controlsButton.gameObject.SetActive(isInWorld);
+        chatButton.gameObject.SetActive(isInWorld);
+        logoutButton.gameObject.SetActive(isInWorld);
+        exitGameButton.gameObject.SetActive(isInWorld);
+        if (isInWorld)
+        {
+            chatUseTimestamps.enabled = optionsCanvas.enabled;
+            chatUseTimestamps.isOn = useChatTimestamps;
+        }
+
         SaveConfigValues();
     }
 
@@ -222,12 +231,13 @@ public class OptionsManager : MonoBehaviour
     public void ToggleTimestampUse()
     {
         useChatTimestamps = !useChatTimestamps;
-        chatUseTimestamps.enabled = useChatTimestamps;
+        // Update player options.
+        NetworkManager.ChannelSend(new PlayerOptionsUpdate());
     }
 
     public void OnButtonCloseClick()
     {
-        ShowOptionsMenu();
+        ToggleOptionsMenu();
     }
 
     // Slider Volume Control Section

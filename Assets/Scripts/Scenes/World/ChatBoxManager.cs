@@ -87,22 +87,22 @@ public class ChatBoxManager : MonoBehaviour
             Destroy(messageList[0].textObject.gameObject);
             messageList.Remove(messageList[0]);
         }
-        Message message = new Message { text = OptionsManager.Instance.useChatTimestamps ? DateTime.Now.ToString(TIMESTAMP_FORMAT) + " " + text : text };
+        Message message = new Message { text = OptionsManager.useChatTimestamps ? DateTime.Now.ToString(TIMESTAMP_FORMAT) + " " + text : text };
         GameObject newText = Instantiate(textObject, chatPanel.transform);
         message.textObject = newText.GetComponent<Text>();
         message.textObject.text = message.text;
         switch (type)
         {
             case 0: // system
-                message.textObject.color = Util.IntToColor(OptionsManager.Instance.chatColorSystemIntValue);
+                message.textObject.color = Util.IntToColor(OptionsManager.chatColorSystemIntValue);
                 break;
 
             case 1: // normal chat
-                message.textObject.color = Util.IntToColor(OptionsManager.Instance.chatColorNormalIntValue);
+                message.textObject.color = Util.IntToColor(OptionsManager.chatColorNormalIntValue);
                 break;
 
             case 2: // personal message
-                message.textObject.color = Util.IntToColor(OptionsManager.Instance.chatColorMessageIntValue);
+                message.textObject.color = Util.IntToColor(OptionsManager.chatColorMessageIntValue);
                 break;
         }
         messageList.Add(message);

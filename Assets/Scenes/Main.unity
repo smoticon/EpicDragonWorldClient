@@ -14504,7 +14504,7 @@ GameObject:
   - component: {fileID: 773190231}
   - component: {fileID: 773190230}
   m_Layer: 0
-  m_Name: Manager - Options Menu
+  m_Name: Manager - Options
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14532,6 +14532,7 @@ MonoBehaviour:
   logoutButton: {fileID: 1464278600}
   exitGameButton: {fileID: 180000606}
   chatUseTimestamps: {fileID: 1995280252}
+  fullScreenToggle: {fileID: 63150366}
   musicSlider: {fileID: 785990217}
   sfxSlider: {fileID: 1517774620}
   chatColorButtons:
@@ -32775,7 +32776,7 @@ GameObject:
   - component: {fileID: 1995280251}
   - component: {fileID: 1995280252}
   m_Layer: 5
-  m_Name: Timestab Toggle
+  m_Name: Timestamp Toggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32899,6 +32900,7 @@ MonoBehaviour:
   accountName: 
   isDraggingWindow: 0
   isChatBoxActive: 0
+  lastLoadedScene: 
 --- !u!4 &1995412270
 Transform:
   m_ObjectHideFlags: 0

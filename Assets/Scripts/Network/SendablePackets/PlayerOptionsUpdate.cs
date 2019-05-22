@@ -8,10 +8,10 @@ public class PlayerOptionsUpdate : SendablePacket
     {
         WriteShort(12); // Packet id.
 
-        WriteInt(OptionsManager.Instance.chatColorNormalIntValue);
-        WriteInt(OptionsManager.Instance.chatColorMessageIntValue);
-        WriteInt(OptionsManager.Instance.chatColorSystemIntValue);
-        WriteByte(OptionsManager.Instance.useChatTimestamps ? 1 : 0);
+        WriteInt(OptionsManager.chatColorNormalIntValue);
+        WriteInt(OptionsManager.chatColorMessageIntValue);
+        WriteInt(OptionsManager.chatColorSystemIntValue);
+        WriteByte(OptionsManager.useChatTimestamps ? 1 : 0);
 
         WriteShort((int)InputManager.KEY_BINDINGS[0]);
         WriteShort((int)InputManager.KEY_BINDINGS[1]);
