@@ -14540,10 +14540,6 @@ MonoBehaviour:
   - {fileID: 295455122}
   - {fileID: 484853349}
   chatColorPickerCanvas: {fileID: 1493927313}
-  chatColorNormalIntValue: 16777215
-  chatColorMessageIntValue: 16711760
-  chatColorSystemIntValue: 16739840
-  useChatTimestamps: 0
   musicManager: {fileID: 756592119}
   optionsCanvas: {fileID: 1795845492}
 --- !u!4 &773190231

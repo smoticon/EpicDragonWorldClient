@@ -2,7 +2,7 @@
 using UnityEngine.Audio;
 
 /**
- * Authors: NightBR
+ * Authors: Pantelis Andrianakis, NightBR
  * Date: April 29th 2019
  */
 public class MusicManager : MonoBehaviour

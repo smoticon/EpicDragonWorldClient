@@ -118,7 +118,7 @@ AudioMixerController:
   - guid: 70a32158430553841af72842917f5a26
     name: LoginMusic
   - guid: e050aba0b002c0a45a048df16a0f2fef
-    name: MasterVolume
+    name: MusicVolume
   m_AudioMixerGroupViews:
   - guids:
     - 9d02fbc5e74c6eb42882d5365ed1a835
@@ -128,7 +128,7 @@ AudioMixerController:
     - ad1be65b14362714381c355a7ea6f776
     name: View
   m_CurrentViewIndex: 0
-  m_TargetSnapshot: {fileID: 3934550847108328282}
+  m_TargetSnapshot: {fileID: 24500006}
 --- !u!243 &24300002
 AudioMixerGroupController:
   m_ObjectHideFlags: 0

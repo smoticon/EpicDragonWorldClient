@@ -24,7 +24,7 @@ Audio: [https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip(https://www.med
 
 Standard Assets: [https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip](https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip)
 
-TextMesh Pro: [https://www.mediafire.com/file/3n3zy4npinl55o7/TextMesh_Pro.zip](https://www.mediafire.com/file/3n3zy4npinl55o7/TextMesh_Pro.zip)
+TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip)
 
 UMA: [https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip](https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip)
 
