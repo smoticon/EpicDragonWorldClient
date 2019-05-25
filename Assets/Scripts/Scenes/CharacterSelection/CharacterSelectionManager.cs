@@ -13,19 +13,12 @@ public class CharacterSelectionManager : MonoBehaviour
     public static CharacterSelectionManager Instance { get; private set; }
 
     public TextMeshProUGUI textMessage;
-    public GameObject characterPanel;
-    public GameObject tutorialPanel;
     public Button nextCharButton;
     public Button previousCharButton;
     public Button createCharButton;
     public Button deleteCharButton;
     public Button exitToLoginButton;
     public Button enterWorldButton;
-    public TextMeshProUGUI characterNameText;
-    public TextMeshProUGUI skinColorText;
-    public TextMeshProUGUI hairTypeText;
-    public TextMeshProUGUI hairColorText;
-    public TextMeshProUGUI eyeColorText;
     public TextMeshProUGUI characterName;
 
     [HideInInspector]
@@ -98,14 +91,12 @@ public class CharacterSelectionManager : MonoBehaviour
         if (!characterSelected)
         {
             textMessage.text = "Click the create button to make a new character.";
-            characterPanel.gameObject.SetActive(false);
             deleteCharButton.gameObject.SetActive(false);
             Destroy(avatar);
         }
         else
         {
             enterWorldButton.Select(); // Be ready to enter via keyboard.
-            tutorialPanel.gameObject.SetActive(false);
             textMessage.text = "";
         }
 
