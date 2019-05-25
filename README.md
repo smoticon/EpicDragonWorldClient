@@ -15,7 +15,7 @@ Unity3D client that connects with .NET Core server.
 - Chat and messaging.
 
 ### Unity version.
-2019.1.0f2
+2019.1.4f1
 
 ### Necessary additional assets. (Put in assets folder)
 3dModels: [https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip](https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip)
