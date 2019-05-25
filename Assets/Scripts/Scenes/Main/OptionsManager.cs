@@ -159,6 +159,12 @@ public class OptionsManager : MonoBehaviour
 
     public void ToggleOptionsMenu()
     {
+        if (chatColorPickerCanvas.gameObject.activeSelf)
+        {
+            HideChatColorPicker();
+            return;
+        }
+
         optionsCanvas.enabled = !optionsCanvas.enabled;
 
         bool isInWorld = MainManager.Instance.lastLoadedScene.Equals(MainManager.WORLD_SCENE);
@@ -168,11 +174,19 @@ public class OptionsManager : MonoBehaviour
         exitGameButton.gameObject.SetActive(isInWorld);
         if (isInWorld)
         {
+            chatColorButtons[0].image.color = Util.IntToColor(chatColorNormalIntValue);
+            chatColorButtons[1].image.color = Util.IntToColor(chatColorMessageIntValue);
+            chatColorButtons[2].image.color = Util.IntToColor(chatColorSystemIntValue);
             chatUseTimestamps.enabled = optionsCanvas.enabled;
             chatUseTimestamps.isOn = useChatTimestamps;
         }
 
         SaveConfigValues();
+    }
+
+    public void HideChatColorPicker()
+    {
+        chatColorPickerCanvas.gameObject.SetActive(false);
     }
 
     public void NormalColorButtonSelected()
