@@ -18,13 +18,15 @@ Unity3D client that connects with .NET Core server.
 2019.1.4f1
 
 ### Necessary additional assets. (Put in assets folder)
-3dModels: [https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip](https://www.mediafire.com/file/zyy2jd8ji89d6sz/3dModels.zip)
-
 Audio: [https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip(https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip)
+
+Models: [https://www.mediafire.com/file/5zmr74xd950fair/Models.zip](https://www.mediafire.com/file/5zmr74xd950fair/Models.zip)
 
 Standard Assets: [https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip](https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip)
 
 TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip)
+
+Textures: [https://www.mediafire.com/file/u37cylkab5r01rf/Textures.zip](https://www.mediafire.com/file/u37cylkab5r01rf/Textures.zip)
 
 UMA: [https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip](https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip)
 

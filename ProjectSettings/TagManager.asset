@@ -8,13 +8,6 @@ TagManager:
   - Collide
   - Water
   - Ground
-  - EnterWolrd
-  - CharSelection
-  - LoginScreen
-  - CharCreation
-  - LoadingScreen
-  - UIScreen
-  - CanvasOptions
   layers:
   - Default
   - TransparentFX
