@@ -108,7 +108,7 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public static void ResetKeyCodes()
+    public void ResetKeyCodes()
     {
         SetKeybind(0, KeyCode.W); // KEY_UP_1
         SetKeybind(1, KeyCode.UpArrow); // KEY_UP_2
@@ -150,6 +150,9 @@ public class InputManager : MonoBehaviour
         SetKeybind(37, KeyCode.None); // KEY_SHORTCUT_11_2
         SetKeybind(38, KeyCode.Equals); // KEY_SHORTCUT_12_1
         SetKeybind(39, KeyCode.None); // KEY_SHORTCUT_12_2
+
+        // Update player options.
+        NetworkManager.ChannelSend(new PlayerOptionsUpdate());
     }
 
     public void RefreshButtonTextValues()
@@ -163,13 +166,23 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public static void SetKeybind(int buttonId, KeyCode keycode)
+    public static int SetKeybind(int buttonId, KeyCode keycode)
     {
         // Check for restricted keys.
-        if (keycode == KeyCode.Tab || keycode == KeyCode.Numlock || keycode == KeyCode.Return || keycode == KeyCode.KeypadEnter || keycode == KeyCode.Escape)
+        if (keycode == KeyCode.Escape //
+            || keycode == KeyCode.Return //
+            || keycode == KeyCode.KeypadEnter //
+            || keycode == KeyCode.Numlock //
+            || keycode == KeyCode.Tab //
+            || keycode == KeyCode.Mouse0 //
+            || keycode == KeyCode.Mouse1 //
+            || keycode == KeyCode.Mouse2 //
+            || keycode == KeyCode.Mouse3 //
+            || keycode == KeyCode.Mouse4 //
+            || keycode == KeyCode.Mouse5 //
+            || keycode == KeyCode.Mouse6)
         {
-            // Message: This key cannot be bound.
-            return;
+            return 0; // This key cannot be bound.
         }
 
         // Check for already bound keys.
@@ -177,12 +190,12 @@ public class InputManager : MonoBehaviour
         {
             if (KEY_BINDINGS[i] == keycode && keycode != KeyCode.None)
             {
-                // Message: Key already bound.
-                return;
+                return 1; // Key already bound.
             }
         }
 
         // Set keybind.
         KEY_BINDINGS[buttonId] = keycode;
+        return 2; // Success.
     }
 }

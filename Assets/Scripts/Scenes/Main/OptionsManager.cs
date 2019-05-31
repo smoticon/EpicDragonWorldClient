@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -50,6 +51,10 @@ public class OptionsManager : MonoBehaviour
     public volatile static int chatColorNormalIntValue = 16777215; // Cannot use Util.ColorToInt in packet, so we store value here.
     public volatile static int chatColorMessageIntValue = 16711760; // Cannot use Util.ColorToInt in packet, so we store value here.
     public volatile static int chatColorSystemIntValue = 16739840; // Cannot use Util.ColorToInt in packet, so we store value here.
+    // Keybind related.
+    public Canvas keybindMenuCanvas;
+    private int lastSelectKeyButtonIndex = -1;
+    public TextMeshProUGUI keybindMenuMessageText;
 
     public MusicManager musicManager;
     public Canvas optionsCanvas;
@@ -96,6 +101,32 @@ public class OptionsManager : MonoBehaviour
         if (InputManager.ESCAPE_DOWN && !ConfirmDialog.Instance.confirmDialogActive)
         {
             ToggleOptionsMenu();
+        }
+
+        if (lastSelectKeyButtonIndex > -1)
+        {
+            foreach (KeyCode keycode in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKey(keycode) && keycode != KeyCode.Escape)
+                {
+                    switch (InputManager.SetKeybind(lastSelectKeyButtonIndex, keycode))
+                    {
+                        case 0: // Key cannot be bound.
+                            keybindMenuMessageText.text = "Input cannot be bound. Try another key.";
+                            break;
+
+                        case 1: // Key already bound.
+                            keybindMenuMessageText.text = "Input already bound. Try another key.";
+                            break;
+
+                        case 2: // Success.
+                            HideKeybindMenu();
+                            // Update player options.
+                            NetworkManager.ChannelSend(new PlayerOptionsUpdate());
+                            break;
+                    }
+                }
+            }
         }
     }
 
@@ -162,6 +193,11 @@ public class OptionsManager : MonoBehaviour
         if (chatColorPickerCanvas.gameObject.activeSelf)
         {
             HideChatColorPicker();
+            return;
+        }
+        if (keybindMenuCanvas.gameObject.activeSelf)
+        {
+            HideKeybindMenu();
             return;
         }
 
@@ -247,6 +283,18 @@ public class OptionsManager : MonoBehaviour
         useChatTimestamps = !useChatTimestamps;
         // Update player options.
         NetworkManager.ChannelSend(new PlayerOptionsUpdate());
+    }
+
+    public void HideKeybindMenu()
+    {
+        keybindMenuCanvas.gameObject.SetActive(false);
+        lastSelectKeyButtonIndex = -1;
+    }
+
+    public void ShowKeybindMenu(int index)
+    {
+        lastSelectKeyButtonIndex = index;
+        keybindMenuCanvas.gameObject.SetActive(true);
     }
 
     public void OnButtonCloseClick()
