@@ -13,6 +13,7 @@ Unity3D client that connects with .NET Core server.
 - Character management.
 - Broadcast game object movement.
 - Chat and messaging.
+- Game options menu.
 
 ### Unity version.
 2019.1.4f1
