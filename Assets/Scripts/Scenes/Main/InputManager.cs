@@ -64,6 +64,14 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        // On all cases check if escape key is pressed.
+        ESCAPE_DOWN = Input.GetKeyDown(KEY_ESCAPE);
+        // Do not proceed when keybind canvas is active and waits for a new input.
+        if (OptionsManager.Instance.keybindMenuCanvas.gameObject.activeSelf)
+        {
+            return;
+        }
+
         // Continuously pressed.
         UP_PRESS = Input.GetKey(KEY_BINDINGS[0]) || Input.GetKey(KEY_BINDINGS[1]);
         DOWN_PRESS = Input.GetKey(KEY_BINDINGS[2]) || Input.GetKey(KEY_BINDINGS[3]);
@@ -89,7 +97,6 @@ public class InputManager : MonoBehaviour
         SHORTCUT_11_DOWN = Input.GetKeyDown(KEY_BINDINGS[36]) || Input.GetKeyDown(KEY_BINDINGS[37]);
         SHORTCUT_12_DOWN = Input.GetKeyDown(KEY_BINDINGS[38]) || Input.GetKeyDown(KEY_BINDINGS[39]);
         RETURN_DOWN = Input.GetKeyDown(KEY_RETURN) || Input.GetKeyDown(KEY_KEYPAD_RETURN);
-        ESCAPE_DOWN = Input.GetKeyDown(KEY_ESCAPE);
         TAB_DOWN = Input.GetKeyDown(KEY_TAB);
         NUMLOCK_DOWN = Input.GetKeyDown(KEY_NUMLOCK);
         SIDE_MOUSE_DOWN = Input.GetMouseButtonDown(SIDE_MOUSE_ID);
