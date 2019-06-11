@@ -16,7 +16,7 @@ Unity3D client that connects with .NET Core server.
 - Game options menu.
 
 ### Unity version.
-2019.1.4f1
+2019.1.6f1
 
 ### Necessary additional assets. (Put in assets folder)
 Animations: [https://www.mediafire.com/file/u17jodcyr0ayd1p/Animations.zip](https://www.mediafire.com/file/u17jodcyr0ayd1p/Animations.zip)
