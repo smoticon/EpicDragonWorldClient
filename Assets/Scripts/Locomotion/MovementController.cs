@@ -12,7 +12,7 @@ public class MovementController : MonoBehaviour
     public float speedRotationSide = 4.0f;
     public float speedWater = 0.999f;
     public float speedJump = 5.0f;
-    public float jumpHeight = 7.0f;
+    public float jumpPower = 7.0f;
     public float distToGround = 0.1f;
     // Static values.
     private readonly string LAYER_GROUND_VALUE = "Everything";
@@ -77,7 +77,7 @@ public class MovementController : MonoBehaviour
                 else if (WorldManager.Instance.isPlayerOnTheGround)
                 {
                     speedCurrent = speedJump;
-                    rigidBody.AddForce(new Vector3(0, jumpHeight, 0), ForceMode.Impulse);
+                    rigidBody.velocity = new Vector3(rigidBody.velocity.x, jumpPower, rigidBody.velocity.y);
                 }
             }
 
