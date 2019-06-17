@@ -16,12 +16,14 @@ Unity3D client that connects with .NET Core server.
 - Game options menu.
 
 ### Unity version.
-2019.1.6f1
+2019.1.7f1
 
 ### Necessary additional assets. (Put in assets folder)
 Animations: [https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip](https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip)
 
 Audio: [https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip](https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip)
+
+Enviroment: [https://www.mediafire.com/file/yltm6c695eeccgc/Enviroment.zip](https://www.mediafire.com/file/yltm6c695eeccgc/Enviroment.zip)
 
 Models: [https://www.mediafire.com/file/5zmr74xd950fair/Models.zip](https://www.mediafire.com/file/5zmr74xd950fair/Models.zip)
 
@@ -29,7 +31,7 @@ Standard Assets: [https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets
 
 TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip)
 
-Textures: [https://www.mediafire.com/file/u37cylkab5r01rf/Textures.zip](https://www.mediafire.com/file/u37cylkab5r01rf/Textures.zip)
+Textures: [https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip](https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip)
 
 UMA: [https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip](https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip)
 

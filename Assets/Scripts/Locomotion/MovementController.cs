@@ -14,6 +14,7 @@ public class MovementController : MonoBehaviour
     public float speedJump = 5.0f;
     public float jumpPower = 7.0f;
     public float distToGround = 0.1f;
+    public float waterLevel = 63.3f;
     // Static values.
     private readonly string LAYER_GROUND_VALUE = "Everything";
     private readonly string WATER_TAG_VALUE = "Water";
@@ -69,7 +70,7 @@ public class MovementController : MonoBehaviour
                 {
                     // TODO: Check if player goes upper than water level.
                     // if (Physics.Raycast(rBody.transform.position, Vector3.up, distToGround, layerWater))
-                    if (transform.position.y < 63.33f)
+                    if (transform.position.y <= waterLevel)
                     {
                         transform.localPosition += transform.up * speedCurrent * Time.deltaTime;
                     }
