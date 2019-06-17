@@ -95,8 +95,8 @@ public class CameraController : MonoBehaviour
             }
         }
 
-        // When in water, move towards camera direction, if right mouse button is pressed.
-        if (WorldManager.Instance.isPlayerInWater && InputManager.RIGHT_MOUSE_PRESS)
+        // When in water, move towards camera direction, if right mouse button is pressed and player is not rotating the camera.
+        if (WorldManager.Instance.isPlayerInWater && InputManager.RIGHT_MOUSE_PRESS && (InputManager.LEFT_MOUSE_PRESS || InputManager.UP_PRESS || InputManager.DOWN_PRESS))
         {
             target.position += transform.forward * Time.deltaTime;
         }
