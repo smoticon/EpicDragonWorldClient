@@ -7,6 +7,7 @@
 public class WorldObject : MonoBehaviour
 {
     public long objectId;
+    public CharacterDataHolder characterData;
     private double distance = 0;
 
     private Animator animator;

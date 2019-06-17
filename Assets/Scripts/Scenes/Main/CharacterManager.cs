@@ -42,9 +42,11 @@ public class CharacterManager : MonoBehaviour
                     // Assign object id and name.
                     WorldObject worldObject = newObj.AddComponent<WorldObject>();
                     worldObject.objectId = entry.Key;
+                    worldObject.characterData = entry.Value;
                     WorldObjectText worldObjectText = newObj.AddComponent<WorldObjectText>();
                     worldObjectText.worldObjectName = entry.Value.GetName();
                     worldObjectText.attachedObject = newObj;
+                    worldObjectText.worldObject = worldObject;
 
                     ((IDictionary<long, GameObject>)WorldManager.Instance.gameObjects).Remove(entry.Key);
                     WorldManager.Instance.gameObjects.TryAdd(entry.Key, newObj);
