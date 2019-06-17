@@ -19,7 +19,7 @@ Unity3D client that connects with .NET Core server.
 2019.1.6f1
 
 ### Necessary additional assets. (Put in assets folder)
-Animations: [https://www.mediafire.com/file/u17jodcyr0ayd1p/Animations.zip](https://www.mediafire.com/file/u17jodcyr0ayd1p/Animations.zip)
+Animations: [https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip](https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip)
 
 Audio: [https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip](https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip)
 

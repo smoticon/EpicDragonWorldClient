@@ -149,12 +149,12 @@ public class AnimationController : MonoBehaviour
             lastWaterState = WorldManager.Instance.isPlayerInWater;
             lastGroundedState = WorldManager.Instance.isPlayerOnTheGround;
         }
+    }
 
-        // Animation related sounds.
-        if (currentVelocityZ > 2 && !audioSource.isPlaying && !WorldManager.Instance.isPlayerInWater && WorldManager.Instance.isPlayerOnTheGround)
-        {
-            audioSource.volume = OptionsManager.Instance.GetSfxVolume();
-            audioSource.PlayOneShot(SoundManager.Instance.FOOTSTEP_SOUND, 1);
-        }
+    // Triggered by animation run_fwd at frames 7 and 16.
+    private void StepSound()
+    {
+        audioSource.volume = OptionsManager.Instance.GetSfxVolume();
+        audioSource.PlayOneShot(SoundManager.Instance.FOOTSTEP_SOUND, 1);
     }
 }
