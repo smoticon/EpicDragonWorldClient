@@ -95,6 +95,12 @@ public class CameraController : MonoBehaviour
             }
         }
 
+        // When in water, move towards camera direction, if right mouse button is pressed.
+        if (WorldManager.Instance.isPlayerInWater && InputManager.RIGHT_MOUSE_PRESS)
+        {
+            target.position += transform.forward * Time.deltaTime;
+        }
+
         // Calculate the desired distance.
         if (!MainManager.Instance.isChatBoxActive && !MainManager.Instance.isDraggingWindow && !MainManager.Instance.optionsCanvas.enabled) // Do not want to intervene with chat scrolling.
         {
