@@ -14,6 +14,13 @@ public class CharacterDataHolder
     private int hairColor = 2695723;
     private int skinColor = 15847869;
     private int eyeColor = 2695723;
+    private int headItem = 0;
+    private int chestItem = 0;
+    private int legsItem = 0;
+    private int handsItem = 0;
+    private int feetItem = 0;
+    private int rightHandItem = 0;
+    private int leftHandItem = 0;
     private float x = 0;
     private float y = 0;
     private float z = 0;
@@ -121,6 +128,76 @@ public class CharacterDataHolder
     public void SetEyeColor(int eyeColor)
     {
         this.eyeColor = eyeColor;
+    }
+
+    public int GetHeadItem()
+    {
+        return headItem;
+    }
+
+    public void SetHeadItem(int headItem)
+    {
+        this.headItem = headItem;
+    }
+
+    public int GetChestItem()
+    {
+        return chestItem;
+    }
+
+    public void SetChestItem(int chestItem)
+    {
+        this.chestItem = chestItem;
+    }
+
+    public int GetLegsItem()
+    {
+        return legsItem;
+    }
+
+    public void SetLegsItem(int legsItem)
+    {
+        this.legsItem = legsItem;
+    }
+
+    public int GetHandsItem()
+    {
+        return handsItem;
+    }
+
+    public void SetHandsItem(int handsItem)
+    {
+        this.handsItem = handsItem;
+    }
+
+    public int GetFeetItem()
+    {
+        return feetItem;
+    }
+
+    public void SetFeetItem(int feetItem)
+    {
+        this.feetItem = feetItem;
+    }
+
+    public int GetRightHandItem()
+    {
+        return rightHandItem;
+    }
+
+    public void SetRightHandItem(int rightHandItem)
+    {
+        this.rightHandItem = rightHandItem;
+    }
+
+    public int GetLeftHandItem()
+    {
+        return leftHandItem;
+    }
+
+    public void SetLeftHandItem(int leftHandItem)
+    {
+        this.leftHandItem = leftHandItem;
     }
 
     public float GetX()

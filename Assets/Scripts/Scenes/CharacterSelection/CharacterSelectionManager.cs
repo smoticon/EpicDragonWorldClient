@@ -195,7 +195,8 @@ public class CharacterSelectionManager : MonoBehaviour
         MainManager.Instance.selectedCharacterData = (CharacterDataHolder)MainManager.Instance.characterList[characterSelectedSlot];
         characterName.text = MainManager.Instance.selectedCharacterData.GetName();
         NetworkManager.ChannelSend(new CharacterSelectUpdate(characterSelectedSlot));
-        StartCoroutine(CharacterManager.Instance.CustomizeCharacterAppearance(MainManager.Instance.selectedCharacterData, avatar));
+        Destroy(avatar.gameObject);
+        avatar = CharacterManager.Instance.CreateCharacter(MainManager.Instance.selectedCharacterData, 8.28f, 0.1035156f, 20.222f, 180);
     }
 
     private void OnClickPreviousButton()
@@ -212,7 +213,8 @@ public class CharacterSelectionManager : MonoBehaviour
         MainManager.Instance.selectedCharacterData = (CharacterDataHolder)MainManager.Instance.characterList[characterSelectedSlot];
         characterName.text = MainManager.Instance.selectedCharacterData.GetName();
         NetworkManager.ChannelSend(new CharacterSelectUpdate(characterSelectedSlot));
-        StartCoroutine(CharacterManager.Instance.CustomizeCharacterAppearance(MainManager.Instance.selectedCharacterData, avatar));
+        Destroy(avatar.gameObject);
+        avatar = CharacterManager.Instance.CreateCharacter(MainManager.Instance.selectedCharacterData, 8.28f, 0.1035156f, 20.222f, 180);
     }
 
     private void OnEnterWorldButton()

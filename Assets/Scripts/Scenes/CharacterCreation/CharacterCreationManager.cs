@@ -29,7 +29,9 @@ public class CharacterCreationManager : MonoBehaviour
     private bool waitingServer;
     private DynamicCharacterAvatar avatar;
     private Dictionary<string, DnaSetter> dna;
-    private CharacterDataHolder dataHolder = new CharacterDataHolder();
+    private CharacterDataHolder dataHolder;
+    private CharacterDataHolder dataHolderMale;
+    private CharacterDataHolder dataHolderFemale;
     private int currentHairMale = 0;
     private int currentHairFemale = 0;
 
@@ -53,8 +55,15 @@ public class CharacterCreationManager : MonoBehaviour
         createButton.onClick.AddListener(OnClickCreateButton);
         backButton.onClick.AddListener(OnClickBackButton);
 
+        // Initialize character data holders.
+        dataHolderMale = new CharacterDataHolder();
+        dataHolderMale.SetRace(0);
+        dataHolderFemale = new CharacterDataHolder();
+        dataHolderFemale.SetRace(1);
+        dataHolder = dataHolderMale;
+
         // Initial values.
-        avatar = CharacterManager.Instance.CreateCharacter(dataHolder, 8.28f, 0.1035156f, 20.222f, 180);
+        avatar = CharacterManager.Instance.CreateCharacter(dataHolderMale, 8.28f, 0.1035156f, 20.222f, 180);
         avatar.CharacterUpdated.AddListener(Updated);
         heightSlider.onValueChanged.AddListener(HeightChange);
         bellySlider.onValueChanged.AddListener(BellyChange);
@@ -75,13 +84,15 @@ public class CharacterCreationManager : MonoBehaviour
     {
         if (male && avatar.activeRace.name != "HumanMaleDCS")
         {
-            avatar.ChangeRace("HumanMaleDCS");
-            dataHolder.SetRace(0);
+            dataHolder = dataHolderMale;
+            Destroy(avatar.gameObject);
+            avatar = CharacterManager.Instance.CreateCharacter(dataHolder, 8.28f, 0.1035156f, 20.222f, 180);
         }
         if (!male && avatar.activeRace.name != "HumanFemaleDCS")
         {
-            avatar.ChangeRace("HumanFemaleDCS");
-            dataHolder.SetRace(1);
+            dataHolder = dataHolderFemale;
+            Destroy(avatar.gameObject);
+            avatar = CharacterManager.Instance.CreateCharacter(dataHolder, 8.28f, 0.1035156f, 20.222f, 180);
         }
     }
 

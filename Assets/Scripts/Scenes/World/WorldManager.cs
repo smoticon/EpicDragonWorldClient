@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using UMA;
 using UMA.CharacterSystem;
 using UnityEngine;
 
@@ -30,6 +31,8 @@ public class WorldManager : MonoBehaviour
     [HideInInspector]
     public ConcurrentDictionary<long, AnimationHolder> animationQueue;
     [HideInInspector]
+    public ConcurrentDictionary<long, CharacterDataHolder> characterUpdateQueue;
+    [HideInInspector]
     public List<long> deleteQueue;
     [HideInInspector]
     public static readonly int VISIBILITY_RADIUS = 10000; // This is the maximum allowed visibility radius.
@@ -44,6 +47,7 @@ public class WorldManager : MonoBehaviour
         gameObjects = new ConcurrentDictionary<long, GameObject>();
         moveQueue = new ConcurrentDictionary<long, MovementHolder>();
         animationQueue = new ConcurrentDictionary<long, AnimationHolder>();
+        characterUpdateQueue = new ConcurrentDictionary<long, CharacterDataHolder>();
         deleteQueue = new List<long>();
 
         if (MainManager.Instance.selectedCharacterData != null)
@@ -186,6 +190,128 @@ public class WorldManager : MonoBehaviour
 
                 ((IDictionary<long, AnimationHolder>)animationQueue).Remove(entry.Key);
             }
+
+            // Update pending characters.
+            foreach (KeyValuePair<long, CharacterDataHolder> entry in characterUpdateQueue)
+            {
+                if (gameObjects.ContainsKey(entry.Key))
+                {
+                    GameObject obj = gameObjects[entry.Key];
+                    if (obj != null)
+                    {
+                        WorldObject worldObject = obj.GetComponent<WorldObject>();
+                        if (worldObject != null)
+                        {
+                            if (worldObject.GetDistance() <= VISIBILITY_RADIUS) // Object is in sight radius.
+                            {
+                                DynamicCharacterAvatar avatar = obj.GetComponent<DynamicCharacterAvatar>();
+                                if (avatar != null)
+                                {
+                                    // TODO: Manage more things than just item updates.
+                                    CharacterDataHolder oldData = worldObject.characterData;
+                                    CharacterDataHolder newData = entry.Value;
+
+                                    int headItem = newData.GetHeadItem();
+                                    if (headItem != oldData.GetHeadItem())
+                                    {
+                                        if (headItem == 0)
+                                        {
+                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.HEAD);
+                                        }
+                                        else
+                                        {
+                                            CharacterManager.Instance.EquipItem(avatar, headItem);
+                                        }
+                                    }
+
+                                    int chestItem = newData.GetChestItem();
+                                    if (chestItem != oldData.GetChestItem())
+                                    {
+                                        if (chestItem == 0)
+                                        {
+                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.CHEST);
+                                        }
+                                        else
+                                        {
+                                            CharacterManager.Instance.EquipItem(avatar, chestItem);
+                                        }
+                                    }
+
+                                    int legsItem = newData.GetLegsItem();
+                                    if (legsItem != oldData.GetLegsItem())
+                                    {
+                                        if (legsItem == 0)
+                                        {
+                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.LEGS);
+                                        }
+                                        else
+                                        {
+                                            CharacterManager.Instance.EquipItem(avatar, legsItem);
+                                        }
+                                    }
+
+                                    int handsItem = newData.GetHandsItem();
+                                    if (handsItem != oldData.GetHandsItem())
+                                    {
+                                        if (handsItem == 0)
+                                        {
+                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.HANDS);
+                                        }
+                                        else
+                                        {
+                                            CharacterManager.Instance.EquipItem(avatar, handsItem);
+                                        }
+                                    }
+
+                                    int feetItem = newData.GetFeetItem();
+                                    if (feetItem != oldData.GetFeetItem())
+                                    {
+                                        if (feetItem == 0)
+                                        {
+                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.FEET);
+                                        }
+                                        else
+                                        {
+                                            CharacterManager.Instance.EquipItem(avatar, feetItem);
+                                        }
+                                    }
+
+                                    int leftHandItem = newData.GetLeftHandItem();
+                                    if (leftHandItem != oldData.GetLeftHandItem())
+                                    {
+                                        if (leftHandItem == 0)
+                                        {
+                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.LEFT_HAND);
+                                        }
+                                        else
+                                        {
+                                            CharacterManager.Instance.EquipItem(avatar, leftHandItem);
+                                        }
+                                    }
+
+                                    int rightHandItem = newData.GetRightHandItem();
+                                    if (rightHandItem != oldData.GetRightHandItem())
+                                    {
+                                        if (rightHandItem == 0)
+                                        {
+                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.RIGHT_HAND);
+                                        }
+                                        else
+                                        {
+                                            CharacterManager.Instance.EquipItem(avatar, rightHandItem);
+                                        }
+                                    }
+
+                                    // Update world object with new data.
+                                    worldObject.characterData = newData;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                ((IDictionary<long, CharacterDataHolder>)characterUpdateQueue).Remove(entry.Key);
+            }
         }
     }
 
@@ -202,7 +328,9 @@ public class WorldManager : MonoBehaviour
             // Check for existing objects.
             if (gameObjects.ContainsKey(objectId))
             {
-                // TODO: Update object info.
+                // Update object info.
+                ((IDictionary<long, CharacterDataHolder>)characterUpdateQueue).Remove(objectId);
+                characterUpdateQueue.TryAdd(objectId, characterdata);
                 return;
             }
 
@@ -224,8 +352,9 @@ public class WorldManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.5f);
 
-        // Delete game object from world.
+        // Destroy name text.
         Destroy(obj.GetComponent<WorldObjectText>().nameMesh.gameObject);
+        // Finally destroy gameobject.
         Destroy(obj);
     }
 

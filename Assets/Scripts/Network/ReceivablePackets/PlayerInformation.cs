@@ -16,6 +16,13 @@ public class PlayerInformation
         characterData.SetHairColor(packet.ReadInt());
         characterData.SetSkinColor(packet.ReadInt());
         characterData.SetEyeColor(packet.ReadInt());
+        characterData.SetHeadItem(packet.ReadInt());
+        characterData.SetChestItem(packet.ReadInt());
+        characterData.SetLegsItem(packet.ReadInt());
+        characterData.SetHandsItem(packet.ReadInt());
+        characterData.SetFeetItem(packet.ReadInt());
+        characterData.SetLeftHandItem(packet.ReadInt());
+        characterData.SetRightHandItem(packet.ReadInt());
         characterData.SetX(packet.ReadFloat());
         characterData.SetY(packet.ReadFloat());
         characterData.SetZ(packet.ReadFloat());
