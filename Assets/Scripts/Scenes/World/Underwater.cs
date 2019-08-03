@@ -16,6 +16,10 @@ public class Underwater : MonoBehaviour
     {
         normalColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
         underwaterColor = new Color(0.3047348f, 0.5396f, 0.6037f, 0.5019f);
+
+        // Set both modes to avoid later latency when switch and initializing.
+        SetUnderwater();
+        SetNormal();
     }
 
     private void Update()
