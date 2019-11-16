@@ -33,7 +33,7 @@ TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](
 
 Textures: [https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip](https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip)
 
-UMA: [https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip](https://www.mediafire.com/file/c86uorashnc6gr6/UMA.zip)
+UMA: [https://www.mediafire.com/file/jcvp3k8mcd4me8n/UMA.zip](https://www.mediafire.com/file/jcvp3k8mcd4me8n/UMA.zip)
 
 
 ### You can see the latest development progress on YouTube.
