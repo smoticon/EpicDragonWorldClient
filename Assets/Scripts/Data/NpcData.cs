@@ -24,7 +24,7 @@ public class NpcData : MonoBehaviour
             {
                 continue;
             }
-            string[] values = Regex.Split(line, ";");
+            string[] values = line.Split(';');
             if (values.Length < 17)
             {
                 continue;

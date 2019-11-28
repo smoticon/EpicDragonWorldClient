@@ -26,7 +26,7 @@ public class ItemData : MonoBehaviour
             {
                 continue;
             }
-            string[] values = Regex.Split(line, ";");
+            string[] values = line.Split(';');
             if (values.Length < 20)
             {
                 continue;
@@ -40,17 +40,17 @@ public class ItemData : MonoBehaviour
             string recipeMale = values[5];
             string recipeFemale = values[6];
             int prefabId = int.Parse(values[7]);
-            string[] positionMaleSplit = Regex.Split(values[8], ",");
+            string[] positionMaleSplit = values[8].Split(',');
             Vector3 positionMale = new Vector3(float.Parse(positionMaleSplit[0]), float.Parse(positionMaleSplit[1]), float.Parse(positionMaleSplit[2]));
-            string[] positionFemaleSplit = Regex.Split(values[9], ",");
+            string[] positionFemaleSplit = values[9].Split(',');
             Vector3 positionFemale = new Vector3(float.Parse(positionFemaleSplit[0]), float.Parse(positionFemaleSplit[1]), float.Parse(positionFemaleSplit[2]));
-            string[] rotationMaleSplit = Regex.Split(values[10], ",");
+            string[] rotationMaleSplit = values[10].Split(',');
             Quaternion rotationMale = Quaternion.Euler(float.Parse(rotationMaleSplit[0]), float.Parse(rotationMaleSplit[1]), float.Parse(rotationMaleSplit[2]));
-            string[] rotationFemaleSplit = Regex.Split(values[11], ",");
+            string[] rotationFemaleSplit = values[11].Split(',');
             Quaternion rotationFemale = Quaternion.Euler(float.Parse(rotationFemaleSplit[0]), float.Parse(rotationFemaleSplit[1]), float.Parse(rotationFemaleSplit[2]));
-            string[] scaleMaleSplit = Regex.Split(values[12], ",");
+            string[] scaleMaleSplit = values[12].Split(',');
             Vector3 scaleMale = new Vector3(float.Parse(scaleMaleSplit[0]), float.Parse(scaleMaleSplit[1]), float.Parse(scaleMaleSplit[2]));
-            string[] scaleFemaleSplit = Regex.Split(values[13], ",");
+            string[] scaleFemaleSplit = values[13].Split(',');
             Vector3 scaleFemale = new Vector3(float.Parse(scaleFemaleSplit[0]), float.Parse(scaleFemaleSplit[1]), float.Parse(scaleFemaleSplit[2]));
             bool stackable = bool.Parse(values[14]);
             bool tradable = bool.Parse(values[15]);
