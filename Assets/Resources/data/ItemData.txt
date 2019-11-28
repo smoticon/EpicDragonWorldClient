@@ -1,0 +1,6 @@
+#id;itemSlot;itemType;name;description;recipeMale;recipeFemale;prefabId;positionMale;positionFemale;rotationMale;rotationFemale;scaleMale;scaleFemale;stackable;tradable;stamina;strength;dexterity;intelect
+1;CHEST;EQUIP;Test Shirt;Tank tops make great first items.;MaleShirt2;FemaleShirt2;-1;0,0,0;0,0,0;0,0,0;0,0,0;1,1,1;1,1,1;FALSE;FALSE;0;0;0;0
+2;LEGS;EQUIP;Test Pants;Some people call them jeans, others... just pants.;MaleJeans;FemalePants1;-1;0,0,0;0,0,0;0,0,0;0,0,0;1,1,1;1,1,1;FALSE;FALSE;0;0;0;0
+3;FEET;EQUIP;Test Shoes;Definitely not tall shoes.;TallShoes_Black_Recipe;FemaleTallShoes_Black;-1;0,0,0;0,0,0;0,0,0;0,0,0;1,1,1;1,1,1;FALSE;FALSE;0;0;0;0
+4;RIGHT_HAND;EQUIP;Test Sword Right;Sword of thunder.;;;0;-0.09,-0.24,-0.09;-0.09,-0.24,-0.09;12.738,-5.85,-0;12.738,-5.85,-0;1,1,1;1,1,1;FALSE;FALSE;0;0;0;0
+5;LEFT_HAND;EQUIP;Test Sword Left;Sword of lightning.;;;0;-0.1,0.3,-0.102;-0.1,0.3,-0.102;-12.738,-5.85,182.189;-12.738,-5.85,182.189;1,1,1;1,1,1;FALSE;FALSE;0;0;0;0
