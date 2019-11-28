@@ -26,15 +26,15 @@ Audio: [https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip](https://www.me
 
 Enviroment: [https://www.mediafire.com/file/yltm6c695eeccgc/Enviroment.zip](https://www.mediafire.com/file/yltm6c695eeccgc/Enviroment.zip)
 
-Models: [https://www.mediafire.com/file/5zmr74xd950fair/Models.zip](https://www.mediafire.com/file/5zmr74xd950fair/Models.zip)
+Models: [https://www.mediafire.com/file/p7m6k6oqfhwtgpt/Models.zip](https://www.mediafire.com/file/p7m6k6oqfhwtgpt/Models.zip)
 
-Standard Assets: [https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip](https://www.mediafire.com/file/rq88mt1w8amt2cz/Standard_Assets.zip)
+Standard Assets: [https://www.mediafire.com/file/gckjjgowazqdbfc/Standard_Assets.zip](https://www.mediafire.com/file/gckjjgowazqdbfc/Standard_Assets.zip)
 
 TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip)
 
 Textures: [https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip](https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip)
 
-UMA: [https://www.mediafire.com/file/jcvp3k8mcd4me8n/UMA.zip](https://www.mediafire.com/file/jcvp3k8mcd4me8n/UMA.zip)
+UMA: [https://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip](https://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip)
 
 
 ### You can see the latest development progress on YouTube.
