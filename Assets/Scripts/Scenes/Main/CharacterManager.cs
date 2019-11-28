@@ -82,8 +82,12 @@ public class CharacterManager : MonoBehaviour
     public DynamicCharacterAvatar CreateCharacter(CharacterDataHolder characterData, float posX, float posY, float posZ)
     {
         // Setting race on Instantiate, because even we set it at CustomizeCharacterAppearance, we could not mount items for female characters.
-        DynamicCharacterAvatar newAvatar = Instantiate(characterData.GetRace() == 0 ? avatarMale : avatarFemale, new Vector3(posX, posY, posZ), Quaternion.identity) as DynamicCharacterAvatar;
-        newAvatar.BuildCharacter(); // Prevent UMA bone error.
+        Vector3 newPosition = new Vector3(posX, posY, posZ);
+        DynamicCharacterAvatar avatarTemplate = characterData.GetRace() == 0 ? avatarMale : avatarFemale;
+        DynamicCharacterAvatar newAvatar = Instantiate(avatarTemplate, newPosition, Quaternion.identity) as DynamicCharacterAvatar;
+
+        // Prevent UMA bone error.
+        newAvatar.BuildCharacter();
 
         // Add a new Capsule Collider to prevent falling.
         CapsuleCollider capsuleCollider = newAvatar.gameObject.AddComponent<CapsuleCollider>();

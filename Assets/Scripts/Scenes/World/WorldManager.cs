@@ -54,6 +54,11 @@ public class WorldManager : MonoBehaviour
         {
             // Create player character.
             activeCharacter = CharacterManager.Instance.CreateCharacter(MainManager.Instance.selectedCharacterData);
+            // Tempfix.
+            // TODO: Find why character initializes at 0, 0.
+            // TODO: Try initialize with delay?
+            Destroy(activeCharacter.gameObject);
+            activeCharacter = CharacterManager.Instance.CreateCharacter(MainManager.Instance.selectedCharacterData);
 
             // Set camera target.
             CameraController.Instance.target = activeCharacter.transform;

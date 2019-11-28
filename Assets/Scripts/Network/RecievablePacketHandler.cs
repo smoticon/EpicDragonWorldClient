@@ -33,22 +33,26 @@ public class RecievablePacketHandler
                 break;
 
             case 7:
-                DeleteObject.Notify(packet);
+                NpcInformation.Notify(packet);
                 break;
 
             case 8:
-                Logout.Notify(packet);
+                DeleteObject.Notify(packet);
                 break;
 
             case 9:
-                LocationUpdate.Notify(packet);
+                Logout.Notify(packet);
                 break;
 
             case 10:
-                AnimatorUpdate.Notify(packet);
+                LocationUpdate.Notify(packet);
                 break;
 
             case 11:
+                AnimatorUpdate.Notify(packet);
+                break;
+
+            case 12:
                 ChatResult.Notify(packet);
                 break;
         }
