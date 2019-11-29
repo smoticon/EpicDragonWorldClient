@@ -124,6 +124,12 @@ public class WorldManager : MonoBehaviour
                         StartCoroutine(DelayedDestroy(obj));
                     }
                 }
+
+                // If object was current target, unselect it.
+                if (targetWorldObject != null && targetWorldObject.objectId == objectId)
+                {
+                    SetTarget(null);
+                }
             }
             if (deleteQueue.Count > 0)
             {
@@ -415,6 +421,13 @@ public class WorldManager : MonoBehaviour
             {
                 worldObjectText.currentColor = WorldObjectText.SELECTED_COLOR;
             }
+
+            // Send new target id to server.
+            NetworkManager.ChannelSend(new TargetUpdateRequest(targetWorldObject.objectId));
+        }
+        else // Target has been unset.
+        {
+            NetworkManager.ChannelSend(new TargetUpdateRequest(-1));
         }
     }
 }
