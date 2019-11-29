@@ -114,52 +114,55 @@ public class CharacterManager : MonoBehaviour
         // Without this delay, on slower machines, we got a crash.
         yield return new WaitForSeconds(0.1f);
 
-        // Re-enable avatar since customization delay ended.
-        newAvatar.gameObject.SetActive(true);
-
-        // Customize character.
-        int hairType = characterData.GetHairType();
-        if (characterData.GetRace() == 0)
+        if (newAvatar != null)
         {
-            newAvatar.ChangeRace("HumanMaleDCS");
-            if (hairType != 0)
+            // Re-enable avatar since customization delay ended.
+            newAvatar.gameObject.SetActive(true);
+
+            // Customize character.
+            int hairType = characterData.GetHairType();
+            if (characterData.GetRace() == 0)
             {
-                newAvatar.SetSlot("Hair", hairModelsMale[characterData.GetHairType()]);
+                newAvatar.ChangeRace("HumanMaleDCS");
+                if (hairType != 0)
+                {
+                    newAvatar.SetSlot("Hair", hairModelsMale[characterData.GetHairType()]);
+                }
             }
-        }
-        if (characterData.GetRace() == 1)
-        {
-            newAvatar.ChangeRace("HumanFemaleDCS");
-            if (hairType != 0)
+            if (characterData.GetRace() == 1)
             {
-                newAvatar.SetSlot("Hair", hairModelsFemale[characterData.GetHairType()]);
+                newAvatar.ChangeRace("HumanFemaleDCS");
+                if (hairType != 0)
+                {
+                    newAvatar.SetSlot("Hair", hairModelsFemale[characterData.GetHairType()]);
+                }
             }
+
+            // Set colors.
+            newAvatar.SetColor("Hair", Util.IntToColor(characterData.GetHairColor()));
+            newAvatar.SetColor("Skin", Util.IntToColor(characterData.GetSkinColor()));
+            newAvatar.SetColor("Eyes", Util.IntToColor(characterData.GetEyeColor()));
+            newAvatar.UpdateColors(true);
+
+            Dictionary<string, DnaSetter> dna = newAvatar.GetDNA();
+            dna["height"].Set(characterData.GetHeight());
+            dna["belly"].Set(characterData.GetBelly());
+            newAvatar.BuildCharacter();
+
+            // Set visible equipable armor items.
+            EquipItem(newAvatar, characterData.GetHeadItem());
+            EquipItem(newAvatar, characterData.GetChestItem());
+            EquipItem(newAvatar, characterData.GetLegsItem());
+            EquipItem(newAvatar, characterData.GetHandsItem());
+            EquipItem(newAvatar, characterData.GetFeetItem());
+
+            // Without this delay, sometimes, we cannot not see mounted weapons.
+            yield return new WaitForSeconds(0.1f);
+
+            // Set visible equipable left and right hand items.
+            EquipItem(newAvatar, characterData.GetLeftHandItem());
+            EquipItem(newAvatar, characterData.GetRightHandItem());
         }
-
-        // Set colors.
-        newAvatar.SetColor("Hair", Util.IntToColor(characterData.GetHairColor()));
-        newAvatar.SetColor("Skin", Util.IntToColor(characterData.GetSkinColor()));
-        newAvatar.SetColor("Eyes", Util.IntToColor(characterData.GetEyeColor()));
-        newAvatar.UpdateColors(true);
-
-        Dictionary<string, DnaSetter> dna = newAvatar.GetDNA();
-        dna["height"].Set(characterData.GetHeight());
-        dna["belly"].Set(characterData.GetBelly());
-        newAvatar.BuildCharacter();
-
-        // Set visible equipable armor items.
-        EquipItem(newAvatar, characterData.GetHeadItem());
-        EquipItem(newAvatar, characterData.GetChestItem());
-        EquipItem(newAvatar, characterData.GetLegsItem());
-        EquipItem(newAvatar, characterData.GetHandsItem());
-        EquipItem(newAvatar, characterData.GetFeetItem());
-
-        // Without this delay, sometimes, we cannot not see mounted weapons.
-        yield return new WaitForSeconds(0.1f);
-
-        // Set visible equipable left and right hand items.
-        EquipItem(newAvatar, characterData.GetLeftHandItem());
-        EquipItem(newAvatar, characterData.GetRightHandItem());
     }
 
     public void EquipItem(DynamicCharacterAvatar avatar, int id)
