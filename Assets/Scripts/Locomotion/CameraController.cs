@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UMA.CharacterSystem;
+using UnityEngine;
 
 /**
  * Author: Paintbrush
@@ -41,13 +42,6 @@ public class CameraController : MonoBehaviour
     {
         Instance = this;
 
-        // Bring camera behing player.
-        xDeg = Mathf.LerpAngle(transform.eulerAngles.y, target.eulerAngles.y, 0); // transform.eulerAngles.x
-        yDeg = transform.eulerAngles.y;
-
-        // Change distance.
-        transform.position = target.position - (transform.rotation * Vector3.back * currentDistance);
-
         // Make the rigid body not change rotation.
         if (gameObject.GetComponent<Rigidbody>())
         {
@@ -61,6 +55,16 @@ public class CameraController : MonoBehaviour
         // Don't do anything if target is not defined.
         if (target == null)
         {
+            DynamicCharacterAvatar activeCharacter = WorldManager.Instance.activeCharacter;
+            if (activeCharacter != null)
+            {
+                // Now we can set target.
+                target = activeCharacter.transform;
+
+                // Bring camera behing player.
+                xDeg = target.eulerAngles.y;
+                yDeg = 10;
+            }
             return;
         }
 

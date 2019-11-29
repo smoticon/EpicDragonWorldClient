@@ -60,9 +60,6 @@ public class WorldManager : MonoBehaviour
             Destroy(activeCharacter.gameObject);
             activeCharacter = CharacterManager.Instance.CreateCharacter(MainManager.Instance.selectedCharacterData);
 
-            // Set camera target.
-            CameraController.Instance.target = activeCharacter.transform;
-
             // Animations.
             activeCharacter.gameObject.AddComponent<AnimationController>();
 
