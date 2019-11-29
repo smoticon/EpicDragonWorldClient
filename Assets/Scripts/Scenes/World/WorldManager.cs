@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using UMA;
 using UMA.CharacterSystem;
 using UnityEngine;
 
@@ -16,6 +15,8 @@ public class WorldManager : MonoBehaviour
 
     [HideInInspector]
     public DynamicCharacterAvatar activeCharacter;
+    [HideInInspector]
+    public WorldObject targetWorldObject;
     [HideInInspector]
     public bool isPlayerInWater = false;
     [HideInInspector]
@@ -392,5 +393,28 @@ public class WorldManager : MonoBehaviour
             Destroy(obj);
         }
         CharacterManager.Instance.characterCreationQueue.Clear();
+    }
+
+    public void SetTarget(WorldObject worldObject)
+    {
+        // Unset old target.
+        if (targetWorldObject != null)
+        {
+            WorldObjectText previousObjectText = targetWorldObject.GetComponentInParent<WorldObjectText>();
+            if (previousObjectText != null)
+            {
+                previousObjectText.currentColor = WorldObjectText.DEFAULT_COLOR;
+            }
+        }
+        // Set new target.
+        targetWorldObject = worldObject;
+        if (targetWorldObject != null)
+        {
+            WorldObjectText worldObjectText = targetWorldObject.GetComponentInParent<WorldObjectText>();
+            if (worldObjectText != null)
+            {
+                worldObjectText.currentColor = WorldObjectText.SELECTED_COLOR;
+            }
+        }
     }
 }

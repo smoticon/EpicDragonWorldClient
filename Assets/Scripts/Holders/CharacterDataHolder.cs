@@ -29,6 +29,7 @@ public class CharacterDataHolder
     private long hp = 0;
     private long mp = 0;
     private byte accessLevel = 0;
+    private bool isTargetable = true;
 
     public string GetName()
     {
@@ -278,5 +279,15 @@ public class CharacterDataHolder
     public void SetAccessLevel(byte accessLevel)
     {
         this.accessLevel = accessLevel;
+    }
+
+    public bool IsTargetable()
+    {
+        return isTargetable;
+    }
+
+    public void SetTargetable(bool isTargetable)
+    {
+        this.isTargetable = isTargetable;
     }
 }

@@ -7,10 +7,15 @@ using UnityEngine;
  */
 public class WorldObjectText : MonoBehaviour
 {
+    public static Color32 DEFAULT_COLOR = new Color32(0, 255, 0, 255);
+    public static Color32 SELECTED_COLOR = new Color32(0, 128, 128, 255);
+
     public GameObject attachedObject;
     public WorldObject worldObject;
     public TextMeshPro nameMesh;
     public string worldObjectName = "";
+    public Color32 currentColor = DEFAULT_COLOR;
+
     private float currentHeight;
     private int raceId;
     private bool isInWater;
@@ -20,10 +25,10 @@ public class WorldObjectText : MonoBehaviour
         GameObject newGameObject = new GameObject();
 
         nameMesh = newGameObject.AddComponent<TextMeshPro>();
+        nameMesh.color = currentColor;
         nameMesh.text = "";
         nameMesh.alignment = TextAlignmentOptions.Center;
         nameMesh.fontSize = 1.5f;
-        nameMesh.color = new Color32(0, 255, 0, 255);
     }
 
     private void LateUpdate()
@@ -64,6 +69,7 @@ public class WorldObjectText : MonoBehaviour
             currentHeight -= 0.3f;
         }
 
+        nameMesh.color = currentColor;
         nameMesh.text = worldObjectName;
         nameMesh.transform.position = new Vector3(attachedObject.transform.position.x, attachedObject.transform.position.y + attachedObject.transform.lossyScale.y + currentHeight, attachedObject.transform.position.z);
         nameMesh.transform.LookAt(CameraController.Instance.transform.position);

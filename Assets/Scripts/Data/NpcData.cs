@@ -25,7 +25,7 @@ public class NpcData : MonoBehaviour
                 continue;
             }
             string[] values = line.Split(';');
-            if (values.Length < 17)
+            if (values.Length < 18)
             {
                 continue;
             }
@@ -47,6 +47,7 @@ public class NpcData : MonoBehaviour
             holder.SetRightHandItem(int.Parse(values[14]));
             holder.SetLeftHandItem(int.Parse(values[15]));
             holder.SetHp(int.Parse(values[16]));
+            holder.SetTargetable(bool.Parse(values[17]));
 
             NPCS.Add(int.Parse(values[0]), holder);
         }

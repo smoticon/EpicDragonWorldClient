@@ -6,9 +6,16 @@ public class NpcInformation
 {
     public static void Notify(ReceivablePacket packet)
     {
+        // Server information.
         long objectId = packet.ReadLong();
         CharacterDataHolder npcTemplate = NpcData.GetNpc(packet.ReadInt());
         CharacterDataHolder characterData = new CharacterDataHolder();
+        characterData.SetX(packet.ReadFloat());
+        characterData.SetY(packet.ReadFloat());
+        characterData.SetZ(packet.ReadFloat());
+        characterData.SetHeading(packet.ReadFloat());
+        characterData.SetHp(packet.ReadLong());
+        // Client information.
         characterData.SetName(npcTemplate.GetName());
         characterData.SetRace(npcTemplate.GetRace());
         characterData.SetHeight(npcTemplate.GetHeight());
@@ -24,11 +31,7 @@ public class NpcInformation
         characterData.SetFeetItem(npcTemplate.GetFeetItem());
         characterData.SetLeftHandItem(npcTemplate.GetLeftHandItem());
         characterData.SetRightHandItem(npcTemplate.GetRightHandItem());
-        characterData.SetX(packet.ReadFloat());
-        characterData.SetY(packet.ReadFloat());
-        characterData.SetZ(packet.ReadFloat());
-        characterData.SetHeading(packet.ReadFloat());
-        characterData.SetHp(packet.ReadLong());
+        characterData.SetTargetable(npcTemplate.IsTargetable());
 
         WorldManager.Instance.UpdateObject(objectId, characterData);
     }

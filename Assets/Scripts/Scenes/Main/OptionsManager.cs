@@ -100,6 +100,12 @@ public class OptionsManager : MonoBehaviour
     {
         if (InputManager.ESCAPE_DOWN && !ConfirmDialog.Instance.confirmDialogActive)
         {
+            // If player has a target selected, cancel the target instead.
+            if (MainManager.Instance.lastLoadedScene.Equals(MainManager.WORLD_SCENE) && WorldManager.Instance.targetWorldObject != null)
+            {
+                WorldManager.Instance.SetTarget(null);
+                return;
+            }
             ToggleOptionsMenu();
         }
 
