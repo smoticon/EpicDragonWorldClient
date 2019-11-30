@@ -1,2 +1,2 @@
-#id;name;race;height;belly;hairType;hairColor;skinColor;eyeColor;headItem;chestItem;legsItem;handsItem;feetItem;rightHandItem;leftHandItem;hp;targetable
-1;Test NPC;1;0.5;0.5;3;15150895;15847869;15150895;0;0;0;0;0;0;0;0;TRUE
+#id;name;race;height;belly;hairType;hairColor;skinColor;eyeColor;headItem;chestItem;legsItem;handsItem;feetItem;rightHandItem;leftHandItem;maxHp;targetable
+1;Test NPC;1;0.5;0.5;3;15150895;15847869;15150895;0;0;0;0;0;0;0;100;TRUE

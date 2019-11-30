@@ -26,8 +26,10 @@ public class CharacterDataHolder
     private float z = 0;
     private float heading = 0;
     private long experience = 0;
-    private long hp = 0;
-    private long mp = 0;
+    private long currentHp = 0;
+    private long maxHp = 0;
+    private long currentMp = 0;
+    private long maxMp = 0;
     private byte accessLevel = 0;
     private bool isTargetable = true;
 
@@ -251,24 +253,44 @@ public class CharacterDataHolder
         this.experience = experience;
     }
 
-    public long GetHp()
+    public long GetCurrentHp()
     {
-        return hp;
+        return currentHp;
     }
 
-    public void SetHp(long hp)
+    public void SetCurrentHp(long currentHp)
     {
-        this.hp = hp;
+        this.currentHp = currentHp;
     }
 
-    public long GetMp()
+    public long GetMaxHp()
     {
-        return mp;
+        return maxHp;
     }
 
-    public void SetMp(long mp)
+    public void SetMaxHp(long maxHp)
     {
-        this.mp = mp;
+        this.maxHp = maxHp;
+    }
+
+    public long GetCurrentMp()
+    {
+        return currentMp;
+    }
+
+    public void SetCurrentMp(long currentMp)
+    {
+        this.currentMp = currentMp;
+    }
+
+    public long GetMaxMp()
+    {
+        return maxMp;
+    }
+
+    public void SetMaxMp(long maxMp)
+    {
+        this.maxMp = maxMp;
     }
 
     public byte GetAccessLevel()

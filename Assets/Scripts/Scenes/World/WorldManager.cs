@@ -72,6 +72,9 @@ public class WorldManager : MonoBehaviour
             worldObjectText.worldObjectName = ""; // MainManager.Instance.selectedCharacterData.GetName();
             worldObjectText.attachedObject = activeCharacter.gameObject;
 
+            // Update status information.
+            StatusInformationManager.Instance.UpdatePlayerInformation();
+
             // Send enter world to Network.
             NetworkManager.ChannelSend(new EnterWorldRequest(MainManager.Instance.selectedCharacterData.GetName()));
         }
@@ -412,6 +415,7 @@ public class WorldManager : MonoBehaviour
                 previousObjectText.currentColor = WorldObjectText.DEFAULT_COLOR;
             }
         }
+
         // Set new target.
         targetWorldObject = worldObject;
         if (targetWorldObject != null)
@@ -429,5 +433,8 @@ public class WorldManager : MonoBehaviour
         {
             NetworkManager.ChannelSend(new TargetUpdateRequest(-1));
         }
+
+        // Update UI target information.
+        StatusInformationManager.Instance.UpdateTargetInformation(targetWorldObject);
     }
 }

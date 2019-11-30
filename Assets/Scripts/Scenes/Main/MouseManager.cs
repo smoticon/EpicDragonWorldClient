@@ -48,7 +48,10 @@ public class MouseManager : MonoBehaviour
                 }
             }
             // Cancel the target.
-            WorldManager.Instance.SetTarget(null);
+            if (!InputManager.RIGHT_MOUSE_PRESS)
+            {
+                WorldManager.Instance.SetTarget(null);
+            }
         }
         else if (InputManager.LEFT_MOUSE_UP || InputManager.RIGHT_MOUSE_UP)
         {

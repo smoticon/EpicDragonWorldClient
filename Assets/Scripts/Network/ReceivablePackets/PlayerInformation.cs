@@ -27,6 +27,8 @@ public class PlayerInformation
         characterData.SetY(packet.ReadFloat());
         characterData.SetZ(packet.ReadFloat());
         characterData.SetHeading(packet.ReadFloat());
+        characterData.SetCurrentHp(packet.ReadLong());
+        characterData.SetMaxHp(packet.ReadLong());
 
         WorldManager.Instance.UpdateObject(objectId, characterData);
     }

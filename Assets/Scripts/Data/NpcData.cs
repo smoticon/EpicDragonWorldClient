@@ -46,7 +46,7 @@ public class NpcData : MonoBehaviour
             holder.SetFeetItem(int.Parse(values[13]));
             holder.SetRightHandItem(int.Parse(values[14]));
             holder.SetLeftHandItem(int.Parse(values[15]));
-            holder.SetHp(int.Parse(values[16]));
+            holder.SetMaxHp(int.Parse(values[16]));
             holder.SetTargetable(bool.Parse(values[17]));
 
             NPCS.Add(int.Parse(values[0]), holder);

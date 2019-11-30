@@ -14,7 +14,7 @@ public class NpcInformation
         characterData.SetY(packet.ReadFloat());
         characterData.SetZ(packet.ReadFloat());
         characterData.SetHeading(packet.ReadFloat());
-        characterData.SetHp(packet.ReadLong());
+        characterData.SetCurrentHp(packet.ReadLong());
         // Client information.
         characterData.SetName(npcTemplate.GetName());
         characterData.SetRace(npcTemplate.GetRace());
@@ -31,6 +31,7 @@ public class NpcInformation
         characterData.SetFeetItem(npcTemplate.GetFeetItem());
         characterData.SetLeftHandItem(npcTemplate.GetLeftHandItem());
         characterData.SetRightHandItem(npcTemplate.GetRightHandItem());
+        characterData.SetMaxHp(npcTemplate.GetMaxHp());
         characterData.SetTargetable(npcTemplate.IsTargetable());
 
         WorldManager.Instance.UpdateObject(objectId, characterData);

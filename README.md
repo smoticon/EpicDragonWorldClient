@@ -32,7 +32,7 @@ Standard Assets: [https://www.mediafire.com/file/gckjjgowazqdbfc/Standard_Assets
 
 TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip)
 
-Textures: [https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip](https://www.mediafire.com/file/vh8sgjwn3s6afzo/Textures.zip)
+Textures: [https://www.mediafire.com/file/uxzza94e0hmr3b9/Textures.zip](https://www.mediafire.com/file/uxzza94e0hmr3b9/Textures.zip)
 
 UMA: [https://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip](https://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip)
 

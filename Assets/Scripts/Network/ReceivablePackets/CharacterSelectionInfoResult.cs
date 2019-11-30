@@ -37,8 +37,10 @@ public class CharacterSelectionInfoResult
             characterData.SetZ(packet.ReadFloat());
             characterData.SetHeading(packet.ReadFloat());
             characterData.SetExperience(packet.ReadLong());
-            characterData.SetHp(packet.ReadLong());
-            characterData.SetMp(packet.ReadLong());
+            characterData.SetCurrentHp(packet.ReadLong());
+            characterData.SetMaxHp(packet.ReadLong());
+            characterData.SetCurrentMp(packet.ReadLong());
+            characterData.SetMaxMp(packet.ReadLong());
             characterData.SetAccessLevel((byte)packet.ReadByte());
             characterList.Add(characterData);
         }
