@@ -110,12 +110,12 @@ public class AnimationController : MonoBehaviour
             animator.SetFloat(VELOCITY_Z_VALUE, currentVelocityZ);
 
             // Left.
-            if (InputManager.LEFT_PRESS && (InputManager.UP_PRESS || InputManager.DOWN_PRESS || sideMovement))
+            if (InputManager.LEFT_PRESS && (InputManager.UP_PRESS || InputManager.DOWN_PRESS))
             {
                 currentVelocityX = Mathf.Max(MAX_VELOCITY, currentVelocityX - VELOCITY_STEP);
             }
             // Right.
-            else if (InputManager.RIGHT_PRESS && (InputManager.UP_PRESS || InputManager.DOWN_PRESS || sideMovement))
+            else if (InputManager.RIGHT_PRESS && (InputManager.UP_PRESS || InputManager.DOWN_PRESS))
             {
                 currentVelocityX = Mathf.Min(-MAX_VELOCITY, currentVelocityX + VELOCITY_STEP);
             }

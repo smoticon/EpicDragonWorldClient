@@ -78,7 +78,10 @@ public class CameraController : MonoBehaviour
 
                 if (!InputManager.LEFT_MOUSE_PRESS || InputManager.RIGHT_MOUSE_PRESS)
                 {
-                    SetPlayerRotation(transform.rotation.eulerAngles.y);
+                    if (!InputManager.LEFT_PRESS && !InputManager.RIGHT_PRESS)
+                    {
+                        SetPlayerRotation(transform.rotation.eulerAngles.y);
+                    }
 
                     // Hide cursor while rotating.
                     Cursor.visible = false;
@@ -165,10 +168,11 @@ public class CameraController : MonoBehaviour
 
     private void SetPlayerRotation(float newRotation)
     {
-        Quaternion curHeading = target.localRotation;
-        Vector3 curvAngle = curHeading.eulerAngles;
+        Quaternion oldHeading = target.localRotation;
+        Quaternion newHeading = target.localRotation;
+        Vector3 curvAngle = newHeading.eulerAngles;
         curvAngle.y = newRotation;
-        curHeading.eulerAngles = curvAngle;
-        target.localRotation = curHeading;
+        newHeading.eulerAngles = curvAngle;
+        target.localRotation = Quaternion.Lerp(oldHeading, newHeading, Time.deltaTime * 10); // 10 is response time.
     }
 }

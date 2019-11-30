@@ -8,13 +8,12 @@ public class MovementController : MonoBehaviour
 {
     // Configs.
     public float speed = 1.0f;
-    public float speedRotation = 2.0f;
-    public float speedRotationSide = 4.0f;
+    public float speedRotation = 8.0f;
     public float speedWater = 0.999f;
-    public float speedJump = 5.0f;
-    public float jumpPower = 7.0f;
+    public float speedJump = 5.5f;
+    public float jumpPower = 7.5f;
     public float distToGround = 0.1f;
-    public float waterLevel = 63.3f;
+    public float waterLevel = 63.2f;
     // Static values.
     private readonly string LAYER_GROUND_VALUE = "Everything";
     private readonly string WATER_TAG_VALUE = "Water";
@@ -23,7 +22,6 @@ public class MovementController : MonoBehaviour
     private LayerMask layerGround;
     private float speedCurrent = 0;
     private bool lockedMovement = false;
-    private bool sideMovement = false;
     public static float storedRotation = 0;
     public static Vector3 storedPosition = Vector3.zero;
 
@@ -60,9 +58,6 @@ public class MovementController : MonoBehaviour
                 lockedMovement = !lockedMovement;
             }
 
-            // Check for side movement.
-            sideMovement = InputManager.RIGHT_MOUSE_PRESS && !InputManager.UP_PRESS && !InputManager.DOWN_PRESS && (InputManager.LEFT_PRESS || InputManager.RIGHT_PRESS);
-
             // Jump.
             if (InputManager.SPACE_PRESS)
             {
@@ -83,7 +78,7 @@ public class MovementController : MonoBehaviour
             }
 
             // Front.
-            if (InputManager.UP_PRESS || lockedMovement || sideMovement)
+            if (InputManager.UP_PRESS || lockedMovement)
             {
                 transform.localPosition += transform.forward * speedCurrent * Time.deltaTime;
             }
@@ -91,21 +86,29 @@ public class MovementController : MonoBehaviour
             // Back.
             if (InputManager.DOWN_PRESS)
             {
-                transform.localPosition -= transform.forward * speedCurrent * Time.deltaTime;
+                transform.localPosition -= transform.forward * (speedCurrent * 0.66f) * Time.deltaTime;
             }
 
             // Left.
             if (InputManager.LEFT_PRESS && !InputManager.RIGHT_PRESS)
             {
-                // Rotate.
-                SetPlayerRotation(transform.rotation.eulerAngles.y - (sideMovement ? speedRotationSide : speedRotation));
+                bool rightPress = InputManager.RIGHT_MOUSE_PRESS;
+                if (rightPress)
+                {
+                    transform.localPosition += -transform.right * (speedRotation / 2) * Time.deltaTime;
+                }
+                SetPlayerRotation(transform.rotation.eulerAngles.y - (rightPress && !InputManager.LEFT_MOUSE_PRESS ? speedRotation : speedRotation * 0.66f));
             }
 
             // Right.
             if (InputManager.RIGHT_PRESS && !InputManager.LEFT_PRESS)
             {
-                // Rotate.
-                SetPlayerRotation(transform.rotation.eulerAngles.y + (sideMovement ? speedRotationSide : speedRotation));
+                bool rightPress = InputManager.RIGHT_MOUSE_PRESS;
+                if (rightPress)
+                {
+                    transform.localPosition += transform.right * (speedRotation / 2) * Time.deltaTime;
+                }
+                SetPlayerRotation(transform.rotation.eulerAngles.y + (rightPress && !InputManager.LEFT_MOUSE_PRESS ? speedRotation : speedRotation * 0.66f));
             }
         }
 
