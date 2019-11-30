@@ -12,7 +12,6 @@ public class WorldObject : MonoBehaviour
 
     private Animator animator;
     private Rigidbody rigidBody;
-    private readonly float VELOCITY = 6;
 
     // Is grounded related.
     public volatile bool isGrounded = false;
@@ -40,14 +39,15 @@ public class WorldObject : MonoBehaviour
             return;
         }
 
-        float step = VELOCITY * Time.deltaTime;
+        float step = Time.deltaTime * 10;
         rigidBody.MovePosition(Vector3.Lerp(transform.position, newPosition, step));
 
-        Quaternion curHeading = transform.localRotation;
-        Vector3 curvAngle = curHeading.eulerAngles;
+        Quaternion oldHeading = transform.localRotation;
+        Quaternion newHeading = transform.localRotation;
+        Vector3 curvAngle = newHeading.eulerAngles;
         curvAngle.y = heading;
-        curHeading.eulerAngles = curvAngle;
-        transform.localRotation = curHeading;
+        newHeading.eulerAngles = curvAngle;
+        transform.localRotation = Quaternion.Lerp(oldHeading, newHeading, step);
 
         // Update distance value.
         distance = WorldManager.Instance.CalculateDistance(transform.position);
