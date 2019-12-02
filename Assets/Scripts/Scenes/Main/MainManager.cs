@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,7 +19,7 @@ public class MainManager : MonoBehaviour
 
     public Canvas loadingCanvas;
     public Slider loadingBar;
-    public Text loadingPercentage;
+    public TextMeshProUGUI loadingPercentage;
     public Canvas optionsCanvas;
     public MusicManager musicManager;
 
