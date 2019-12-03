@@ -95,14 +95,14 @@ public class CharacterManager : MonoBehaviour
         capsuleCollider.height = 1.71f;
         capsuleCollider.center = new Vector3(0, 0.82f, 0);
 
-        // Customize character.
-        StartCoroutine(CustomizeCharacterAppearance(characterData, newAvatar));
-
         // Add AudioSource.
         newAvatar.gameObject.AddComponent<AudioSource>();
 
         // Disable avatar until race customization ends.
         newAvatar.gameObject.SetActive(false);
+
+        // Customize character.
+        StartCoroutine(CustomizeCharacterAppearance(characterData, newAvatar));
 
         // Return GameObject.
         return newAvatar;
@@ -112,7 +112,7 @@ public class CharacterManager : MonoBehaviour
     {
         // Unfortunately UMA needs a small delay to initialize.
         // Without this delay, on slower machines, we got a crash.
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.25f);
 
         if (newAvatar != null)
         {
@@ -157,7 +157,7 @@ public class CharacterManager : MonoBehaviour
             EquipItem(newAvatar, characterData.GetFeetItem());
 
             // Without this delay, sometimes, we cannot not see mounted weapons.
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.25f);
 
             // Set visible equipable left and right hand items.
             EquipItem(newAvatar, characterData.GetLeftHandItem());
