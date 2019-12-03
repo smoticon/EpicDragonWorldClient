@@ -21,7 +21,6 @@ public class LoginManager : MonoBehaviour
     [HideInInspector]
     public int status;
     private bool authenticating;
-    private readonly object messageBox;
 
     private void Start()
     {
@@ -82,14 +81,6 @@ public class LoginManager : MonoBehaviour
 
         // At this point client has initialized.
         MainManager.Instance.hasInitialized = true;
-    }
-
-    private void OnPasswordEnter()
-    {
-        if (InputManager.RETURN_DOWN)
-        {
-            OnButtonLoginClick();
-        }
     }
 
     private void OnButtonLoginClick()
