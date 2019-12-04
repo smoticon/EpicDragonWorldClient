@@ -20,7 +20,6 @@ public class MainManager : MonoBehaviour
     public Canvas loadingCanvas;
     public Slider loadingBar;
     public TextMeshProUGUI loadingPercentage;
-    public Canvas optionsCanvas;
     public MusicManager musicManager;
 
     [HideInInspector]

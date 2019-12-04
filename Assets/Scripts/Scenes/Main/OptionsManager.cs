@@ -208,6 +208,10 @@ public class OptionsManager : MonoBehaviour
         }
 
         optionsCanvas.enabled = !optionsCanvas.enabled;
+        if (!optionsCanvas.enabled)
+        {
+            MainManager.Instance.isDraggingWindow = false;
+        }
 
         bool isInWorld = MainManager.Instance.lastLoadedScene.Equals(MainManager.WORLD_SCENE);
         controlsButton.gameObject.SetActive(isInWorld);

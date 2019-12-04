@@ -109,7 +109,7 @@ public class InputManager : MonoBehaviour
         AXIS_MOUSE_Y = Input.GetAxis(AXIS_MOUSE_Y_VALUE);
         AXIS_MOUSE_SCROLLWHEEL = Input.GetAxis(AXIS_MOUSE_SCROLLWHEEL_VALUE);
 
-        if (MainManager.Instance.optionsCanvas.enabled)
+        if (OptionsManager.Instance.optionsCanvas.enabled)
         {
             RefreshButtonTextValues();
         }

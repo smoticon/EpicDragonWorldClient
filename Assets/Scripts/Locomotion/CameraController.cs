@@ -69,7 +69,7 @@ public class CameraController : MonoBehaviour
         }
 
         // If either mouse buttons are down, let the mouse govern camera position.
-        if (GUIUtility.hotControl == 0 && !MainManager.Instance.isDraggingWindow && !MainManager.Instance.optionsCanvas.enabled)
+        if (GUIUtility.hotControl == 0 && !MainManager.Instance.isDraggingWindow)
         {
             if (InputManager.LEFT_MOUSE_PRESS || (InputManager.RIGHT_MOUSE_PRESS && !InputManager.LEFT_PRESS && !InputManager.RIGHT_PRESS) || MovementController.rightSideMovement || MovementController.leftSideMovement)
             {
@@ -109,7 +109,7 @@ public class CameraController : MonoBehaviour
         }
 
         // Calculate the desired distance.
-        if (!MainManager.Instance.isChatBoxActive && !MainManager.Instance.isDraggingWindow && !MainManager.Instance.optionsCanvas.enabled) // Do not want to intervene with chat scrolling.
+        if (!MainManager.Instance.isChatBoxActive && !MainManager.Instance.isDraggingWindow) // Do not want to intervene with chat scrolling.
         {
             desiredDistance -= InputManager.AXIS_MOUSE_SCROLLWHEEL * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance) * speedDistance;
         }

@@ -44,7 +44,7 @@ public class DragPanel : MonoBehaviour, IPointerDownHandler, IDragHandler
 
     private IEnumerator CheckDragStop()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.5f);
         if (!InputManager.LEFT_MOUSE_PRESS && !InputManager.RIGHT_MOUSE_PRESS)
         {
             MainManager.Instance.isDraggingWindow = false;
