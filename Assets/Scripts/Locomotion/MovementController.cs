@@ -21,7 +21,9 @@ public class MovementController : MonoBehaviour
     private Rigidbody rigidBody;
     private LayerMask layerGround;
     private float speedCurrent = 0;
-    private bool lockedMovement = false;
+    public static bool leftSideMovement = false;
+    public static bool rightSideMovement = false;
+    public static bool lockedMovement = false;
     public static float storedRotation = 0;
     public static Vector3 storedPosition = Vector3.zero;
 
@@ -89,26 +91,71 @@ public class MovementController : MonoBehaviour
                 transform.localPosition -= transform.forward * (speedCurrent * 0.66f) * Time.deltaTime;
             }
 
+            // Check for side movement.
+            if (!InputManager.RIGHT_MOUSE_PRESS)
+            {
+                leftSideMovement = false;
+                rightSideMovement = false;
+            }
+
             // Left.
             if (InputManager.LEFT_PRESS && !InputManager.RIGHT_PRESS)
             {
-                bool rightPress = InputManager.RIGHT_MOUSE_PRESS;
-                if (rightPress)
+                if (InputManager.RIGHT_MOUSE_PRESS && !lockedMovement && !InputManager.UP_PRESS && !InputManager.DOWN_PRESS && !InputManager.LEFT_MOUSE_PRESS)
                 {
-                    transform.localPosition += -transform.right * (speedRotation / 2) * Time.deltaTime;
+                    if (!leftSideMovement)
+                    {
+                        leftSideMovement = true;
+                        SetPlayerRotation(CameraController.Instance.transform.rotation.eulerAngles.y - 90);
+                    }
+                    transform.localPosition += transform.forward * speedCurrent * Time.deltaTime;
                 }
-                SetPlayerRotation(transform.rotation.eulerAngles.y - (rightPress && !InputManager.LEFT_MOUSE_PRESS ? speedRotation : speedRotation * 0.66f));
+                else if (!leftSideMovement)
+                {
+                    rightSideMovement = false;
+                    if (InputManager.LEFT_MOUSE_PRESS || (!(InputManager.LEFT_MOUSE_PRESS && !InputManager.DOWN_PRESS)))
+                    {
+                        SetPlayerRotation(transform.rotation.eulerAngles.y - (!InputManager.LEFT_MOUSE_PRESS ? speedRotation : speedRotation * 0.66f));
+                    }
+                    else
+                    {
+                        SetPlayerRotationWithLerp(CameraController.Instance.transform.rotation.eulerAngles.y);
+                    }
+                }
+            }
+            else
+            {
+                leftSideMovement = false;
             }
 
             // Right.
             if (InputManager.RIGHT_PRESS && !InputManager.LEFT_PRESS)
             {
-                bool rightPress = InputManager.RIGHT_MOUSE_PRESS;
-                if (rightPress)
+                if (InputManager.RIGHT_MOUSE_PRESS && !lockedMovement && !InputManager.UP_PRESS && !InputManager.DOWN_PRESS && !InputManager.LEFT_MOUSE_PRESS)
                 {
-                    transform.localPosition += transform.right * (speedRotation / 2) * Time.deltaTime;
+                    if (!rightSideMovement)
+                    {
+                        rightSideMovement = true;
+                        SetPlayerRotation(CameraController.Instance.transform.rotation.eulerAngles.y + 90);
+                    }
+                    transform.localPosition += transform.forward * speedCurrent * Time.deltaTime;
                 }
-                SetPlayerRotation(transform.rotation.eulerAngles.y + (rightPress && !InputManager.LEFT_MOUSE_PRESS ? speedRotation : speedRotation * 0.66f));
+                else if (!rightSideMovement)
+                {
+                    leftSideMovement = false;
+                    if (InputManager.LEFT_MOUSE_PRESS || (!(InputManager.LEFT_MOUSE_PRESS && !InputManager.DOWN_PRESS)))
+                    {
+                        SetPlayerRotation(transform.rotation.eulerAngles.y + (!InputManager.LEFT_MOUSE_PRESS ? speedRotation : speedRotation * 0.66f));
+                    }
+                    else
+                    {
+                        SetPlayerRotationWithLerp(CameraController.Instance.transform.rotation.eulerAngles.y);
+                    }
+                }
+            }
+            else
+            {
+                rightSideMovement = false;
             }
         }
 
@@ -131,6 +178,16 @@ public class MovementController : MonoBehaviour
         curvAngle.y = newRotation;
         curHeading.eulerAngles = curvAngle;
         transform.localRotation = curHeading;
+    }
+
+    private void SetPlayerRotationWithLerp(float newRotation)
+    {
+        Quaternion oldHeading = transform.localRotation;
+        Quaternion newHeading = transform.localRotation;
+        Vector3 curvAngle = newHeading.eulerAngles;
+        curvAngle.y = newRotation;
+        newHeading.eulerAngles = curvAngle;
+        transform.localRotation = Quaternion.Lerp(oldHeading, newHeading, Time.deltaTime * 10);
     }
 
     private void OnTriggerEnter(Collider other)

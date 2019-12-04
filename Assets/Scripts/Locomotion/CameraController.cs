@@ -71,7 +71,7 @@ public class CameraController : MonoBehaviour
         // If either mouse buttons are down, let the mouse govern camera position.
         if (GUIUtility.hotControl == 0 && !MainManager.Instance.isDraggingWindow && !MainManager.Instance.optionsCanvas.enabled)
         {
-            if (InputManager.LEFT_MOUSE_PRESS || (InputManager.RIGHT_MOUSE_PRESS && !InputManager.LEFT_PRESS && !InputManager.RIGHT_PRESS))
+            if (InputManager.LEFT_MOUSE_PRESS || (InputManager.RIGHT_MOUSE_PRESS && !InputManager.LEFT_PRESS && !InputManager.RIGHT_PRESS) || MovementController.rightSideMovement || MovementController.leftSideMovement)
             {
                 xDeg += InputManager.AXIS_MOUSE_X * xSpeed * 0.02f;
                 yDeg -= InputManager.AXIS_MOUSE_Y * ySpeed * 0.02f;
