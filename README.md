@@ -17,7 +17,7 @@ Unity3D client that connects with .NET Core server.
 - Spawn NPCs.
 
 ### Unity version.
-2019.2.14f1
+2019.3.0f3
 
 ### Necessary additional assets. (Put in assets folder)
 Animations: [https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip](https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip)
@@ -32,9 +32,9 @@ Standard Assets: [https://www.mediafire.com/file/gckjjgowazqdbfc/Standard_Assets
 
 TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip)
 
-Textures: [https://www.mediafire.com/file/0uq9q46rqcbp7gk/Textures.zip](https://www.mediafire.com/file/0uq9q46rqcbp7gk/Textures.zip)
+Textures: [https://www.mediafire.com/file/30h870jg1dogsdw/Textures.zip](https://www.mediafire.com/file/30h870jg1dogsdw/Textures.zip)
 
-UMA: [https://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip](https://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip)
+UMA: [http://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip](http://www.mediafire.com/file/zxulmjv6mjau76u/UMA.zip)
 
 
 ### You can see the latest development progress on YouTube.

@@ -96,6 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
+    m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -29906,6 +29907,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11464156, guid: fe29e3c90ef88194184c6f3656db5ec5, type: 3}
+      propertyPath: dynamicallyAddFromAssetBundles
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe29e3c90ef88194184c6f3656db5ec5, type: 3}
 --- !u!114 &1879363843 stripped
@@ -30911,6 +30916,10 @@ PrefabInstance:
     - target: {fileID: 11453600, guid: 5c80fc4442f8349969abea6c1a0f1faa, type: 3}
       propertyPath: previewModel
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11453600, guid: 5c80fc4442f8349969abea6c1a0f1faa, type: 3}
+      propertyPath: loadBlendShapes
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2203160161317335296, guid: 5c80fc4442f8349969abea6c1a0f1faa,
         type: 3}
