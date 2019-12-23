@@ -87,7 +87,7 @@ public class CharacterManager : MonoBehaviour
         DynamicCharacterAvatar newAvatar = Instantiate(avatarTemplate, newPosition, Quaternion.identity) as DynamicCharacterAvatar;
 
         // Prevent UMA bone error.
-        newAvatar.BuildCharacter();
+        newAvatar.BuildCharacter(false);
 
         // Add a new Capsule Collider to prevent falling.
         CapsuleCollider capsuleCollider = newAvatar.gameObject.AddComponent<CapsuleCollider>();
@@ -147,7 +147,7 @@ public class CharacterManager : MonoBehaviour
             Dictionary<string, DnaSetter> dna = newAvatar.GetDNA();
             dna["height"].Set(characterData.GetHeight());
             dna["belly"].Set(characterData.GetBelly());
-            newAvatar.BuildCharacter();
+            newAvatar.BuildCharacter(false);
 
             // Set visible equipable armor items.
             EquipItem(newAvatar, characterData.GetHeadItem());
