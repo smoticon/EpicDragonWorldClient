@@ -43,6 +43,10 @@ public class WorldManager : MonoBehaviour
 
     private void Start()
     {
+        if (Instance != null)
+        {
+            return;
+        }
         Instance = this;
 
         gameObjects = new ConcurrentDictionary<long, GameObject>();

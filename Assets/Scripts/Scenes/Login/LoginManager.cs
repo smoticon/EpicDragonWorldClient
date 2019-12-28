@@ -24,10 +24,6 @@ public class LoginManager : MonoBehaviour
 
     private void Start()
     {
-        Instance = this;
-
-        versionText.text = "Version " + (VersionConfigurations.CLIENT_VERSION % 1 == 0 ? VersionConfigurations.CLIENT_VERSION + ".0" : VersionConfigurations.CLIENT_VERSION.ToString());
-
         // In case player logouts underwater.
         RenderSettings.fogColor = new Color(0.5f, 0.5f, 0.5f, 0.5f);
         RenderSettings.fogDensity = 0.01f;
@@ -35,12 +31,11 @@ public class LoginManager : MonoBehaviour
         RenderSettings.fogStartDistance = 500;
         RenderSettings.fogEndDistance = 1200;
 
+        // Restore Camera Position
+        Camera.main.transform.position = new Vector3(0f, 1f, 0.95f);
+
         // Make sure options manager has set fullscreen.
         OptionsManager.Instance.CheckFullscreen();
-
-        loginButton.onClick.AddListener(OnButtonLoginClick);
-        optionsButton.onClick.AddListener(OnButtonOptionsClick);
-        quitButton.onClick.AddListener(OnButtonQuitClick);
 
         // If player exits to login screen, authentication must be repeated.
         NetworkManager.DisconnectFromServer();
@@ -56,6 +51,21 @@ public class LoginManager : MonoBehaviour
             messageText.text = "Could not communicate with the server.";
             NetworkManager.unexpectedDisconnection = false;
         }
+
+        // Set instance.
+        if (Instance != null)
+        {
+            return;
+        }
+        Instance = this;
+
+        // Display version text.
+        versionText.text = "Version " + (VersionConfigurations.CLIENT_VERSION % 1 == 0 ? VersionConfigurations.CLIENT_VERSION + ".0" : VersionConfigurations.CLIENT_VERSION.ToString());
+
+        // Button listeners.
+        loginButton.onClick.AddListener(OnButtonLoginClick);
+        optionsButton.onClick.AddListener(OnButtonOptionsClick);
+        quitButton.onClick.AddListener(OnButtonQuitClick);
 
         // One time opperations.
         if (!MainManager.Instance.hasInitialized)

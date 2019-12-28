@@ -44,6 +44,10 @@ public class CharacterCreationManager : MonoBehaviour
         }
 
         // Set instance.
+        if (Instance != null)
+        {
+            return;
+        }
         Instance = this;
 
         // Schedule exit to login screen.

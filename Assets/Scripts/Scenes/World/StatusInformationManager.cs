@@ -20,6 +20,10 @@ public class StatusInformationManager : MonoBehaviour
 
     private void Start()
     {
+        if (Instance != null)
+        {
+            return;
+        }
         Instance = this;
 
         HideTargetInformation();

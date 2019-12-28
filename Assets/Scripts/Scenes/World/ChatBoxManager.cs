@@ -23,6 +23,10 @@ public class ChatBoxManager : MonoBehaviour
 
     private void Start()
     {
+        if (Instance != null)
+        {
+            return;
+        }
         Instance = this;
     }
 

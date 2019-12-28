@@ -30,6 +30,10 @@ public class CharacterSelectionManager : MonoBehaviour
     private void Start()
     {
         // Set instance.
+        if (Instance != null)
+        {
+            return;
+        }
         Instance = this;
 
         // In case player logouts underwater.
