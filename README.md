@@ -36,6 +36,8 @@ Textures: [https://www.mediafire.com/file/30h870jg1dogsdw/Textures.zip](https://
 
 UMA: [https://www.mediafire.com/file/80kap186prp20t7/UMA.zip](https://www.mediafire.com/file/80kap186prp20t7/UMA.zip)
 
+### Secondary download mirror for all assets above.
+https://drive.google.com/open?id=1hkSRRNUXVPy5ceMTf-MjQ44dknmTwf-8
 
 ### You can see the latest development progress on YouTube.
 [![Video demonstration](https://img.youtube.com/vi/iQPzHTy7uz0/0.jpg)](https://www.youtube.com/watch?v=iQPzHTy7uz0&list=PLNuit1aMUWTDRll1MGF7Cqn_lX-BqKpZn&index=5)
