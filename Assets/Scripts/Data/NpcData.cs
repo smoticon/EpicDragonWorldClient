@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -33,8 +34,8 @@ public class NpcData : MonoBehaviour
             CharacterDataHolder holder = new CharacterDataHolder();
             holder.SetName(values[1]);
             holder.SetRace(byte.Parse(values[2]));
-            holder.SetHeight(float.Parse(values[3]));
-            holder.SetBelly(float.Parse(values[4]));
+            holder.SetHeight(float.Parse(values[3], CultureInfo.InvariantCulture));
+            holder.SetBelly(float.Parse(values[4], CultureInfo.InvariantCulture));
             holder.SetHairType(int.Parse(values[5]));
             holder.SetHairColor(int.Parse(values[6]));
             holder.SetSkinColor(int.Parse(values[7]));

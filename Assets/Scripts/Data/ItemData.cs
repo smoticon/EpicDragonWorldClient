@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -41,17 +42,17 @@ public class ItemData : MonoBehaviour
             string recipeFemale = values[6];
             int prefabId = int.Parse(values[7]);
             string[] positionMaleSplit = values[8].Split(',');
-            Vector3 positionMale = new Vector3(float.Parse(positionMaleSplit[0]), float.Parse(positionMaleSplit[1]), float.Parse(positionMaleSplit[2]));
+            Vector3 positionMale = new Vector3(float.Parse(positionMaleSplit[0], CultureInfo.InvariantCulture), float.Parse(positionMaleSplit[1], CultureInfo.InvariantCulture), float.Parse(positionMaleSplit[2], CultureInfo.InvariantCulture));
             string[] positionFemaleSplit = values[9].Split(',');
-            Vector3 positionFemale = new Vector3(float.Parse(positionFemaleSplit[0]), float.Parse(positionFemaleSplit[1]), float.Parse(positionFemaleSplit[2]));
+            Vector3 positionFemale = new Vector3(float.Parse(positionFemaleSplit[0], CultureInfo.InvariantCulture), float.Parse(positionFemaleSplit[1], CultureInfo.InvariantCulture), float.Parse(positionFemaleSplit[2], CultureInfo.InvariantCulture));
             string[] rotationMaleSplit = values[10].Split(',');
-            Quaternion rotationMale = Quaternion.Euler(float.Parse(rotationMaleSplit[0]), float.Parse(rotationMaleSplit[1]), float.Parse(rotationMaleSplit[2]));
+            Quaternion rotationMale = Quaternion.Euler(float.Parse(rotationMaleSplit[0], CultureInfo.InvariantCulture), float.Parse(rotationMaleSplit[1], CultureInfo.InvariantCulture), float.Parse(rotationMaleSplit[2], CultureInfo.InvariantCulture));
             string[] rotationFemaleSplit = values[11].Split(',');
-            Quaternion rotationFemale = Quaternion.Euler(float.Parse(rotationFemaleSplit[0]), float.Parse(rotationFemaleSplit[1]), float.Parse(rotationFemaleSplit[2]));
+            Quaternion rotationFemale = Quaternion.Euler(float.Parse(rotationFemaleSplit[0], CultureInfo.InvariantCulture), float.Parse(rotationFemaleSplit[1], CultureInfo.InvariantCulture), float.Parse(rotationFemaleSplit[2], CultureInfo.InvariantCulture));
             string[] scaleMaleSplit = values[12].Split(',');
-            Vector3 scaleMale = new Vector3(float.Parse(scaleMaleSplit[0]), float.Parse(scaleMaleSplit[1]), float.Parse(scaleMaleSplit[2]));
+            Vector3 scaleMale = new Vector3(float.Parse(scaleMaleSplit[0], CultureInfo.InvariantCulture), float.Parse(scaleMaleSplit[1], CultureInfo.InvariantCulture), float.Parse(scaleMaleSplit[2], CultureInfo.InvariantCulture));
             string[] scaleFemaleSplit = values[13].Split(',');
-            Vector3 scaleFemale = new Vector3(float.Parse(scaleFemaleSplit[0]), float.Parse(scaleFemaleSplit[1]), float.Parse(scaleFemaleSplit[2]));
+            Vector3 scaleFemale = new Vector3(float.Parse(scaleFemaleSplit[0], CultureInfo.InvariantCulture), float.Parse(scaleFemaleSplit[1], CultureInfo.InvariantCulture), float.Parse(scaleFemaleSplit[2], CultureInfo.InvariantCulture));
             bool stackable = bool.Parse(values[14]);
             bool tradable = bool.Parse(values[15]);
             int stamina = int.Parse(values[16]);
