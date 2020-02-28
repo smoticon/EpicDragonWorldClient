@@ -19,24 +19,7 @@ Unity3D client that connects with .NET Core server.
 ### Unity version.
 2019.3.3f1
 
-### Necessary additional assets. (Put in assets folder)
-Animations: [https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip](https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip)
-
-Audio: [https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip](https://www.mediafire.com/file/08waafcvxbngkab/Audio.zip)
-
-Enviroment: [https://www.mediafire.com/file/yltm6c695eeccgc/Enviroment.zip](https://www.mediafire.com/file/yltm6c695eeccgc/Enviroment.zip)
-
-Models: [https://www.mediafire.com/file/p7m6k6oqfhwtgpt/Models.zip](https://www.mediafire.com/file/p7m6k6oqfhwtgpt/Models.zip)
-
-Standard Assets: [https://www.mediafire.com/file/gckjjgowazqdbfc/Standard_Assets.zip](https://www.mediafire.com/file/gckjjgowazqdbfc/Standard_Assets.zip)
-
-TextMesh Pro: [https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip](https://www.mediafire.com/file/k6a33d7gyngm7bm/TextMesh_Pro.zip)
-
-Textures: [https://www.mediafire.com/file/30h870jg1dogsdw/Textures.zip](https://www.mediafire.com/file/30h870jg1dogsdw/Textures.zip)
-
-UMA: [https://www.mediafire.com/file/80kap186prp20t7/UMA.zip](https://www.mediafire.com/file/80kap186prp20t7/UMA.zip)
-
-### Secondary download mirror for all assets above.
+### Necessary additional assets. (Download and put in assets folder)
 https://drive.google.com/open?id=1hkSRRNUXVPy5ceMTf-MjQ44dknmTwf-8
 
 ### You can see the latest development progress on YouTube.
