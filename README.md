@@ -17,7 +17,7 @@ Unity3D client that connects with .NET Core server.
 - Spawn NPCs.
 
 ### Unity version.
-2019.3.0f3
+2019.3.3f1
 
 ### Necessary additional assets. (Put in assets folder)
 Animations: [https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip](https://www.mediafire.com/file/obaa9av02bgfdms/Animations.zip)
