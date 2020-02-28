@@ -66,21 +66,6 @@ public class CharacterManager : MonoBehaviour
 
     public DynamicCharacterAvatar CreateCharacter(CharacterDataHolder characterData, float posX, float posY, float posZ, float heading)
     {
-        DynamicCharacterAvatar newAvatar = CreateCharacter(characterData, posX, posY, posZ);
-
-        // Rotation.
-        Quaternion curHeading = newAvatar.gameObject.transform.localRotation;
-        Vector3 curvAngle = curHeading.eulerAngles;
-        curvAngle.y = heading;
-        curHeading.eulerAngles = curvAngle;
-        newAvatar.gameObject.transform.localRotation = curHeading;
-
-        // Return the new DynamicCharacterAvatar.
-        return newAvatar;
-    }
-
-    public DynamicCharacterAvatar CreateCharacter(CharacterDataHolder characterData, float posX, float posY, float posZ)
-    {
         // Setting race on Instantiate, because even we set it at CustomizeCharacterAppearance, we could not mount items for female characters.
         Vector3 newPosition = new Vector3(posX, posY, posZ);
         DynamicCharacterAvatar avatarTemplate = characterData.GetRace() == 0 ? avatarMale : avatarFemale;
@@ -98,11 +83,9 @@ public class CharacterManager : MonoBehaviour
         // Add AudioSource.
         newAvatar.gameObject.AddComponent<AudioSource>();
 
-        // Disable avatar until race customization ends.
-        newAvatar.gameObject.SetActive(false);
-
         // Customize character.
         StartCoroutine(CustomizeCharacterAppearance(characterData, newAvatar));
+        StartCoroutine(InitializeLocation(newAvatar, newPosition, heading)); // TODO: Just change heading.
 
         // Return GameObject.
         return newAvatar;
@@ -111,58 +94,67 @@ public class CharacterManager : MonoBehaviour
     public IEnumerator CustomizeCharacterAppearance(CharacterDataHolder characterData, DynamicCharacterAvatar newAvatar)
     {
         // Unfortunately UMA needs a small delay to initialize.
-        // Without this delay, on slower machines, we got a crash.
         yield return new WaitForSeconds(0.25f);
 
-        if (newAvatar != null)
+        // Customize character.
+        int hairType = characterData.GetHairType();
+        if (characterData.GetRace() == 0)
         {
-            // Re-enable avatar since customization delay ended.
-            newAvatar.gameObject.SetActive(true);
-
-            // Customize character.
-            int hairType = characterData.GetHairType();
-            if (characterData.GetRace() == 0)
+            newAvatar.ChangeRace("HumanMaleDCS");
+            if (hairType != 0)
             {
-                newAvatar.ChangeRace("HumanMaleDCS");
-                if (hairType != 0)
-                {
-                    newAvatar.SetSlot("Hair", hairModelsMale[characterData.GetHairType()]);
-                }
+                newAvatar.SetSlot("Hair", hairModelsMale[characterData.GetHairType()]);
             }
-            if (characterData.GetRace() == 1)
-            {
-                newAvatar.ChangeRace("HumanFemaleDCS");
-                if (hairType != 0)
-                {
-                    newAvatar.SetSlot("Hair", hairModelsFemale[characterData.GetHairType()]);
-                }
-            }
-
-            // Set colors.
-            newAvatar.SetColor("Hair", Util.IntToColor(characterData.GetHairColor()));
-            newAvatar.SetColor("Skin", Util.IntToColor(characterData.GetSkinColor()));
-            newAvatar.SetColor("Eyes", Util.IntToColor(characterData.GetEyeColor()));
-            newAvatar.UpdateColors(true);
-
-            Dictionary<string, DnaSetter> dna = newAvatar.GetDNA();
-            dna["height"].Set(characterData.GetHeight());
-            dna["belly"].Set(characterData.GetBelly());
-            newAvatar.BuildCharacter(false);
-
-            // Set visible equipable armor items.
-            EquipItem(newAvatar, characterData.GetHeadItem());
-            EquipItem(newAvatar, characterData.GetChestItem());
-            EquipItem(newAvatar, characterData.GetLegsItem());
-            EquipItem(newAvatar, characterData.GetHandsItem());
-            EquipItem(newAvatar, characterData.GetFeetItem());
-
-            // Without this delay, sometimes, we cannot not see mounted weapons.
-            yield return new WaitForSeconds(0.25f);
-
-            // Set visible equipable left and right hand items.
-            EquipItem(newAvatar, characterData.GetLeftHandItem());
-            EquipItem(newAvatar, characterData.GetRightHandItem());
         }
+        if (characterData.GetRace() == 1)
+        {
+            newAvatar.ChangeRace("HumanFemaleDCS");
+            if (hairType != 0)
+            {
+                newAvatar.SetSlot("Hair", hairModelsFemale[characterData.GetHairType()]);
+            }
+        }
+
+        // Set colors.
+        newAvatar.SetColor("Hair", Util.IntToColor(characterData.GetHairColor()));
+        newAvatar.SetColor("Skin", Util.IntToColor(characterData.GetSkinColor()));
+        newAvatar.SetColor("Eyes", Util.IntToColor(characterData.GetEyeColor()));
+        newAvatar.UpdateColors(true);
+
+        Dictionary<string, DnaSetter> dna = newAvatar.GetDNA();
+        dna["height"].Set(characterData.GetHeight());
+        dna["belly"].Set(characterData.GetBelly());
+        newAvatar.BuildCharacter(false);
+
+        // Set visible equipable armor items.
+        EquipItem(newAvatar, characterData.GetHeadItem());
+        EquipItem(newAvatar, characterData.GetChestItem());
+        EquipItem(newAvatar, characterData.GetLegsItem());
+        EquipItem(newAvatar, characterData.GetHandsItem());
+        EquipItem(newAvatar, characterData.GetFeetItem());
+
+        // Without this delay, sometimes, we cannot not see mounted weapons.
+        yield return new WaitForSeconds(0.25f);
+
+        // Set visible equipable left and right hand items.
+        EquipItem(newAvatar, characterData.GetLeftHandItem());
+        EquipItem(newAvatar, characterData.GetRightHandItem());
+    }
+
+    private IEnumerator InitializeLocation(DynamicCharacterAvatar avatar, Vector3 position, float heading)
+    {
+        // Following above CreateCharacter delay.
+        yield return new WaitForSeconds(0.26f);
+
+        // Set position.
+        avatar.transform.position = position;
+
+        // Rotation.
+        Quaternion curHeading = avatar.gameObject.transform.localRotation;
+        Vector3 curvAngle = curHeading.eulerAngles;
+        curvAngle.y = heading;
+        curHeading.eulerAngles = curvAngle;
+        avatar.gameObject.transform.localRotation = curHeading;
     }
 
     public void EquipItem(DynamicCharacterAvatar avatar, int id)
