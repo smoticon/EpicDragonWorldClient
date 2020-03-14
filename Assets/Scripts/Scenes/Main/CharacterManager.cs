@@ -176,7 +176,7 @@ public class CharacterManager : MonoBehaviour
         switch (item.GetItemSlot())
         {
             case ItemSlot.HEAD:
-                avatar.SetSlot("Head", isMale ? item.GetRecipeMale() : item.GetRecipeFemale());
+                avatar.SetSlot("Helmet", isMale ? item.GetRecipeMale() : item.GetRecipeFemale());
                 avatar.BuildCharacter();
                 break;
 
@@ -280,7 +280,7 @@ public class CharacterManager : MonoBehaviour
         switch (itemSlot)
         {
             case ItemSlot.HEAD:
-                avatar.ClearSlot("Head");
+                avatar.ClearSlot("Helmet");
                 avatar.BuildCharacter();
                 break;
 

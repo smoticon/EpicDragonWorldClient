@@ -42,8 +42,8 @@ public class NpcData : MonoBehaviour
             holder.SetEyeColor(int.Parse(values[8]));
             holder.SetHeadItem(int.Parse(values[9]));
             holder.SetChestItem(int.Parse(values[10]));
-            holder.SetLegsItem(int.Parse(values[11]));
-            holder.SetHandsItem(int.Parse(values[12]));
+            holder.SetHandsItem(int.Parse(values[11]));
+            holder.SetLegsItem(int.Parse(values[12]));
             holder.SetFeetItem(int.Parse(values[13]));
             holder.SetRightHandItem(int.Parse(values[14]));
             holder.SetLeftHandItem(int.Parse(values[15]));
