@@ -71,6 +71,10 @@ public class CharacterManager : MonoBehaviour
         DynamicCharacterAvatar avatarTemplate = characterData.GetRace() == 0 ? avatarMale : avatarFemale;
         DynamicCharacterAvatar newAvatar = Instantiate(avatarTemplate, newPosition, Quaternion.identity) as DynamicCharacterAvatar;
 
+        // Set heading early, to avoid inconsistencies with template heading that are
+        // sometimes visible before CustomizeCharacterAppearance starts on character selection scene.
+        SetAvatarHeading(newAvatar, heading);
+
         // Prevent UMA bone error.
         newAvatar.BuildCharacter(false);
 
@@ -85,7 +89,7 @@ public class CharacterManager : MonoBehaviour
 
         // Customize character.
         StartCoroutine(CustomizeCharacterAppearance(characterData, newAvatar));
-        StartCoroutine(InitializeLocation(newAvatar, newPosition, heading)); // TODO: Just change heading.
+        StartCoroutine(InitializeLocation(newAvatar, newPosition, heading));
 
         // Return GameObject.
         return newAvatar;
@@ -93,8 +97,14 @@ public class CharacterManager : MonoBehaviour
 
     public IEnumerator CustomizeCharacterAppearance(CharacterDataHolder characterData, DynamicCharacterAvatar newAvatar)
     {
+        // Hide avatar until delay ends.
+        newAvatar.gameObject.SetActive(false);
+
         // Unfortunately UMA needs a small delay to initialize.
         yield return new WaitForSeconds(0.25f);
+
+        // Delay ended. Show avatar.
+        newAvatar.gameObject.SetActive(true);
 
         // Customize character.
         int hairType = characterData.GetHairType();
@@ -144,12 +154,17 @@ public class CharacterManager : MonoBehaviour
     private IEnumerator InitializeLocation(DynamicCharacterAvatar avatar, Vector3 position, float heading)
     {
         // Following above CreateCharacter delay.
-        yield return new WaitForSeconds(0.26f);
+        yield return new WaitForSeconds(0.3f);
 
         // Set position.
         avatar.transform.position = position;
 
-        // Rotation.
+        // Set heading.
+        SetAvatarHeading(avatar, heading);
+    }
+
+    private void SetAvatarHeading(DynamicCharacterAvatar avatar, float heading)
+    {
         Quaternion curHeading = avatar.gameObject.transform.localRotation;
         Vector3 curvAngle = curHeading.eulerAngles;
         curvAngle.y = heading;
