@@ -55,6 +55,9 @@ public class RecievablePacketHandler
             case 12:
                 ChatResult.Notify(packet);
                 break;
+            case 13:
+                CharacterInventoryResult.Notify(packet);
+                break;
         }
     }
 }

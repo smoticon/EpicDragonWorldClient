@@ -81,6 +81,8 @@ public class WorldManager : MonoBehaviour
 
             // Send enter world to Network.
             NetworkManager.ChannelSend(new EnterWorldRequest(MainManager.Instance.selectedCharacterData.GetName()));
+
+            NetworkManager.ChannelSend(new CharacterInventoryRequest(MainManager.Instance.selectedCharacterData.GetName()));
         }
     }
 
@@ -232,7 +234,7 @@ public class WorldManager : MonoBehaviour
                                     {
                                         if (headItem == 0)
                                         {
-                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.HEAD);
+                                            CharacterManager.Instance.UnEquipItem(avatar, EquipmentItemSlot.HEAD);
                                         }
                                         else
                                         {
@@ -245,7 +247,7 @@ public class WorldManager : MonoBehaviour
                                     {
                                         if (chestItem == 0)
                                         {
-                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.CHEST);
+                                            CharacterManager.Instance.UnEquipItem(avatar, EquipmentItemSlot.CHEST);
                                         }
                                         else
                                         {
@@ -258,7 +260,7 @@ public class WorldManager : MonoBehaviour
                                     {
                                         if (legsItem == 0)
                                         {
-                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.LEGS);
+                                            CharacterManager.Instance.UnEquipItem(avatar, EquipmentItemSlot.LEGS);
                                         }
                                         else
                                         {
@@ -271,7 +273,7 @@ public class WorldManager : MonoBehaviour
                                     {
                                         if (handsItem == 0)
                                         {
-                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.HANDS);
+                                            CharacterManager.Instance.UnEquipItem(avatar, EquipmentItemSlot.HANDS);
                                         }
                                         else
                                         {
@@ -284,7 +286,7 @@ public class WorldManager : MonoBehaviour
                                     {
                                         if (feetItem == 0)
                                         {
-                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.FEET);
+                                            CharacterManager.Instance.UnEquipItem(avatar, EquipmentItemSlot.FEET);
                                         }
                                         else
                                         {
@@ -297,7 +299,7 @@ public class WorldManager : MonoBehaviour
                                     {
                                         if (leftHandItem == 0)
                                         {
-                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.LEFT_HAND);
+                                            CharacterManager.Instance.UnEquipItem(avatar, EquipmentItemSlot.LEFT_HAND);
                                         }
                                         else
                                         {
@@ -310,7 +312,7 @@ public class WorldManager : MonoBehaviour
                                     {
                                         if (rightHandItem == 0)
                                         {
-                                            CharacterManager.Instance.UnEquipItem(avatar, ItemSlot.RIGHT_HAND);
+                                            CharacterManager.Instance.UnEquipItem(avatar, EquipmentItemSlot.RIGHT_HAND);
                                         }
                                         else
                                         {

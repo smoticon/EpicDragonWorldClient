@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
@@ -14,6 +15,7 @@ public class ItemData : MonoBehaviour
 
     public GameObject[] itemPrefabs;
     private static readonly Dictionary<int, ItemHolder> ITEMS = new Dictionary<int, ItemHolder>();
+    public static Dictionary<int, Item> itemDB = new Dictionary<int, Item>();
 
     private void Start()
     {
@@ -34,7 +36,7 @@ public class ItemData : MonoBehaviour
             }
 
             int itemId = int.Parse(values[0]);
-            ItemSlot itemSlot = (ItemSlot)Enum.Parse(typeof(ItemSlot), values[1]);
+            EquipmentItemSlot itemSlot = (EquipmentItemSlot)Enum.Parse(typeof(EquipmentItemSlot), values[1]);
             ItemType itemType = (ItemType)Enum.Parse(typeof(ItemType), values[2]);
             string name = values[3];
             string description = values[4];
@@ -59,8 +61,10 @@ public class ItemData : MonoBehaviour
             int strength = int.Parse(values[17]);
             int dexterity = int.Parse(values[18]);
             int intelect = int.Parse(values[19]);
-
             ITEMS.Add(itemId, new ItemHolder(itemId, itemSlot, itemType, name, description, recipeMale, recipeFemale, prefabId, positionMale, positionFemale, rotationMale, rotationFemale, scaleMale, scaleFemale, stackable, tradable, stamina, strength, dexterity, intelect));
+            
+            Sprite icon = Resources.Load<Sprite>("ItemIcons/Equipment/" + recipeFemale.Replace("_Recipe", ""));
+            itemDB.Add(itemId, new Item(itemId, itemSlot, itemType, name, description, icon, stackable, stamina, strength, dexterity, intelect));
         }
     }
 
@@ -71,5 +75,14 @@ public class ItemData : MonoBehaviour
             return null;
         }
         return ITEMS[id];
+    }
+
+    public static Item GetItemInfo(int id)
+    {
+        if (!itemDB.ContainsKey(id))
+        {
+            return null;
+        }
+        return itemDB[id];
     }
 }

@@ -190,33 +190,33 @@ public class CharacterManager : MonoBehaviour
         bool isMale = avatar.activeRace.name.Equals("HumanMaleDCS");
         switch (item.GetItemSlot())
         {
-            case ItemSlot.HEAD:
+            case EquipmentItemSlot.HEAD:
                 avatar.SetSlot("Helmet", isMale ? item.GetRecipeMale() : item.GetRecipeFemale());
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.CHEST:
+            case EquipmentItemSlot.CHEST:
                 avatar.SetSlot("Chest", isMale ? item.GetRecipeMale() : item.GetRecipeFemale());
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.LEGS:
+            case EquipmentItemSlot.LEGS:
                 avatar.SetSlot("Legs", isMale ? item.GetRecipeMale() : item.GetRecipeFemale());
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.HANDS:
+            case EquipmentItemSlot.HANDS:
                 avatar.SetSlot("Hands", isMale ? item.GetRecipeMale() : item.GetRecipeFemale());
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.FEET:
+            case EquipmentItemSlot.FEET:
                 avatar.SetSlot("Feet", isMale ? item.GetRecipeMale() : item.GetRecipeFemale());
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.LEFT_HAND:
-                UnEquipItem(avatar, ItemSlot.LEFT_HAND);
+            case EquipmentItemSlot.LEFT_HAND:
+                UnEquipItem(avatar, EquipmentItemSlot.LEFT_HAND);
                 // Find left hand bone.
                 GameObject boneObjL = umaData.GetBoneGameObject("LeftHand");
                 // Create the item.
@@ -237,8 +237,8 @@ public class CharacterManager : MonoBehaviour
                 }
                 break;
 
-            case ItemSlot.RIGHT_HAND:
-                UnEquipItem(avatar, ItemSlot.RIGHT_HAND);
+            case EquipmentItemSlot.RIGHT_HAND:
+                UnEquipItem(avatar, EquipmentItemSlot.RIGHT_HAND);
                 // Find right hand bone.
                 GameObject boneObjR = umaData.GetBoneGameObject("RightHand");
                 // Create the item.
@@ -259,8 +259,8 @@ public class CharacterManager : MonoBehaviour
                 }
                 break;
 
-            case ItemSlot.TWO_HAND:
-                UnEquipItem(avatar, ItemSlot.TWO_HAND);
+            case EquipmentItemSlot.TWO_HAND:
+                UnEquipItem(avatar, EquipmentItemSlot.TWO_HAND);
                 // Find right hand bone.
                 GameObject boneObjTH = umaData.GetBoneGameObject("RightHand");
                 // Create the item.
@@ -283,7 +283,7 @@ public class CharacterManager : MonoBehaviour
         }
     }
 
-    public void UnEquipItem(DynamicCharacterAvatar avatar, ItemSlot itemSlot)
+    public void UnEquipItem(DynamicCharacterAvatar avatar, EquipmentItemSlot itemSlot)
     {
         // UMAData must not be null, so wait until it is not.
         UMAData umaData = null;
@@ -294,32 +294,32 @@ public class CharacterManager : MonoBehaviour
 
         switch (itemSlot)
         {
-            case ItemSlot.HEAD:
+            case EquipmentItemSlot.HEAD:
                 avatar.ClearSlot("Helmet");
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.CHEST:
+            case EquipmentItemSlot.CHEST:
                 avatar.ClearSlot("Chest");
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.LEGS:
+            case EquipmentItemSlot.LEGS:
                 avatar.ClearSlot("Legs");
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.HANDS:
+            case EquipmentItemSlot.HANDS:
                 avatar.ClearSlot("Hands");
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.FEET:
+            case EquipmentItemSlot.FEET:
                 avatar.ClearSlot("Feet");
                 avatar.BuildCharacter();
                 break;
 
-            case ItemSlot.LEFT_HAND:
+            case EquipmentItemSlot.LEFT_HAND:
                 // Find left hand bone.
                 GameObject boneObjL = umaData.GetBoneGameObject("LeftHand");
                 // If previous item exists remove it.
@@ -338,7 +338,7 @@ public class CharacterManager : MonoBehaviour
                 }
                 break;
 
-            case ItemSlot.RIGHT_HAND:
+            case EquipmentItemSlot.RIGHT_HAND:
                 // Find right hand bone.
                 GameObject boneObjR = umaData.GetBoneGameObject("RightHand");
                 // If previous item exists remove it.
@@ -355,7 +355,7 @@ public class CharacterManager : MonoBehaviour
                 }
                 break;
 
-            case ItemSlot.TWO_HAND:
+            case EquipmentItemSlot.TWO_HAND:
                 // Find left hand bone.
                 GameObject boneObjTHL = umaData.GetBoneGameObject("LeftHand");
                 // If previous left hand item exists remove it.

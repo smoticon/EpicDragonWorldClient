@@ -7,7 +7,7 @@
 public class ItemHolder
 {
     private readonly int itemId;
-    private readonly ItemSlot itemSlot;
+    private readonly EquipmentItemSlot itemSlot;
     private readonly ItemType itemType;
     private readonly string name;
     private readonly string description;
@@ -49,7 +49,7 @@ public class ItemHolder
     /// dexterity: UI dexterity information.
     /// intelect: UI intelect information.
     /// </summary>
-    public ItemHolder(int itemId, ItemSlot itemSlot, ItemType itemType, string name, string description, string recipeMale, string recipeFemale, int prefabId, Vector3 positionMale, Vector3 positionFemale, Quaternion rotationMale, Quaternion rotationFemale, Vector3 scaleMale, Vector3 scaleFemale, bool stackable, bool tradable, int stamina, int strength, int dexterity, int intelect)
+    public ItemHolder(int itemId, EquipmentItemSlot itemSlot, ItemType itemType, string name, string description, string recipeMale, string recipeFemale, int prefabId, Vector3 positionMale, Vector3 positionFemale, Quaternion rotationMale, Quaternion rotationFemale, Vector3 scaleMale, Vector3 scaleFemale, bool stackable, bool tradable, int stamina, int strength, int dexterity, int intelect)
     {
         this.itemId = itemId;
         this.itemSlot = itemSlot;
@@ -78,7 +78,7 @@ public class ItemHolder
         return itemId;
     }
 
-    public ItemSlot GetItemSlot()
+    public EquipmentItemSlot GetItemSlot()
     {
         return itemSlot;
     }
