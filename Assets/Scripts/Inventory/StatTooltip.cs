@@ -8,6 +8,7 @@ public class StatTooltip : MonoBehaviour
     [SerializeField] Text StatNameText;
     [SerializeField] Text StatModifiersLabelText;
     [SerializeField] Text StatModifiersText;
+    [SerializeField] Camera uiCamera;
 
     private StringBuilder sb = new StringBuilder();
 
@@ -85,5 +86,16 @@ public class StatTooltip : MonoBehaviour
         }
 
         return sb.ToString();
+    }
+
+    private void LateUpdate()
+    {
+        Vector2 localPoint;
+        Vector3 mPosition = Input.mousePosition;
+        mPosition.x = mPosition.x + 150;
+        mPosition.y = mPosition.y + 100;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.parent.GetComponent<RectTransform>(), mPosition, uiCamera, out localPoint);
+        transform.localPosition = localPoint;
+        transform.SetAsLastSibling();
     }
 }

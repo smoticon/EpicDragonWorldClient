@@ -35,8 +35,7 @@ public class ItemTooltip : MonoBehaviour
         mPosition.x = mPosition.x + 150;
         mPosition.y = mPosition.y + 100;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(transform.parent.GetComponent<RectTransform>(), mPosition, uiCamera, out localPoint);
-        
         transform.localPosition = localPoint;
-
+        transform.SetAsLastSibling();
     }
 }
