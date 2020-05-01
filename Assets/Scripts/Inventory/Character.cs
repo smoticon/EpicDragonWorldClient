@@ -58,6 +58,8 @@ public class Character : MonoBehaviour
         // Drop
         Inventory.OnDropEvent += Drop;
         EquipmentPanel.OnDropEvent += Drop;
+
+        inventoryManager.LoadEquipment(this);
     }
 
     private void InventoryRightClick(BaseItemSlot itemSlot)
@@ -174,7 +176,12 @@ public class Character : MonoBehaviour
 
     public void Equip(Item item)
     {
-        item.EnchantLvl = dragItemSlot.EnchantLvl;
+       foreach (ItemInfoHolder itemInfo in inventoryManager.itemsList)
+        {
+            // TODO search item after unique id
+            if (item.itemId == itemInfo.GetItemId())
+                item.EnchantLvl = itemInfo.GetEnchantLvl();
+        }
 
         if (Inventory.RemoveItem(item))
         {
@@ -190,8 +197,9 @@ public class Character : MonoBehaviour
                 }
 
                 item.Equip(this);
-                CharacterManager.Instance.EquipItem(WorldManager.Instance.activeCharacter, item.itemId);
                 statPanel.UpdateStatValues();
+                Debug.Log("Equip: " + item.itemId);
+                CharacterManager.Instance.EquipItem(WorldManager.Instance.activeCharacter, item.itemId);
             }
             else
             {

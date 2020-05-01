@@ -3,11 +3,11 @@
 public class ItemInfoHolder
 {
     private readonly int itemId;
-    private readonly int equipped;
+    private readonly bool equipped;
     private readonly int amount;
     private readonly int enchantLvl;
 
-    public ItemInfoHolder(int itemId, int equipped, int amount, int enchantLvl)
+    public ItemInfoHolder(int itemId, bool equipped, int amount, int enchantLvl)
     {
         this.itemId = itemId;
         this.equipped = equipped;
@@ -20,7 +20,7 @@ public class ItemInfoHolder
         return itemId;
     }
 
-    public int IsEquipped()
+    public bool IsEquipped()
     {
         return equipped;
     }

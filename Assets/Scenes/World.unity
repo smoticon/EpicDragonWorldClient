@@ -5642,7 +5642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1610974505}
   valueText: {fileID: 274542759}
-  tooltip: {fileID: 0}
+  tooltip: {fileID: 1378036232}
 --- !u!114 &149756743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23908,7 +23908,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 1479592305}
   valueText: {fileID: 1555290732}
-  tooltip: {fileID: 0}
+  tooltip: {fileID: 1378036232}
 --- !u!114 &627775121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37510,7 +37510,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 2097609563}
   valueText: {fileID: 1718762897}
-  tooltip: {fileID: 0}
+  tooltip: {fileID: 1378036232}
 --- !u!114 &1006289669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38842,8 +38842,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1047332544}
-  m_LocalRotation: {x: 0.56503373, y: 0.42513162, z: 0.42513162, w: -0.56503373}
-  m_LocalPosition: {x: 1537.4331, y: 18.291168, z: -230.37207}
+  m_LocalRotation: {x: -0.012475359, y: 0.97638524, z: 0.20753706, w: 0.05869196}
+  m_LocalPosition: {x: 1562.6001, y: 35.311165, z: -277.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1470148734}
@@ -45812,8 +45812,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 225, y: 0}
-  m_SizeDelta: {x: 480, y: 650}
+  m_AnchoredPosition: {x: 220, y: 0}
+  m_SizeDelta: {x: 460, y: 650}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1258477169
 MonoBehaviour:
@@ -49587,7 +49587,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameText: {fileID: 162929513}
   valueText: {fileID: 1093168666}
-  tooltip: {fileID: 0}
+  tooltip: {fileID: 1378036232}
 --- !u!114 &1367055855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -50224,6 +50224,7 @@ MonoBehaviour:
   StatNameText: {fileID: 430835082}
   StatModifiersLabelText: {fileID: 2035338476}
   StatModifiersText: {fileID: 1405788067}
+  uiCamera: {fileID: 0}
 --- !u!114 &1378036233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57834,8 +57835,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1258477167}
-        m_MethodName: SetActive
+      - m_Target: {fileID: 403036262}
+        m_MethodName: set_IsDisplaying
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -72970,8 +72971,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1863548444}
-        m_MethodName: SetActive
+      - m_Target: {fileID: 403036262}
+        m_MethodName: set_IsDisplaying
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

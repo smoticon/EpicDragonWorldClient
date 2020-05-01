@@ -4,7 +4,7 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
-    ArrayList itemsList = new ArrayList();
+    public ArrayList itemsList = new ArrayList();
 
     private bool isReady = false;
 
@@ -19,12 +19,7 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         Instance = this;
-
         _canvas.enabled = false;
-        
-
-
-
     }
 
     public void CharacterItems(ArrayList charItems)
@@ -65,9 +60,23 @@ public class InventoryManager : MonoBehaviour
             ItemSlot itemSlot = character.Inventory.ItemSlots[_slot];
             itemSlot.Item = ItemData.GetItemInfo(itemInfo.GetItemId());
             itemSlot.Amount = itemInfo.GetAmount();
+            itemSlot.isEquiped = itemInfo.IsEquipped();
             itemSlot.EnchantLvl = itemInfo.GetEnchantLvl();
-            
             _slot++;
+
+        }
+    }
+
+    public void LoadEquipment(Character character)
+    {
+        for (int i = 0; i < character.Inventory.ItemSlots.Count; i++)
+        {
+            ItemSlot itemSlot = character.Inventory.ItemSlots[i];
+            if (itemSlot.isEquiped)
+            {
+                CharacterManager.Instance.EquipItem(WorldManager.Instance.activeCharacter, itemSlot.Item.itemId);               
+                character.Equip(itemSlot.Item);
+            }
         }
     }
 }
