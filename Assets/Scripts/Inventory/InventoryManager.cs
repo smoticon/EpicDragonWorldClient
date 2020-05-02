@@ -74,7 +74,7 @@ public class InventoryManager : MonoBehaviour
             ItemSlot itemSlot = character.Inventory.ItemSlots[i];
             if (itemSlot.isEquiped)
             {
-                CharacterManager.Instance.EquipItem(WorldManager.Instance.activeCharacter, itemSlot.Item.itemId);               
+//                CharacterManager.Instance.EquipItem(WorldManager.Instance.activeCharacter, itemSlot.Item.itemId);               
                 character.Equip(itemSlot.Item);
             }
         }

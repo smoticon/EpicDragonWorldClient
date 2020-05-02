@@ -20,6 +20,7 @@ public class Character : MonoBehaviour
     [Header("Serialize Field")]
     [SerializeField] StatPanel statPanel;
     [SerializeField] ItemTooltip itemTooltip;
+    [SerializeField] ItemInfoTooltip itemInfoTooltip;
     [SerializeField] Image draggableItem;
     [SerializeField] InventoryManager inventoryManager;
     private BaseItemSlot dragItemSlot;
@@ -65,13 +66,18 @@ public class Character : MonoBehaviour
     private void InventoryRightClick(BaseItemSlot itemSlot)
     {
         dragItemSlot = itemSlot;
+
         if (itemSlot.Item is Item)
+            itemInfoTooltip.ShowTooltip(this, itemSlot.Item);
+
+
+ /*       if (itemSlot.Item is Item)
         {
             dragItemSlot.EnchantLvl = itemSlot.EnchantLvl;
             Equip((Item)itemSlot.Item);
         }
         // TODO if item is consumable
-    }
+*/    }
 
     private void EquipmentPanelRightClick(BaseItemSlot itemSlot)
     {
@@ -198,7 +204,7 @@ public class Character : MonoBehaviour
 
                 item.Equip(this);
                 statPanel.UpdateStatValues();
-                Debug.Log("Equip: " + item.itemId);
+                // Debug.Log("Equip: " + item.itemId);
                 CharacterManager.Instance.EquipItem(WorldManager.Instance.activeCharacter, item.itemId);
             }
             else
