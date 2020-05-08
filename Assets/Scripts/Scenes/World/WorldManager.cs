@@ -360,7 +360,7 @@ public class WorldManager : MonoBehaviour
 
             // Add placeholder to game object list.
             gameObjects.GetOrAdd(objectId, (GameObject)null);
-
+ 
             // Queue creation.
             CharacterManager.Instance.characterCreationQueue.TryAdd(objectId, characterdata);
         }
@@ -442,5 +442,6 @@ public class WorldManager : MonoBehaviour
 
         // Update UI target information.
         StatusInformationManager.Instance.UpdateTargetInformation(targetWorldObject);
+        QuestManager.instance.QuestInfo(targetWorldObject);
     }
 }

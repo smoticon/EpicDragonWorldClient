@@ -1,0 +1,19 @@
+{
+	"id":2,
+	"questName":"Test of Strength",
+	"questDescription":"How good you are young man? Show me your skill's. Kill this monsters around me and I reward you with a good armor.",
+	"recipent":0,
+	"requiredLevel":1,
+	"reward":
+	{
+		"exp":100.0,
+		"money":100.0,
+		"items":[{"id":3,"amount":1}]
+	},
+	"task":
+	{
+		"talkTo":[],
+		"items":[{"id":1,"amount":1}],
+		"kills":[{"id":0,"amount":10,"initialAmount":0},{"id":1, "amount":3, "initialAmount":0}]
+	}
+}

@@ -33,7 +33,7 @@ public class ItemInfoTooltip : MonoBehaviour
         itemImage.sprite = item.Icon;
         ItemStatsText.text = item.GetStatsDescription();
         gameObject.SetActive(true);
-        //        equipButton.GetComponent<Button>().onClick.AddListener(new UnityAction(() => { Equip(item); }));
+
         enhanceButton.onClick.AddListener(() => { Debug.Log("TODO: Enhance Method"); });
         jewelsButton.onClick.AddListener(() => { Debug.Log("TODO: Jewels Method"); });
         traitsButton.onClick.AddListener(() => { Debug.Log("TODO: Traits Method"); });

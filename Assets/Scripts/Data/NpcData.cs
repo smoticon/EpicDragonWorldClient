@@ -12,7 +12,6 @@ public class NpcData : MonoBehaviour
     public static NpcData Instance { get; private set; }
 
     private static readonly Dictionary<int, CharacterDataHolder> NPCS = new Dictionary<int, CharacterDataHolder>();
-
     private void Start()
     {
         Instance = this;

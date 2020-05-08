@@ -72,11 +72,11 @@ public class Item
         AddStat(Strength, "Strength");
         AddStat(Dexterity, "Dexterity");
         AddStat(Intelect, "Intelect");
-
-        AddStat(StaminaPercentBonus, "Stamina", true);
-        AddStat(StrengthPercentBonus, "Strength", true);
-        AddStat(DexterityPercentBonus, "Dexterity", true);
-        AddStat(IntelectPercentBonus, "Intelect", true);
+        sb.AppendLine();
+        AddStat(StaminaPercentBonus, "Stamina", isPercent: true);
+        AddStat(StrengthPercentBonus, "Strength", isPercent: true);
+        AddStat(DexterityPercentBonus, "Dexterity", isPercent: true);
+        AddStat(IntelectPercentBonus, "Intelect", isPercent: true);
         return sb.ToString();
     }
 

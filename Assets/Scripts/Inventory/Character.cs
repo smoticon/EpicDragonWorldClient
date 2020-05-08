@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using edw.CharacterStats;
+using System.Collections.Generic;
+using System;
 
 public class Character : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class Character : MonoBehaviour
     public CharacterStat Dexterity;
     public CharacterStat Intelect;
 
+    public int playerLevel = 1;
 
     [Header("Public")]
     public Inventory Inventory;
@@ -24,6 +27,11 @@ public class Character : MonoBehaviour
     [SerializeField] Image draggableItem;
     [SerializeField] InventoryManager inventoryManager;
     private BaseItemSlot dragItemSlot;
+
+    // TODO: Quest system - in future move to single file QuestData
+    public static Dictionary<int, ActiveQuest> activeQuests = new Dictionary<int, ActiveQuest>();
+    public List<int> finishedQuest = new List<int>();
+    public static Dictionary<int, MonsterKills> monstersKilled = new Dictionary<int, MonsterKills>();
 
     // Start is called before the first frame update
     void Start()
@@ -224,5 +232,60 @@ public class Character : MonoBehaviour
 
             Inventory.AddItem(item);
         }
+    }
+
+    // Quest System
+
+    public static void AddQuest(int id)
+    {
+        // If we already accepted this quest, we won't accept it again
+        if (activeQuests.ContainsKey(id)) return;
+
+        // Otherwise, we create a new ActiveQuest.
+        Quest quest = QuestManager.instance.questDictionary[id]; // reference to our quest
+        ActiveQuest newActiveQuest = new ActiveQuest();
+        newActiveQuest.id = id;
+        newActiveQuest.dateTaken = DateTime.Now.ToLongDateString();
+
+        // If we need to kill monsters on this quest...
+        if(quest.task.kills.Length > 0)
+        {
+            // set the kills of the new active quest as new array of the kills
+            newActiveQuest.kills = new Quest.QuestKill[quest.task.kills.Length];
+            //for every kill in our quest.task
+            foreach(Quest.QuestKill questKill in quest.task.kills)
+            {
+                // set each quest kill to a new instance of questKill
+                newActiveQuest.kills[questKill.id] = new Quest.QuestKill();
+                // set the player current amount of kills of the new active quest based on the 
+                if (!monstersKilled.ContainsKey(questKill.id)) monstersKilled.Add(questKill.id, new Character.MonsterKills());
+                newActiveQuest.kills[questKill.id].initialAmount = monstersKilled[questKill.id].amount;
+            }
+        }
+
+        if(quest.task.talkTo.Length > 0)
+        {
+            // TODO
+            newActiveQuest.npcId = quest.task.talkTo[0];
+            Debug.Log("Talk to " + newActiveQuest.npcId);
+        }
+        activeQuests.Add(id, newActiveQuest);
+    }
+
+    // How many monsters[id] have we killed in total.
+    public class MonsterKills
+    {
+        public int id;
+        public int amount;
+    }
+
+    // Holds information specific to the instance of this ques.
+    // Useful for repetable quests
+    public class ActiveQuest
+    {
+        public int id; // Id of the quest taken
+        public int npcId; // Id of Npc toTalk
+        public string dateTaken;
+        public Quest.QuestKill[] kills; // Holds the task monster ID and the amount of surrent monsters kill
     }
 }

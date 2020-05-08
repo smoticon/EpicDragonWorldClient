@@ -1,0 +1,38 @@
+{
+	"id":0,
+	"questName":"[NpcName]: ",
+	"questDescription":"Greetings [CharacterName]. First, you must learn the basic methods of control in the game. You should meet the Rosa over there. Listen carefully to what she tells you, you will find it very useful later in the game.",
+	"recipent":0,
+	"requiredLevel":0,
+	"reward":
+	{
+		"exp":100.0,
+		"money":20.0,
+		"items":[{"id":2,"amount":1}]
+	},
+	"task":
+	{
+		"talkTo":[2],
+		"items":[],
+		"kills":[]
+	}
+};
+{
+	"id":1,
+	"questName":"[NpcName]: ",
+	"questDescription":"How good you are young man? Show me your skill's. Kill this monsters around me and I reward you with a good armor.",
+	"recipent":0,
+	"requiredLevel":0,
+	"reward":
+	{
+		"exp":100.0,
+		"money":100.0,
+		"items":[{"id":3,"amount":1}]
+	},
+	"task":
+	{
+		"talkTo":[],
+		"items":[{"id":1,"amount":1}],
+		"kills":[{"id":0,"amount":10,"initialAmount":0},{"id":1, "amount":3, "initialAmount":0}]
+	}
+}
